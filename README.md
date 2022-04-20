@@ -5,4 +5,5 @@ INT221 INFORMATION TECHNOLOGY INTEGRATED PROJECT
 ---
 https://miro.com/app/board/uXjVO7o40L4=/?share_link_id=117329436940
 
+(Relay 1 day)
 ![Task Board](https://github.com/FhLk/INT221-SSA-5/blob/main/Week-Pre-Game/TaskBoard1.jpg)
