@@ -72,6 +72,25 @@ CREATE TABLE IF NOT EXISTS `mydb`.`event` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+insert into `booking` (`bookingId`,`name`,`email`) values 
+(65000001, 'Paramet','paramt.55@gmail.com' ),
+(65000002, 'Michel','michel.ez@gmail.com' ),
+(65000003, 'John','johnwick.007@gmail.com' ),
+(65000004, 'Alice','alice.inwonderland@gmail.com' );
+
+insert into `eventcategory` (`CategoryID`,`categoryName`,`description`,`duration`) values 
+(10001, 'Back-End','Back-End clinic', 90 ),
+(10002, 'Database','Database clinic',60 ),
+(10003, 'Front-End','Front-End clinic', 120 ),
+(10004, 'Project-Management','Project-Management',60 ),
+(10005, 'DevOps-Infra','DevOps-Infra clinic',60 ),
+(10006, 'Business-Requirement','Business-Requirement clinic', 90 );
+
+insert into `event` (`eventId`,`bookingId`,`CategoryID`,`startTime`,`eventNote`) values 
+(1, 65000001,10001,'2022-04-1','Working homework' ),
+(2, 65000002,10002,'2022-04-7' ,'Meeting about study'),
+(3, 65000003,10003,'2022-04-14',null ),
+(4, 65000004,10004,'2022-04-15','Database about Travel in Thailand' );
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
