@@ -20,7 +20,7 @@ USE `oasip_db` ;
 -- -----------------------------------------------------
 -- Table `oasip_db`.`EventCategory`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oasip_db`.`EventCategory` (
+CREATE TABLE IF NOT EXISTS `EventCategory` (
   `CategoryID` INT NOT NULL,
   `CategoryName` VARCHAR(45) NOT NULL,
   `Description` VARCHAR(255) NULL,
@@ -33,7 +33,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `oasip_db`.`EventBooking`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oasip_db`.`EventBooking` (
+CREATE TABLE IF NOT EXISTS `EventBooking` (
   `BookingID` INT NOT NULL,
   `BookingName` VARCHAR(50) NOT NULL,
   `BookingEmail` VARCHAR(50) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `oasip_db`.`EventBooking` (
   INDEX `fk_EventBooking_EventCategory_idx` (`CategoryID` ASC) VISIBLE,
   CONSTRAINT `fk_EventBooking_EventCategory`
     FOREIGN KEY (`CategoryID`)
-    REFERENCES `oasip_db`.`EventCategory` (`CategoryID`)
+    REFERENCES `EventCategory` (`CategoryID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -54,10 +54,8 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-select * from EventBooking;
-select * from EventCategory;
 
-insert into `eventcategory` (`CategoryID`,`CategoryName`,`Description`,`Duration`) values 
+insert into `EventCategory` (`CategoryID`,`CategoryName`,`Description`,`Duration`) values 
 (1, 'Project Management Clinic',
 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project
 management clinic ในวิชา INT221 integrated
