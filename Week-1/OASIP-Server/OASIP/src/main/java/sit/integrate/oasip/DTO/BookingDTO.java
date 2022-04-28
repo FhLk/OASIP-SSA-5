@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
+import sit.integrate.oasip.Entity.Category;
 
 @Getter@Setter
 @NoArgsConstructor

@@ -16,7 +16,7 @@ public class Booking {
     @Column(name = "BookingEmail", nullable = false, length = 50)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "CategoryID", nullable = false)
     private Category categoryID;
 
