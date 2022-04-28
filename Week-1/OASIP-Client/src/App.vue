@@ -1,20 +1,14 @@
 <script setup>
-import {onMounted,ref} from 'vue';
+import {onMounted,onBeforeMount,ref} from 'vue';
 const isBooking=ref(false)
 const isDetail=ref(-1)
-const categories=ref([
-    {name:"front-end",duration:60},
-    {name:"back-end",duration:30},
-    {name:"business",duration:30},
-    {name:"project-mange",duration:60},
-    {name:"devops",duration:60},
-    {name:"database",duration:60},
-])
+
 const booking=ref({name:"",email:"",group:"",date:"",startTime:"" ,category:{name:"",duration:0},note:""});
 const resetBooking=()=>{
     booking.value={name:"",email:"",group:"",date:"",startTime:"" ,category:{name:"",duration:0},note:""};
 }
 const listdata=ref([]);
+const categories=ref([])
 const getBookings= async ()=>{
     const res=await fetch('http://localhost:5000/Events',{
         method: 'GET'
@@ -22,8 +16,16 @@ const getBookings= async ()=>{
     listdata.value=await res.json()
 }
 
+const getCategories= async () =>{
+    const res=await fetch('http://localhost:5000/Category',{
+        method: 'GET'
+    })
+    categories.value=await res.json()
+}
+
 onMounted(async ()=>{
     await getBookings()
+    await getCategories()
 })
 
 
