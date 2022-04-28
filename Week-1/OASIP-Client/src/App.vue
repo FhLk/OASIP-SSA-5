@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue';
+import {onMounted,ref} from 'vue';
 const isBooking=ref(false)
 const isDetail=ref(-1)
 const categories=ref([
@@ -14,36 +14,17 @@ const booking=ref({name:"",email:"",group:"",date:"",startTime:"" ,category:{nam
 const resetBooking=()=>{
     booking.value={name:"",email:"",group:"",date:"",startTime:"" ,category:{name:"",duration:0},note:""};
 }
-const listdata=ref([
-    {
-        name:"Somchai Jaidee",
-        email:"somchai.jai@mail.kmutt.ac.th",
-        group:"OR-7",
-        date:"2022-05-23",
-        startTime:"13:30" ,
-        category:{name:"DevOps/Infra Clinic",duration:30},
-        note:""
-    },
-    {
-        name:"Somsri Rakdee",
-        email:"somsri.rak@mail.kmutt.ac.th",
-        group:"SJ-3",
-        date:"Project Management Clinic",
-        startTime:"2022-05-23 13:30" ,
-        category:{name:"DevOps/Infra Clinic",duration:30},
-        note:"ขอปรึกษาปัญหาเพื่อนไม่ช่วยงาน"
-    },
-    {
-        name:"สมเกียรติ ขยันเรียน",
-        email:"somkiat.kay@kmutt.ac.th",
-        group:"TT-4",
-        date:"2022-05-23",
-        startTime:"16:30" ,
-        category:{name:"Database Clinic",duration:30},
-        note:""
-    }
-]);
+const listdata=ref([]);
+const getBookings= async ()=>{
+    const res=await fetch('http://localhost:5000/Events',{
+        method: 'GET'
+    })
+    listdata.value=await res.json()
+}
 
+onMounted(async ()=>{
+    await getBookings()
+})
 
 
 const Add=(event)=>{
@@ -88,7 +69,7 @@ const Add=(event)=>{
             </p>
         </div>
     </div>
-    <div>
+    <div v-if="listdata.length!==0">
         <p>Sort By: | <a>Day</a> | <a>Upcoming</a> | <a>Past</a> | <a>Time</a> | </p>
     <ul>
         <li v-for="(data,index) in listdata" :key="index">{{data.date}}
@@ -111,6 +92,9 @@ const Add=(event)=>{
             <br/>
         </li>
     </ul>
+    </div>
+    <div v-else>
+        <h2>No Scheduled Events.</h2>
     </div>
 </div>
 </template>
