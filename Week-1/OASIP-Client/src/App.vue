@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted,onBeforeMount,ref} from 'vue';
+import {onMounted,onBeforeMount,ref, onBeforeUpdate} from 'vue';
 const isBooking=ref(false)
 const isDetail=ref(-1)
 
@@ -15,6 +15,14 @@ const getBookings= async ()=>{
     })
     listdata.value=await res.json()
 }
+const getBooking = async (id)=>{
+    const res=await fetch(`http://localhost:5000/Events/${id}`,{
+        method: 'GET'
+    })
+    booking.value=await res.json()
+    isDetail.value= isDetail.value===id-1 ? -1:id-1
+}
+
 
 const getCategories= async () =>{
     const res=await fetch('http://localhost:5000/Category',{
@@ -78,16 +86,16 @@ const Add=(event)=>{
             {{data.startTime}} ({{data.category.duration}} min.) {{data.category.name.toLocaleUpperCase()}} Clinic
             {{data.name}} ({{data.group}})
             <div>
-            <button @click="isDetail= isDetail===index ? -1:index">{{isDetail===index ? "Closed":"Detail"}}</button>
+            <button @click="getBooking(index+1)">{{isDetail===index ? "Closed":"Detail"}}</button>
             <button>Delete</button>
             <div v-show="isDetail===index">
-                <p>Name: {{data.name}}</p>
-                <p>E-mail: {{data.email}}</p>
-                <p>Category: {{data.category.name.toLocaleUpperCase()}}</p>
-                <p>Start Time: {{data.startTime}} PM.</p>
-                <p>Duration: {{data.category.duration}} min.</p>
-                <p>Date & Time: {{data.date}} {{data.startTime}}</p>
-                <p>Note: {{data.note}}</p>
+                <p>Name: {{booking.name}} ({{booking.group}})</p>
+                <p>E-mail: {{booking.email}}</p>
+                <p>Category: {{booking.category.name.toLocaleUpperCase()}}</p>
+                <p>Start Time: {{booking.startTime}} PM.</p>
+                <p>Duration: {{booking.category.duration}} min.</p>
+                <p>Date & Time: {{booking.date}} {{booking.startTime}}</p>
+                <p>Note: {{booking.note}}</p>
                 <button>Edit</button>
             </div>
             </div>
