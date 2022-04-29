@@ -2,25 +2,27 @@ package sit.integrate.oasip.Controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.CategoryDTO;
-import sit.integrate.oasip.Entity.Category;
-import sit.integrate.oasip.Repository.CategoryRepository;
 import sit.integrate.oasip.Service.CategoryService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/categories")
+@CrossOrigin(origins = "http://localhost:3000",allowedHeaders = "*",methods = {RequestMethod.GET,RequestMethod.POST})
 public class CategoryController {
     @Autowired
-    private CategoryRepository repository;
+    private CategoryService service;
 
     @GetMapping("")
-    public List<Category> getAllCategory(){return repository.findAll();}
+    public List<CategoryDTO> getAllCategory(){
+        return service.getCategories();
+    }
+
+    @GetMapping("/{CategoryId}")
+    public CategoryDTO getCategoryById(@PathVariable Integer CategoryId){
+        return service.getCategoryById(CategoryId);
+    }
 }

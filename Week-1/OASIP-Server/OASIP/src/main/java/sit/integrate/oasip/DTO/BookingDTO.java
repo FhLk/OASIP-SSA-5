@@ -1,11 +1,16 @@
 package sit.integrate.oasip.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
-import sit.integrate.oasip.Entity.Category;
+
+
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter@Setter
 @NoArgsConstructor
@@ -14,10 +19,7 @@ public class BookingDTO {
     private Integer id;
     private String bookingName;
     private String bookingEmail;
-    @JsonIgnore
     private CategoryDTO category;
-    private String startTime;
+    private Instant startTime;
     private String eventNote;
-
-
 }

@@ -1,11 +1,14 @@
 package sit.integrate.oasip.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import java.io.Serializable;
+import java.util.Set;
 
 
 @Getter
@@ -17,5 +20,4 @@ public class CategoryDTO {
     private String categoryName;
     private String description;
     private Integer duration;
-
 }

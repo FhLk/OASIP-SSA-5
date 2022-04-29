@@ -1,31 +1,58 @@
 <script setup>
 import {onMounted,onBeforeMount,ref, onBeforeUpdate} from 'vue';
+import moment from "moment"
 const isBooking=ref(false)
 const isDetail=ref(-1)
-
-const booking=ref({name:"",email:"",group:"",date:"",startTime:"" ,category:{name:"",duration:0},note:""});
-const resetBooking=()=>{
-    booking.value={name:"",email:"",group:"",date:"",startTime:"" ,category:{name:"",duration:0},note:""};
-}
+let DateFormat="YYYY-MM-DD HH:mm A"
 const listdata=ref([]);
-const categories=ref([])
-const getBookings= async ()=>{
-    const res=await fetch('http://localhost:5000/Events',{
-        method: 'GET'
-    })
-    listdata.value=await res.json()
+const categories=ref([]);
+const booking=ref({
+    id: 0,
+    bookingName: "",
+    bookingEmail: "",
+    category: {
+        id: 0,
+        categoryName: "",
+        description: "",
+        duration: 0
+    },
+    startTime: "",
+    eventNote: ""
+});
+const group=ref("")
+const bookingDate=ref("");
+const bookingTime=ref("")
+const resetBooking=()=>{
+    booking.value={
+    id: 0,
+    bookingName: "",
+    bookingEmail: "",
+    category: {
+        id: 0,
+        categoryName: "",
+        description: "",
+        duration: 0
+    },
+    startTime: "",
+    eventNote: ""
+};
 }
-const getBooking = async (id)=>{
-    const res=await fetch(`http://localhost:5000/Events/${id}`,{
-        method: 'GET'
-    })
-    booking.value=await res.json()
+const showDetail = (id)=>{
     isDetail.value= isDetail.value===id-1 ? -1:id-1
 }
 
+const getBookings= async ()=>{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
+        method: 'GET'
+    })
+    listdata.value=await res.json()
+    listdata.value.forEach((data)=>{
+        data.startTime=moment(data.startTime).format(DateFormat)
+    })
+}
 
 const getCategories= async () =>{
-    const res=await fetch('http://localhost:5000/Category',{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/categories`,{
         method: 'GET'
     })
     categories.value=await res.json()
@@ -36,11 +63,36 @@ onMounted(async ()=>{
     await getCategories()
 })
 
-
-const Add=(event)=>{
-    listdata.value.push(event)
+const Add= async (event)=>{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
+        method: 'POST',
+        headers:{
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            id:listdata.value.length+1,
+            bookingName: event.bookingName + ` (${group.value})`,
+            bookingEmail: event.bookingEmail,
+            category: {
+                id:event.category.id,
+                categoryName: event.category.categoryName,
+                description: event.category.description,
+                duration: event.category.duration 
+                },
+            startTime: bookingDate.value+"T"+bookingTime.value+":00Z",
+            eventNote: event.eventNote  
+        })
+    })
+    const newBooking =await res.json()
+    listdata.value.push(newBooking)
     resetBooking()
     isBooking.value=false
+}
+
+const isEditBooking=ref(false);
+const EditEvent=(event,index)=>{
+    isBooking.value=false;
+    isEditBooking.value= isEditBooking.value ? false:true;
 }
 </script>
  
@@ -50,30 +102,27 @@ const Add=(event)=>{
     <h2>Event List</h2>
     <div>
         <button @click="isBooking= isBooking ? false:true">Booking</button>
-        <div v-show="isBooking">
-            <p>Full Name: <input type="text" placeholder="Name..." v-model="booking.name"></p>
-            <p>E-mail: <input type="email" placeholder="E-mail..." v-model="booking.email"></p>
-            <p>Group: <input type="text" placeholder="Group" v-model="booking.group"/></p>
+        <div v-if="isBooking">
+            <p>Full Name: <input type="text" placeholder="Name..." v-model="booking.bookingName"></p>
+            <p>Group: <input type="text" placeholder="Group" v-model="group"/></p>
+            <p>E-mail: <input type="email" placeholder="E-mail..." v-model="booking.bookingEmail"></p>
             <p>Category: 
-                <ul v-for="(name,index) in categories" :key="index">
-                    <input type="radio" :id="name.name" :value="name" v-model="booking.category">
-                    - <label :for="name.name">{{name.name.toLocaleUpperCase()}}</label>
+                <ul v-for="(category,index) in categories" :key="index">
+                    <input type="radio" :id="index" :value="category" v-model="booking.category">
+                    - <label :for="index">{{category.categoryName}}</label>
                 </ul>
                 <label>Date </label>: 
-                <input type="date" v-model="booking.date">
+                <input type="date" v-model="bookingDate">
                 <br/>
                 <label> Start (Time) </label>: 
-                <input type="time" v-model="booking.startTime">
+                <input type="time" v-model="bookingTime">
                 <br/>
                 <label>Duration (Minute): {{booking.category.duration}}</label>
                 <br/>
                 <label>Note: </label>
-                <textarea rows="5" cols="50" v-model="booking.note"></textarea>
+                <textarea rows="5" cols="50" v-model="booking.eventNote"></textarea>
                 <div> 
-                    <button @click="Add(booking)" :disabled="
-                    booking.name==='' || booking.email==='' || !booking.email.includes('@') || booking.date===''
-                    || booking.startTime==='' || booking.category.name===''"
-                    >OK</button>
+                    <button @click="Add(booking)">OK</button>
                     <button @click="cancle">Cancle</button>
                 </div>
             </p>
@@ -82,27 +131,27 @@ const Add=(event)=>{
     <div v-if="listdata.length!==0">
         <p>Sort By: | <a>Day</a> | <a>Upcoming</a> | <a>Past</a> | <a>Time</a> | </p>
     <ul>
-        <li v-for="(data,index) in listdata" :key="index">{{data.date}}
-            {{data.startTime}} ({{data.category.duration}} min.) {{data.category.name.toLocaleUpperCase()}} Clinic
-            {{data.name}} ({{data.group}})
+        <li v-for="(data,index) in listdata" :key="index">{{data.startTime}}
+            ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}} Clinic
+            {{data.bookingName}}
             <div>
-            <button @click="getBooking(index+1)">{{isDetail===index ? "Closed":"Detail"}}</button>
+            <button @click="showDetail(index+1)">{{isDetail===index ? "Closed":"Detail"}}</button>
             <button>Delete</button>
-            <div v-show="isDetail===index">
-                <p>Name: {{booking.name}} ({{booking.group}})</p>
-                <p>E-mail: {{booking.email}}</p>
-                <p>Category: {{booking.category.name.toLocaleUpperCase()}}</p>
-                <p>Start Time: {{booking.startTime}} PM.</p>
-                <p>Duration: {{booking.category.duration}} min.</p>
-                <p>Date & Time: {{booking.date}} {{booking.startTime}}</p>
-                <p>Note: {{booking.note}}</p>
-                <button>Edit</button>
+            <div v-if="isDetail===index">
+                <p>Name: {{data.bookingName}}</p>
+                <p>E-mail: {{data.bookingEmail}}</p>
+                <p>Category: {{data.category.categoryName}}</p>
+                <p>Date & Time: {{data.startTime}}</p>
+                <p>Duration: {{data.category.duration}} min.</p>
+                <p>Start Time: {{data.startTime.slice(10)}}</p>
+                <p>Note: {{data.eventNote}}</p>
+                <button @click="EditEvent(data,index)">Edit</button>
             </div>
             </div>
             <br/>
         </li>
     </ul>
-    </div>
+    </div> 
     <div v-else>
         <h2>No Scheduled Events.</h2>
     </div>
