@@ -3,15 +3,15 @@ services:
     oasip_DB:
         container_name: oasip_DB
         volumes:
-          - 'C:/Users/param/Documents/INT221/INT221-SSA-5/Week-1/OASIP-DAtaBase/my.cnf:/etc/my.cnf'
-          - 'C:/Users/param/Documents/INT221/INT221-SSA-5/Week-1/OASIP-DAtaBase/oasip_data.sql:/docker-entrypoint-initdb.d/oasip_data.sql'
-          - 'C:/Users/param/Documents/INT221/INT221-SSA-5/Week-1/OASIP-DAtaBase/Query_oasip.sql:/docker-entrypoint-initdb.d/Query_oasip.sql'
+          - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/my.cnf:/etc/my.cnf'
+          - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/oasip_data.sql:/docker-entrypoint-initdb.d/oasip_data.sql'
+          - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/Query_oasip.sql:/docker-entrypoint-initdb.d/Query_oasip.sql'
         environment:
           - MYSQL_USER=oasip_user
           - MYSQL_DATABASE=oasip_db
           - MYSQL_PASSWORD=kmutt@631305.78
         ports:
-          - '3307:3306'
+          - '3306:3306'
         image: mysql/mysql-server
         restart: always
         
