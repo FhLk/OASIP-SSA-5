@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+    oasip_SVR:
+        container_name: oasip_SVR
+        image: oasip_back_img
+        ports : 
+          - '8080:8080'
+        restart: always
+        
