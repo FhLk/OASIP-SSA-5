@@ -1,12 +1,7 @@
 package sit.integrate.oasip.Entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 public class EventBooking {
@@ -20,7 +15,7 @@ public class EventBooking {
     @Column(name = "BookingEmail", nullable = false, length = 45)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CategoryID", nullable = false)
     private EventCategory categoryID;
 

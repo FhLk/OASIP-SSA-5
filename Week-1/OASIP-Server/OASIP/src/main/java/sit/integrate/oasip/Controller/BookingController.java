@@ -4,13 +4,10 @@ package sit.integrate.oasip.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.Entity.EventBooking;
-import sit.integrate.oasip.Repository.BookingRepository;
 import sit.integrate.oasip.Service.BookingService;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController

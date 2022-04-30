@@ -1,14 +1,8 @@
 package sit.integrate.oasip.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import sit.integrate.oasip.Entity.EventBooking;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 public class EventCategory {
@@ -24,10 +18,6 @@ public class EventCategory {
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "categoryID")
-    private Set<EventBooking> eventBookings = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -59,14 +49,6 @@ public class EventCategory {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
-    }
-
-    public Set<EventBooking> getEventBookings() {
-        return eventBookings;
-    }
-
-    public void setEventBookings(Set<EventBooking> eventBookings) {
-        this.eventBookings = eventBookings;
     }
 
 }
