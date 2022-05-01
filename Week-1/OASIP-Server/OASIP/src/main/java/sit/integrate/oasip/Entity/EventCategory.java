@@ -3,8 +3,10 @@ package sit.integrate.oasip.Entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "EventCategory")
 public class EventCategory {
     @Id
     @Column(name = "CategoryID", nullable = false)

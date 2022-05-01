@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(name = "EventBooking")
 public class EventBooking {
     @Id
     @Column(name = "BookingID", nullable = false)
@@ -12,7 +13,7 @@ public class EventBooking {
     @Column(name = "BookingName", nullable = false, length = 50)
     private String bookingName;
 
-    @Column(name = "BookingEmail", nullable = false, length = 45)
+    @Column(name = "BookingEmail", nullable = false, length = 50)
     private String bookingEmail;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -22,7 +23,7 @@ public class EventBooking {
     @Column(name = "StartTime", nullable = false)
     private Instant startTime;
 
-    @Column(name = "EventNote", length = 50)
+    @Column(name = "EventNote")
     private String eventNote;
 
     public Integer getId() {
