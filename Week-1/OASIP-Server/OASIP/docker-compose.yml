@@ -9,7 +9,7 @@ services:
       - MYSQL_DATABASE=oasip_db
       - MYSQL_PASSWORD=kmutt@631305.78
     ports:
-      - '3307:3306'
+      - '3306:3306'
     image: mysql/mysql-server
     restart: always
   oasip_SVR:
