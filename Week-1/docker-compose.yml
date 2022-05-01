@@ -8,7 +8,7 @@ services:
       - MYSQL_PASSWORD=kmutt@631305.78
     ports:
       - '3306:3306'
-    image: mysql
+    image: mysql:8
     restart: always
   oasip_SVR:
     container_name: oasip_SVR
