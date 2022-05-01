@@ -1,27 +1,32 @@
 version: '3.3'
 services:
-    oasip_SVR:
-        container_name: oasip_SVR
-        image: oasip_back_img
-        ports : 
-          - '8080:8080'
-        restart: always
-        networks:
-          - backend
-    oasip_DB:
-        container_name: oasip_DB
-        volumes:
-          - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/my.cnf:/etc/my.cnf'
-          - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/oasip_data.sql:/docker-entrypoint-initdb.d/oasip_data.sql'
-          - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/Query_oasip.sql:/docker-entrypoint-initdb.d/Query_oasip.sql'
-        environment:
-          - MYSQL_USER=oasip_user
-          - MYSQL_DATABASE=oasip_db
-          - MYSQL_PASSWORD=kmutt@631305.78
-        ports:
-          - '3307:3306'
-        image: mysql/mysql-server
-        restart: always
-        networks:
-          - backend
+
+  oasip_DB:
+    container_name: oasip_DB
+    volumes:
+      - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/my.cnf:/etc/my.cnf'
+      - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/oasip_data.sql:/docker-entrypoint-initdb.d/oasip_data.sql'
+      - '/home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/Query_oasip.sql:/docker-entrypoint-initdb.d/Query_oasip.sql'
+    environment:
+      - MYSQL_USER=oasip_user
+      - MYSQL_DATABASE=oasip_db
+      - MYSQL_PASSWORD=kmutt@631305.78
+    ports:
+      - '3307:3306'
+    image: mysql/mysql-server
+    restart: always
+  oasip_SVR:
+    container_name: oasip_SVR
+    image: oasip_back_img
+    ports:
+      - '8080:8080'
+    restart: always
+    links:
+      - 'oasip_DB:mysql'
+  oasip_CLI:
+    container_name: oasip_CLI
+    image: oasip_cli_img
+    ports:
+      - '80:80'
+    restart: always
         
