@@ -2,6 +2,9 @@ version: '3.3'
 services:
   oasip_DB:
     container_name: oasip_DB
+    volumes:
+      - /home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase/script:/docker-entrypoint-initdb.d/
+      - /home/spadmin/OASIP/OASIP-SSA-5/Week-1/OASIP-DAtaBase:/var/lib/mysql
     environment:
       - MYSQL_USER=oasip_user
       - MYSQL_DATABASE=oasip_db
