@@ -30,5 +30,3 @@ services:
     ports : 
       - '80:80'
     restart: always
-    links:
-      - oasip_SVR
