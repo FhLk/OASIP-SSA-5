@@ -6,6 +6,7 @@ services:
       - MYSQL_USER=oasip_user
       - MYSQL_DATABASE=oasip_db
       - MYSQL_PASSWORD=kmutt@631305.78
+      - MYSQL_ROOT_PASSWORD=1234
     ports:
       - '3306:3306'
     image: mysql:8
