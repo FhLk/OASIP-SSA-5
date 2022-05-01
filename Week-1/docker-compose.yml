@@ -15,12 +15,11 @@ services:
   oasip_SVR:
     container_name: oasip_SVR
     image: oasip_back_img
+    environment:
+      - spring.datasource.url=jdbc:mysql://oasip_DB:3306/oasip_db?useSSL=false
     ports:
       - '8080:8080'
     restart: always
     depends_on:
       - oasip_DB
-    links:
-      - oasip_DB
-
         
