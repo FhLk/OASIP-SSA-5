@@ -20,5 +20,7 @@ services:
     restart: always
     depends_on:
       - oasip_DB
+    links:
+      - oasip_DB
 
         
