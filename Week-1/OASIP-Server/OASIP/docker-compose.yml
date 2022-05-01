@@ -1,6 +1,5 @@
 version: '3.3'
 services:
-
   oasip_DB:
     container_name: oasip_DB
     volumes:
@@ -22,11 +21,6 @@ services:
       - '8080:8080'
     restart: always
     links:
-      - 'oasip_DB:mysql'
-  oasip_CLI:
-    container_name: oasip_CLI
-    image: oasip_cli_img
-    ports:
-      - '80:80'
-    restart: always
+      - 'oasip_DB'
+
         
