@@ -8,10 +8,13 @@ services:
       - MYSQL_USER=oasip_user
       - MYSQL_DATABASE=oasip_db
       - MYSQL_PASSWORD=kmutt@631305.78
+      - MYSQL_ROOT_PASSWORD=1234
     ports:
       - '3306:3306'
     image: mysql/mysql-server
     restart: always
+    networks:
+      - backend
   oasip_SVR:
     container_name: oasip_SVR
     image: oasip_back_img
@@ -22,4 +25,7 @@ services:
     restart: always
     depends_on:
       - oasip_DB
-        
+    networks:
+      - backend
+networks:
+  backend:
