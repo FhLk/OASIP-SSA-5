@@ -28,5 +28,5 @@ services:
     container_name: oasip_CLI
     image: oasip_cli_img
     ports : 
-      - '80:80'
+      - '3000:80'
     restart: always
