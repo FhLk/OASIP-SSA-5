@@ -12,10 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
-//@CrossOrigin(origins = "http://10.4.56.111",
-//        allowedHeaders = "*",
-//        methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT},
-//        allowCredentials = "true")
+@CrossOrigin(origins = {"http://10.4.56.111","http://ip21ssa5.sit.kmutt.ac.th"},
+        allowedHeaders = "*",
+        methods = RequestMethod.GET,
+        allowCredentials = "true")
 public class BookingController {
     @Autowired
     private BookingService service;

@@ -11,9 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
-//@CrossOrigin(origins = "http://10.4.56.111",
-//    allowedHeaders = "*",
-//    methods = {RequestMethod.GET,RequestMethod.POST})
+@CrossOrigin(origins = {"http://10.4.56.111","http://ip21ssa5.sit.kmutt.ac.th"},
+    allowedHeaders = "*",
+    methods = RequestMethod.GET,
+    allowCredentials = "true")
 public class CategoryController {
     @Autowired
     private CategoryService service;
