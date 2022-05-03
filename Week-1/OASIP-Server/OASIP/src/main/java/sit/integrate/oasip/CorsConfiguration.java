@@ -12,8 +12,8 @@ public class CorsConfiguration implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("api/**")
                 .allowedOrigins(
-                        "http://10.4.56.111",
-                        "http://ip21ssa5.sit.kmutt.ac.th"
+                        "http://10.4.56.111:80",
+                        "http://ip21ssa5.sit.kmutt.ac.th:80"
                 )
                 .allowedHeaders("*")
                 .allowCredentials(true)
