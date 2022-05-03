@@ -10,10 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("api/**")
+        registry.addMapping("/**")
                 .allowedOrigins(
                         "http://10.4.56.111:80",
-                        "http://ip21ssa5.sit.kmutt.ac.th:80"
+                        "https://ip21ssa5.sit.kmutt.ac.th:80"
                 )
                 .allowedHeaders("*")
                 .allowCredentials(true)
