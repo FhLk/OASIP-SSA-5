@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+  oasip_CLI:
+    container_name: oasip_CLI
+    image: oasip_cli_img
+    ports : 
+      - '80:80'
+    restart: always
+networks:
+  default:
+    external:
+      name: oasip_nw
