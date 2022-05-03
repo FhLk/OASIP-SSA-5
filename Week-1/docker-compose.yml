@@ -23,6 +23,8 @@ services:
     restart: always
     links:
       - oasip_DB
+    networks:
+      - oasip_network
   oasip_CLI:
     container_name: oasip_CLI
     image: oasip_cli_img
@@ -31,3 +33,7 @@ services:
     restart: always
     links:
       - oasip_SVR
+    networks:
+      - oasip_network
+networks:
+  oasip_network:
