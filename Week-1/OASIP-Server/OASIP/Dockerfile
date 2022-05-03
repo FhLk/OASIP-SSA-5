@@ -1,3 +1,12 @@
+# build stage
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+
 FROM openjdk:11
 ARG JAR_FILE=target/OASIP-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar
