@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://10.4.56.111",
+@CrossOrigin(origins = "http://10.4.56.111:80",
         allowedHeaders = "*",
         methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT},
         allowCredentials = "true")
