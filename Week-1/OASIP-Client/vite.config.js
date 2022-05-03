@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [vue()],
   server:{
     proxy:{
-      '/api':'http://oasip_SVR:8086'
+      '/api':'http://oasip_SVR:8086/'
     }
   }
 })

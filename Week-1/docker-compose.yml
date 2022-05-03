@@ -13,6 +13,8 @@ services:
       - '3306:3306'
     image: mysql:8
     restart: always
+    networks:
+      - oasip_network
   oasip_SVR:
     container_name: oasip_SVR
     image: oasip_back_img
