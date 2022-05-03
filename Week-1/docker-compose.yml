@@ -23,7 +23,6 @@ services:
     restart: always
     links:
       - oasip_DB
-      - oasip_CLI
   oasip_CLI:
     container_name: oasip_CLI
     image: oasip_cli_img
