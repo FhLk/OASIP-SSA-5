@@ -4,7 +4,8 @@ import moment from "moment"
 const isBooking=ref(false)
 const isDetail=ref(-1)
 let DateFormat="YYYY-MM-DD HH:mm A"
-const listdata=ref([]);
+const getListBooking=ref([]);
+const getBooking=ref({});
 const categories=ref([]);
 const booking=ref({
     id: 0,
@@ -37,19 +38,25 @@ const resetBooking=()=>{
     eventNote: ""
 };
 }
-const showDetail = (id)=>{
+const showDetail = async (id)=>{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${id}`,{
+        method: 'GET'
+    })
+    getBooking.value=await res.json()
+    getBooking.value.startTime=moment(getBooking.value.startTime).format(DateFormat)
     isDetail.value= isDetail.value===id-1 ? -1:id-1
 }
 
-const getBookings= async ()=>{
-    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
+const getBookings= async (startTime)=>{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?startTime=${startTime}`,{
         method: 'GET'
     })
-    listdata.value=await res.json()
-    listdata.value.forEach((data)=>{
+    getListBooking.value=await res.json()
+    getListBooking.value.forEach((data)=>{
         data.startTime=moment(data.startTime).format(DateFormat)
     })
 }
+
 
 const getCategories= async () =>{
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/categories`,{
@@ -59,7 +66,7 @@ const getCategories= async () =>{
 }
 
 onMounted(async ()=>{
-    await getBookings()
+    await getBookings("startTime")
     await getCategories()
 })
 
@@ -70,7 +77,8 @@ const Add= async (event)=>{
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            id:listdata.value.length+1,
+            id:getListBooking
+        .value.length+1,
             bookingName: event.bookingName + ` (${group.value})`,
             bookingEmail: event.bookingEmail,
             category: {
@@ -84,7 +92,8 @@ const Add= async (event)=>{
         })
     })
     const newBooking =await res.json()
-    listdata.value.push(newBooking)
+    getListBooking
+.value.push(newBooking)
     resetBooking()
     isBooking.value=false
 }
@@ -128,23 +137,25 @@ const EditEvent=(event,index)=>{
             </p>
         </div>
     </div>
-    <div v-if="listdata.length!==0">
+    <div v-if="getListBooking
+.length!==0">
         <p>Sort By: | <a>Day</a> | <a>Upcoming</a> | <a>Past</a> | <a>Time</a> | </p>
     <ul>
-        <li v-for="(data,index) in listdata" :key="index">{{data.startTime}}
+        <li v-for="(data,index) in getListBooking
+    " :key="index">{{data.startTime}}
             ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}} Clinic
             {{data.bookingName}}
             <div>
             <button @click="showDetail(index+1)">{{isDetail===index ? "Closed":"Detail"}}</button>
             <button>Delete</button>
             <div v-if="isDetail===index">
-                <p>Name: {{data.bookingName}}</p>
-                <p>E-mail: {{data.bookingEmail}}</p>
-                <p>Category: {{data.category.categoryName}}</p>
-                <p>Date & Time: {{data.startTime}}</p>
-                <p>Duration: {{data.category.duration}} min.</p>
-                <p>Start Time: {{data.startTime.slice(10)}}</p>
-                <p>Note: {{data.eventNote}}</p>
+                <p>Name: {{getBooking.bookingName}}</p>
+                <p>E-mail: {{getBooking.bookingEmail}}</p>
+                <p>Category: {{getBooking.category.categoryName}}</p>
+                <p>Date & Time: {{getBooking.startTime}}</p>
+                <p>Duration: {{getBooking.category.duration}} min.</p>
+                <p>Start Time: {{getBooking.startTime.slice(10)}}</p>
+                <p>Note: {{getBooking.eventNote}}</p>
                 <button @click="EditEvent(data,index)">Edit</button>
             </div>
             </div>

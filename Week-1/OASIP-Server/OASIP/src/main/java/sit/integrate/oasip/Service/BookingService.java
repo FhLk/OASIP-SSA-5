@@ -2,6 +2,7 @@ package sit.integrate.oasip.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,8 +19,8 @@ public class BookingService {
     @Autowired private ModelMapper modelMapper;
     @Autowired private ListMapper listMapper;
 
-    public List<BookingDTO> getBookings(){
-        List<EventBooking> bookingList = repository.findAll();
+    public List<BookingDTO> getBookings(String startTime){
+        List<EventBooking> bookingList = repository.findAll(Sort.by(Sort.Direction.DESC,startTime));
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 

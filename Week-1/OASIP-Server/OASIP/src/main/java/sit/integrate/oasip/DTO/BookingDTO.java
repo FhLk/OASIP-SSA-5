@@ -20,6 +20,6 @@ public class BookingDTO {
     private String bookingName;
     private String bookingEmail;
     private CategoryDTO category;
-    private Instant startTime;
+    private String startTime;
     private String eventNote;
 }

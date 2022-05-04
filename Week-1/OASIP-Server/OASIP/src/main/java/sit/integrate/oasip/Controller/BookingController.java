@@ -17,8 +17,8 @@ public class BookingController {
     private BookingService service;
 
     @GetMapping("")
-    public List<BookingDTO> getAllBooking(){
-        return service.getBookings();
+    public List<BookingDTO> getAllBooking(@RequestParam String startTime){
+        return service.getBookings(startTime);
     }
     @GetMapping("/{BookingId}")
     public BookingDTO getAllBooking(@PathVariable Integer BookingId){
@@ -35,6 +35,7 @@ public class BookingController {
     public EventBooking update(@PathVariable Integer BookingId,@RequestBody BookingDTO updateBooking){
         return service.updateBooking(BookingId,updateBooking);
     }
+
 
 
 }
