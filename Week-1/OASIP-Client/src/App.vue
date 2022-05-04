@@ -44,10 +44,10 @@ const showDetail = async (id)=>{
     })
     getBooking.value=await res.json()
     getBooking.value.startTime=moment(getBooking.value.startTime).format(DateFormat)
-    isDetail.value= isDetail.value===id-1 ? -1:id-1
+    isDetail.value= isDetail.value===id ? -1:id
 }
 
-const getBookings= async (startTime)=>{
+const getBookings= async (startTime="startTime")=>{
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?startTime=${startTime}`,{
         method: 'GET'
     })
@@ -66,7 +66,7 @@ const getCategories= async () =>{
 }
 
 onMounted(async ()=>{
-    await getBookings("startTime")
+    await getBookings()
     await getCategories()
 })
 
@@ -146,9 +146,9 @@ const EditEvent=(event,index)=>{
             ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}} Clinic
             {{data.bookingName}}
             <div>
-            <button @click="showDetail(index+1)">{{isDetail===index ? "Closed":"Detail"}}</button>
+            <button @click="showDetail(data.id)">{{isDetail===index ? "Closed":"Detail"}}</button>
             <button>Delete</button>
-            <div v-if="isDetail===index">
+            <div v-if="isDetail===data.id">
                 <p>Name: {{getBooking.bookingName}}</p>
                 <p>E-mail: {{getBooking.bookingEmail}}</p>
                 <p>Category: {{getBooking.category.categoryName}}</p>
