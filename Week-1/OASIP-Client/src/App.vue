@@ -42,7 +42,7 @@ const showDetail = async (id)=>{
         method: 'GET'
     })
     getBooking.value=await res.json()
-    getBooking.value.startTime=moment(getBooking.value.startTime).format(DateFormat)
+    getBooking.value.startTime=moment(getBooking.value.startTime).utcOffset(0).format(DateFormat)
     isDetail.value= isDetail.value===id ? -1:id
 }
 
@@ -52,7 +52,7 @@ const getBookings= async (startTime="startTime")=>{
     })
     getListBooking.value=await res.json()
     getListBooking.value.forEach((data)=>{
-        data.startTime=moment(data.startTime).format(DateFormat)
+        data.startTime=moment(data.startTime).utcOffset(0).format(DateFormat)
     })
 }
 
