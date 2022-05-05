@@ -8,7 +8,6 @@ const getListBooking=ref([]);
 const getBooking=ref({});
 const categories=ref([]);
 const booking=ref({
-    id: 0,
     bookingName: "",
     bookingEmail: "",
     category: {
@@ -77,8 +76,7 @@ const Add= async (event)=>{
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            id:getListBooking
-        .value.length+1,
+            id:getListBooking.value.length+1,
             bookingName: event.bookingName + ` (${group.value})`,
             bookingEmail: event.bookingEmail,
             category: {
@@ -87,13 +85,12 @@ const Add= async (event)=>{
                 description: event.category.description,
                 duration: event.category.duration 
                 },
-            startTime: bookingDate.value+"T"+bookingTime.value+":00Z",
+            startTime:`${bookingDate.value}T${bookingTime.value}:00Z`,
             eventNote: event.eventNote  
         })
     })
     const newBooking =await res.json()
-    getListBooking
-.value.push(newBooking)
+    getListBooking.value.push(newBooking)
     resetBooking()
     isBooking.value=false
 }
@@ -141,9 +138,8 @@ const EditEvent=(event,index)=>{
 .length!==0">
         <p>Sort By: | <a>Day</a> | <a>Upcoming</a> | <a>Past</a> | <a>Time</a> | </p>
     <ul>
-        <li v-for="(data,index) in getListBooking
-    " :key="index">{{data.startTime}}
-            ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}} Clinic
+        <li v-for="(data,index) in getListBooking" :key="index">{{data.startTime}}
+            ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}}
             {{data.bookingName}}
             <div>
             <button @click="showDetail(data.id)">{{isDetail===index ? "Closed":"Detail"}}</button>
