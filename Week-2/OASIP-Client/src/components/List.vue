@@ -15,6 +15,7 @@ const props=defineProps({
 
 const getBooking=ref();
 const isDetail=ref(-1)
+const isEdit=ref(false)
 
 const showDetail = async (id)=>{
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${id}`,{
@@ -23,40 +24,55 @@ const showDetail = async (id)=>{
     getBooking.value=await res.json()
     getBooking.value.startTime=moment(getBooking.value.startTime).utcOffset(0).format(DateFormat)
     isDetail.value= isDetail.value===id ? -1:id
+    isEdit.value=false
 }
 
-const isEdit=ref(false)
+
 const EditNote=ref("")
 const EditDate=ref("")
 const EditTime=ref("")
 const EditDateTime=ref("")
 const EditEvent=(booking)=>{
     isEdit.value= isEdit.value ? false : true
-    EditNote.value=booking.eventNote
-}
-
-const savebooking= async (booking)=>{
-    EditDateTime.value=`${EditDate.value}T${EditTime.value}:00Z`
-    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${booking.id}`,{
-        method: 'PUT',
-        headers:{
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            id:booking.id,
-            bookingName: booking.bookingName + ` (${booking.group})`,
-            bookingEmail: booking.bookingEmail,
-            category: booking.category,
-            startTime:EditDateTime.value,
-            bookingNote: EditNote.value  
-        })
-    })
-    if(res.status===200){
-        const updateBooking = await res.json()
-        return updateBooking
+    if(isEdit.value){
+        EditNote.value=booking.eventNote
+        EditDateTime.value=booking.startTime
+        EditDate.value=EditDateTime.value.slice(0,10)
+        EditTime.value=EditDateTime.value.slice(10).trim()
     }
     else{
-        return booking
+        EditNote.value=getBooking.value.eventNote
+        EditDateTime.value=getBooking.value.startTime
+        EditDate.value=""
+        EditTime.value=""
+    }
+}
+
+
+const savebooking= async (booking)=>{
+    if(confirm("You Have Edited Your Event.")){
+        const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${booking.id}`,{
+            method: 'PUT',
+            headers:{
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                id:booking.id,
+                bookingName: booking.bookingName,
+                bookingEmail: booking.bookingEmail,
+                category: booking.category,
+                startTime: `${EditDate.value}T${EditTime.value}:00Z`,
+                eventNote: EditNote.value  
+            })
+        })
+        if(res.status===200){
+            const updateBooking = await res.json()
+            isEdit.value=false
+            return updateBooking
+        }
+        else{
+            return booking
+        }
     }
 }
 
@@ -71,7 +87,7 @@ const savebooking= async (booking)=>{
             ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}}
             {{data.bookingName}}
             <div>
-            <button @click="showDetail(data.id)">{{isDetail===index ? "Closed":"Detail"}}</button>
+            <button @click="showDetail(data.id)">{{isDetail===data.id ? "Closed":"Detail"}}</button>
             <button @click="$emit('delete',data)">Cancle</button>
             <div v-if="isDetail===data.id">
                 <p>Name: {{getBooking.bookingName}}</p>

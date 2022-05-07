@@ -72,6 +72,7 @@ const saveBooking=(updateBooking)=>{
     getListBooking.value=getListBooking.value.map((booking)=>{
         return booking.id===updateBooking.id ? {...booking,updateBooking}:booking
     })
+    location.reload()
 }
 </script>
  
