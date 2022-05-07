@@ -1,7 +1,9 @@
 package sit.integrate.oasip.Entity;
 
+import org.springframework.data.jpa.repository.Temporal;
+
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.*;
 
 @Entity
 @Table(name = "EventBooking")

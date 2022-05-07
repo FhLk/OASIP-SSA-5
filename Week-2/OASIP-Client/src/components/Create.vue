@@ -19,7 +19,6 @@ const booking=ref({
     bookingName: "",
     bookingEmail: "",
     category: {},
-    startTime: "",
     eventNote: ""
 });
 const group=ref("")

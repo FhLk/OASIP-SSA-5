@@ -37,13 +37,13 @@ CREATE TABLE IF NOT EXISTS `oasip_db`.`EventBooking` (
   `BookingID` INT NOT NULL,
   `BookingName` VARCHAR(50) NOT NULL,
   `BookingEmail` VARCHAR(45) NOT NULL,
-  `Category` INT NOT NULL,
+  `CategoryID` INT NOT NULL,
   `StartTime` DATETIME NOT NULL,
   `EventNote` VARCHAR(50) NULL,
   PRIMARY KEY (`BookingID`),
-  INDEX `fk_EventBooking_EventCategory_idx` (`Category` ASC) VISIBLE,
+  INDEX `fk_EventBooking_EventCategory_idx` (`StartTime` ASC) VISIBLE,
   CONSTRAINT `fk_EventBooking_EventCategory`
-    FOREIGN KEY (`Category`)
+    FOREIGN KEY (`CategoryID`)
     REFERENCES `oasip_db`.`EventCategory` (`CategoryID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

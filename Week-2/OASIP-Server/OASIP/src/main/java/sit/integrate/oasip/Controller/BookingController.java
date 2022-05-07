@@ -43,5 +43,4 @@ public class BookingController {
     public void deleteBooking(@PathVariable Integer bookingId){
         service.CancelBooking(bookingId);
     }
-
 }
