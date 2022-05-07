@@ -13,17 +13,17 @@ public class EventBooking {
     @Column(name = "BookingName", nullable = false, length = 50)
     private String bookingName;
 
-    @Column(name = "BookingEmail", nullable = false, length = 50)
+    @Column(name = "BookingEmail", nullable = false, length = 45)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "CategoryID", nullable = false)
-    private EventCategory categoryID;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "Category", nullable = false)
+    private EventCategory category;
 
     @Column(name = "StartTime", nullable = false)
     private Instant startTime;
 
-    @Column(name = "EventNote")
+    @Column(name = "EventNote", length = 50)
     private String eventNote;
 
     public Integer getId() {
@@ -50,20 +50,20 @@ public class EventBooking {
         this.bookingEmail = bookingEmail;
     }
 
-    public EventCategory getCategoryID() {
-        return categoryID;
+    public EventCategory getCategory() {
+        return category;
     }
 
-    public void setCategoryID(EventCategory categoryID) {
-        this.categoryID = categoryID;
+    public void setCategory(EventCategory category) {
+        this.category = category;
     }
 
     public Instant getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
+    public void setStartTime(String startTime) {
+        this.startTime = Instant.parse(startTime);
     }
 
     public String getEventNote() {

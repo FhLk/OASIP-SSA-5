@@ -17,9 +17,10 @@ public class BookingController {
     private BookingService service;
 
     @GetMapping("")
-    public List<BookingDTO> getAllBooking(@RequestParam String startTime){
-        return service.getBookings(startTime);
+    public List<BookingDTO> getAllBooking(){
+        return service.getBookings();
     }
+
     @GetMapping("/{BookingId}")
     public BookingDTO getAllBooking(@PathVariable Integer BookingId){
         return service.getBookingId(BookingId);
@@ -27,15 +28,20 @@ public class BookingController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventBooking AddBooking(@RequestBody BookingDTO newBooking){
-        return service.CreateBooking(newBooking);
+    public BookingDTO AddBooking(@RequestBody BookingDTO newBooking){
+        service.CreateBooking(newBooking);
+        return newBooking;
     }
 
     @PutMapping("/{BookingId}")
-    public EventBooking update(@PathVariable Integer BookingId,@RequestBody BookingDTO updateBooking){
-        return service.updateBooking(BookingId,updateBooking);
+    public BookingDTO update(@PathVariable Integer BookingId,@RequestBody BookingDTO updateBooking){
+        service.updateBooking(BookingId,updateBooking);
+        return updateBooking;
     }
 
-
+    @DeleteMapping("/{bookingId}")
+    public void deleteBooking(@PathVariable Integer bookingId){
+        service.CancelBooking(bookingId);
+    }
 
 }

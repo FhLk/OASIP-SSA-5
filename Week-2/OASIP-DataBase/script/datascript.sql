@@ -7,14 +7,14 @@ project I ให้นักศึกษาเตรียมเอกสาร�
 (2,'DevOps/Infra Clinic','Use this event category for DevOps/Infra clinic.',30),
 (3,'Database Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ใน
 วิชา INT221 integrated project I',15),
-(4,'Client-side Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ใน
+(4,'Client-side Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ในEventBooking
 วิชา INT221 integrated project',30),
 (5,'Server-side Clinic',' ',30);
 
-insert into `EventBooking` (`BookingID`,`BookingName`,`BookingEmail`,`CategoryID`,`StartTime`,`EventNote`) values 
+insert into `EventBooking` (`BookingID`,`BookingName`,`BookingEmail`,`Category`,`StartTime`,`EventNote`) values 
 (1,'Somchai Jaidee (OR-7)','somchai.jai@mail.kmutt.ac.th',2,'2022-05-23 13:30',' '),
 (2,'Somsri Rakdee (SJ-3)','somsri.rak@mail.kmutt.ac.th',1,'2022-04-27 09:30',' ขอปรึกษาเรื่องเพพื่อนไม่ช่วยงาน '),
 (3,'สมเกียรติ ขยันเรียน กลุ่ม TT-4','somkiat.kay@kmutt.ac.th',3,'2022-05-23 16:30',' ');
 
 delete from EventBooking where BookingID in (1,2,3);
-delete from EventCategory where CategoryID in (1,2,3,4,5);
+-- delete from EventCategory where Category in (1,2,3,4,5);

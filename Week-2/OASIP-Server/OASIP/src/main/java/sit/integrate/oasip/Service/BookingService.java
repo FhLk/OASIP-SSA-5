@@ -15,19 +15,21 @@ import java.util.List;
 
 @Service
 public class BookingService {
+
     @Autowired private BookingRepository repository;
     @Autowired private ModelMapper modelMapper;
     @Autowired private ListMapper listMapper;
 
-    public List<BookingDTO> getBookings(String startTime){
-        List<EventBooking> bookingList = repository.findAll(Sort.by(Sort.Direction.DESC,startTime));
+    public List<BookingDTO> getBookings(){
+//        List<EventBooking> bookingList = repository.findAll(Sort.by(Sort.Direction.DESC,startTime));
+        List<EventBooking> bookingList = repository.findAll();
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 
     public BookingDTO getBookingId(Integer bookingId){
         EventBooking booking = repository.findById(bookingId)
                 .orElseThrow(()->new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,  "Booking id "+ bookingId +"Does Not Exist !!!"));
+                        HttpStatus.NOT_FOUND,  "Booking id "+ bookingId +" Does Not Exist !!!"));
         return modelMapper.map(booking, BookingDTO.class);
     }
 
@@ -48,5 +50,9 @@ public class BookingService {
     private EventBooking mapBooking(BookingDTO oldBooking,BookingDTO newBooking){
         oldBooking=newBooking;
         return modelMapper.map(oldBooking,EventBooking.class);
+    }
+
+    public void CancelBooking(Integer BookingId){
+        repository.deleteById(BookingId);
     }
 }
