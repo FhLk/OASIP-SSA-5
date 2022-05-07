@@ -9,13 +9,13 @@ const props=defineProps({
     type: Array,
     require: true
   },
-  LastID:{
-      type:Number,
+  getListBooking:{
+      type: Array,
       require:true
   }
 })
 
-const booking=ref({
+const newbooking=ref({
     bookingName: "",
     bookingEmail: "",
     category: {},
@@ -25,11 +25,24 @@ const group=ref("")
 const bookingDate=ref("");
 const bookingTime=ref("")
 
-const create=()=>{
-    booking.value.group=group.value
-    booking.value.Date=bookingDate.value
-    booking.value.Time=bookingTime.value
-    return booking.value
+const create= ()=>{
+    newbooking.value.group=group.value
+    newbooking.value.Date=bookingDate.value
+    newbooking.value.Time=bookingTime.value
+    return newbooking.value
+}
+
+const reset=()=>{
+    isBooking.value=false
+    group.value=""
+    bookingDate.value=""
+    bookingTime.value=""
+    newbooking.value={
+        bookingName: "",
+        bookingEmail: "",
+        category: {},
+        eventNote: ""
+    }
 }
 
 </script>
@@ -39,12 +52,12 @@ const create=()=>{
     <div>
         <button @click="isBooking= isBooking ? false:true">Booking</button>
         <div v-if="isBooking">
-            <p>Full Name: <input type="text" placeholder="Name..." v-model="booking.bookingName"></p>
+            <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName"></p>
             <p>Group: <input type="text" placeholder="Group" v-model="group"/></p>
-            <p>E-mail: <input type="email" placeholder="E-mail..." v-model="booking.bookingEmail"></p>
+            <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail"></p>
             <p>Category: 
                 <ul v-for="(category,index) in getCategories " :key="index">
-                    <input type="radio" :id="index" :value="category" v-model="booking.category">
+                    <input type="radio" :id="index" :value="category" v-model="newbooking.category">
                     - <label :for="index">{{category.categoryName}}</label>
                 </ul>
                 <label>Date </label>: 
@@ -53,13 +66,13 @@ const create=()=>{
                 <label> Start (Time) </label>: 
                 <input type="time" v-model="bookingTime">
                 <br/>
-                <label>Duration (Minute): {{booking.category.duration}}</label>
+                <label>Duration (Minute): {{newbooking.category.duration}}</label>
                 <br/>
                 <label>Note: </label>
-                <textarea rows="5" cols="50" v-model="booking.eventNote"></textarea>
+                <textarea rows="5" cols="50" v-model="newbooking.eventNote"></textarea>
                 <div> 
                     <button @click="$emit('add',create())">OK</button>
-                    <button @click="cancle">Cancle</button>
+                    <button @click="reset">Cancle</button>
                 </div>
             </p>
         </div>

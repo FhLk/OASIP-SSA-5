@@ -33,13 +33,24 @@ onBeforeMount(async ()=>{
 })
 
 const createBooking= async (booking)=>{
+    const Auto_Increment =(increment)=>{
+        getListBooking.value.forEach((data)=>{
+            if(increment===data.id){
+                increment=data.id+1
+            }
+            else{
+                increment=getListBooking.value.length+1
+            }
+        })
+        return increment
+    }
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
         method: 'POST',
         headers:{
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            id:getListBooking.value.length+1,
+            id: Auto_Increment(getListBooking.value.length+1),
             bookingName: booking.bookingName + ` (${booking.group})`,
             bookingEmail: booking.bookingEmail,
             category: {
@@ -49,13 +60,11 @@ const createBooking= async (booking)=>{
                 duration: booking.category.duration
             },
             startTime:`${booking.Date}T${booking.Time}:00Z`,
-            bookingNote: booking.bookingNote  
+            eventNote: booking.eventNote  
         })
     })
     if(res.status===201){
-        const newbooking=await res.json()
-        newbooking.startTime=moment(newbooking.startTime).utcOffset(0).format(DateFormat)
-        getListBooking.value.push(newbooking)
+        await getBookings()
     }
 }
 const deleteBooking= async (booking)=>{
@@ -80,7 +89,7 @@ const saveBooking=(updateBooking)=>{
 <h1>OASIP TEST</h1>
 <div>
     <h2>booking List</h2>
-    <Create @add="createBooking" :getCategories="getListCategories" :LastID="getListBooking.length"/>
+    <Create @add="createBooking" :getCategories="getListCategories" :getListBooking="getListBooking"/>
     <List @save="saveBooking" @delete="deleteBooking" :getListBooking="getListBooking"/>
 </div>
 </template>

@@ -15,3 +15,7 @@ insert into `EventBooking` (`BookingID`,`BookingName`,`BookingEmail`,`Category`,
 (1,'Somchai Jaidee (OR-7)','somchai.jai@mail.kmutt.ac.th',4,'2022-05-23 13:00',' '),
 (2,'Somsri Rakdee (SJ-3)','somsri.rak@mail.kmutt.ac.th',1,'2022-04-27 09:30',' ขอปรึกษาเรื่องเพพื่อนไม่ช่วยงาน '),
 (3,'สมเกียรติ ขยันเรียน กลุ่ม TT-4','somkiat.kay@kmutt.ac.th',3,'2022-05-23 16:30',' ');
+
+select * from EventBooking;
+
+delete from EventBooking where BookingID in (1,2,3,4,5,6,7);

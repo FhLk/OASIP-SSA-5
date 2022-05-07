@@ -1,14 +1,16 @@
 package sit.integrate.oasip.Entity;
 
-import org.springframework.data.jpa.repository.Temporal;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.*;
+import java.time.Instant;
 
-@Entity
-@Table(name = "EventBooking")
+@Getter
+@Setter
+@Entity(name = "EventBooking")
 public class EventBooking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BookingID", nullable = false)
     private Integer id;
 
@@ -28,52 +30,7 @@ public class EventBooking {
     @Column(name = "EventNote", length = 50)
     private String eventNote;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getBookingName() {
-        return bookingName;
-    }
-
-    public void setBookingName(String bookingName) {
-        this.bookingName = bookingName;
-    }
-
-    public String getBookingEmail() {
-        return bookingEmail;
-    }
-
-    public void setBookingEmail(String bookingEmail) {
-        this.bookingEmail = bookingEmail;
-    }
-
-    public EventCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(EventCategory category) {
-        this.category = category;
-    }
-
-    public Instant getStartTime() {
-        return startTime;
-    }
-
     public void setStartTime(String startTime) {
         this.startTime = Instant.parse(startTime);
     }
-
-    public String getEventNote() {
-        return eventNote;
-    }
-
-    public void setEventNote(String eventNote) {
-        this.eventNote = eventNote;
-    }
-
 }

@@ -34,16 +34,16 @@ ENGINE = InnoDB;
 -- Table `oasip_db`.`EventBooking`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `oasip_db`.`EventBooking` (
-  `BookingID` INT NOT NULL,
+  `BookingID` INT NOT NULL auto_increment,
   `BookingName` VARCHAR(50) NOT NULL,
   `BookingEmail` VARCHAR(45) NOT NULL,
-  `CategoryID` INT NOT NULL,
+  `Category` INT NOT NULL,
   `StartTime` DATETIME NOT NULL,
   `EventNote` VARCHAR(50) NULL,
   PRIMARY KEY (`BookingID`),
   INDEX `fk_EventBooking_EventCategory_idx` (`StartTime` ASC) VISIBLE,
   CONSTRAINT `fk_EventBooking_EventCategory`
-    FOREIGN KEY (`CategoryID`)
+    FOREIGN KEY (`Category`)
     REFERENCES `oasip_db`.`EventCategory` (`CategoryID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
