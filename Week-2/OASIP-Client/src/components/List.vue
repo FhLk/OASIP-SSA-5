@@ -13,16 +13,20 @@ const props=defineProps({
   }
 })
 
-const getBooking=ref();
+const getBooking=ref({});
 const isDetail=ref(-1)
 const isEdit=ref(false)
 
+let count=0
 const showDetail = async (id)=>{
-    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${id}`,{
-        method: 'GET'
-    })
-    getBooking.value=await res.json()
-    getBooking.value.startTime=moment(getBooking.value.startTime).utcOffset(0).format(DateFormat)
+    if(id!==count){
+        const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${id}`,{
+            method: 'GET'
+        })
+        getBooking.value=await res.json()
+        getBooking.value.startTime=moment(getBooking.value.startTime).utcOffset(0).format(DateFormat)
+        count=id
+    }
     isDetail.value= isDetail.value===id ? -1:id
     isEdit.value=false
 }

@@ -1,26 +1,23 @@
 package sit.integrate.oasip.DTO;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.Instant;
+import javax.persistence.Column;
+import java.io.Serializable;
+import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
-public class BookingDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CategoryDTO {
     private Integer id;
-    private String bookingName;
-    private String bookingEmail;
-    private CategoryDTO category;
-    private Instant startTime;
-    private String eventNote;
-
-    public String getStartTime(){
-        return startTime.toString();
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = Instant.parse(startTime);
-    }
+    private String categoryName;
+    private String description;
+    private Integer duration;
 }

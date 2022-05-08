@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.BookingDTO;
-import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Service.BookingService;
 
 import java.util.List;
