@@ -16,7 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDTO {
-//    @JsonIgnore
     private Integer id;
     private String categoryName;
     private String description;
