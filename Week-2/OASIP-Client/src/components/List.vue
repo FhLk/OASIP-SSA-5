@@ -83,8 +83,8 @@ const savebooking= async (booking)=>{
 </script>
  
 <template>
-<div>
-    <div v-if="getListBooking.length!==0">
+<div class="bg pt-3 rounded-md bgde mx-10 mb-4 pb-3 tde">
+    <div v-if="getListBooking.length!==0" class="mx-5">
         <p>Sort By: | <a>Day</a> | <a>Upcoming</a> | <a>Past</a> | <a>Time</a> | </p>
     <ul>
         <li v-for="(data,index) in getListBooking" :key="index">{{data.startTime}}
@@ -126,5 +126,70 @@ const savebooking= async (booking)=>{
 </template>
  
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap');
+
+.bgm {
+    background-color: rgb(254, 252, 255);
+}
+
+.bg {
+    background-color: rgb(25, 25, 112);
+}
+
+.font {
+    font-family: 'Titan One', cursive;
+}
+
+.dl {
+    background-color: rgb(215, 45, 45);
+}
+
+.scd {
+    background-color: rgb(86, 165, 236);
+}
+
+.ins {
+    background-color: rgb(130, 202, 255);
+}
+
+.oa {
+    background-color: rgb(66, 155, 219);
+}
+
+.list {
+    background-color: rgb(92, 179, 255);
+}
+
+.dl {
+    background-color: rgb(0, 0, 165);
+}
+
+.bgde {
+    background-color: rgb(254, 252, 255);
+}
+
+.tde {
+    color: rgb(12, 9, 10);
+}
+
+.tins {
+    color: rgb(255, 255, 247);
+}
+
+.bgis {
+    background-color: rgb(255, 250, 250);
+}
+
+.w {
+    width: 120px;
+}
+
+.h {
+    height: 25px;
+}
+
+.bgmm {
+    background-color: rgb(0, 0, 128);
+}
 
 </style>
