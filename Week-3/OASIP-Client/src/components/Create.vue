@@ -17,7 +17,6 @@ const props=defineProps({
 
 const newbooking=ref({
     bookingName: "",
-    group:"",
     bookingEmail: "",
     Date:"",
     Time:"",
@@ -29,7 +28,6 @@ const reset=()=>{
     isBooking.value=false
     newbooking.value={
         bookingName: "",
-        group:"",
         bookingEmail: "",
         Date:"",
         Time:"",
@@ -46,7 +44,6 @@ const reset=()=>{
         <button @click="isBooking= isBooking ? false:true">Booking</button>
         <div v-if="isBooking">
             <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName"></p>
-            <p>Group: <input type="text" placeholder="Group" v-model="newbooking.group"/></p>
             <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail"></p>
             <p>Category: 
                 <ul v-for="(category,index) in getCategories " :key="index">

@@ -51,7 +51,7 @@ const createBooking= async (booking)=>{
         },
         body: JSON.stringify({
             id: Auto_Increment(getListBooking.value.length+1),
-            bookingName: booking.bookingName + ` (${booking.group})`,
+            bookingName: booking.bookingName,
             bookingEmail: booking.bookingEmail,
             category: {
                 id: booking.category.id,
