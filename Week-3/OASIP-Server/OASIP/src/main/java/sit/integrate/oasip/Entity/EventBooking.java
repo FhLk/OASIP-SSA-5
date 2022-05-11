@@ -1,12 +1,18 @@
 package sit.integrate.oasip.Entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.Instant;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity(name = "EventBooking")
 public class EventBooking {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BookingID", nullable = false)
     private Integer id;
 
@@ -16,12 +22,15 @@ public class EventBooking {
     @Column(name = "BookingEmail", nullable = false, length = 150)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Category", nullable = false)
     private EventCategory category;
 
     @Column(name = "StartTime", nullable = false)
     private Instant startTime;
+
+    @Column(name = "BookingDuration", nullable = false)
+    private Integer bookingDuration;
 
     @Column(name = "EventNote", length = 550)
     private String eventNote;
@@ -30,48 +39,31 @@ public class EventBooking {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getBookingName() {
         return bookingName;
-    }
-
-    public void setBookingName(String bookingName) {
-        this.bookingName = bookingName;
     }
 
     public String getBookingEmail() {
         return bookingEmail;
     }
 
-    public void setBookingEmail(String bookingEmail) {
-        this.bookingEmail = bookingEmail;
-    }
-
     public EventCategory getCategory() {
         return category;
-    }
-
-    public void setCategory(EventCategory category) {
-        this.category = category;
     }
 
     public Instant getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = Instant.parse(startTime);
+    public Integer getBookingDuration() {
+        return bookingDuration;
     }
 
     public String getEventNote() {
         return eventNote;
     }
 
-    public void setEventNote(String eventNote) {
-        this.eventNote = eventNote;
+    public void setStartTime(String startTime) {
+        this.startTime = Instant.parse(startTime);
     }
-
 }

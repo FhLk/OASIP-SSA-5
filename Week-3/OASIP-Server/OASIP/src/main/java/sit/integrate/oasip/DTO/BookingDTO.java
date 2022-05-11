@@ -14,6 +14,7 @@ public class BookingDTO {
     private String bookingEmail;
     private CategoryDTO category;
     private Instant startTime;
+    private Integer bookingDuration;
     private String eventNote;
 
     public String getStartTime(){

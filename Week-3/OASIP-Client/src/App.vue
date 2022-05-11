@@ -22,17 +22,10 @@ const getBookings= async ()=>{
     getListBooking.value.forEach((data)=>{
         data.startTime=ShowDateTime(data.startTime)
     })
-    SortByDateTime()
-}
-
-const SortByDateTime=()=>{
-    getListBooking.value.sort((a,b)=>{
-        return new Date(b.startTime) - new Date(a.startTime)
-    })
 }
 
 const ShowDateTime=(datetime)=>{
-    return moment(datetime).utcOffset(0).format(DateFormat)
+    return moment(datetime).utcOffset(7).format(DateFormat)
 }
 
 onMounted(async ()=>{
@@ -63,14 +56,13 @@ const createBooking= async (booking)=>{
             bookingEmail: booking.bookingEmail,
             category: booking.category,
             startTime:`${booking.Date}T${booking.Time}:00Z`,
+            bookingDuration:booking.bookingDuration,
             eventNote: booking.eventNote  
         })
     })
     if(res.status===201){
-        const newbooking=await res.json()
-        newbooking.startTime=ShowDateTime(newbooking.startTime)
-        getListBooking.value.push(await newbooking)
-        SortByDateTime()        
+        alert("You Add New Event Booking.")
+        location.reload()
     }
 }
 const deleteBooking= async (booking)=>{
@@ -95,15 +87,13 @@ const saveBooking= async (updateBooking)=>{
             bookingEmail: updateBooking.bookingEmail,
             category: updateBooking.category,
             startTime: updateBooking.startTime,
+            bookingDuration:updateBooking.bookingDuration,
             eventNote: updateBooking.eventNote 
         })
     })
     if(res.status===200){
-        updateBooking.startTime=ShowDateTime(updateBooking.startTime)
-        getListBooking.value=getListBooking.value.map((booking)=>{
-            return booking.id===updateBooking.id ? {...booking,updateBooking}:booking
-        })
-        SortByDateTime()
+        alert("You Have Edited Event Booking.")
+        location.reload()
     }
 }
 </script>

@@ -34,11 +34,12 @@ ENGINE = InnoDB;
 -- Table `oasip_db`.`EventBooking`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `oasip_db`.`EventBooking` (
-  `BookingID` INT NOT NULL,
+  `BookingID` INT NOT NULL ,
   `BookingName` VARCHAR(150) NOT NULL,
   `BookingEmail` VARCHAR(150) NOT NULL,
   `Category` INT NOT NULL,
   `StartTime` DATETIME NOT NULL,
+  `BookingDuration` INT NOT NULL,
   `EventNote` VARCHAR(550) NULL,
   PRIMARY KEY (`BookingID`),
   INDEX `fk_EventBooking_EventCategory_idx` (`StartTime` ASC) VISIBLE,

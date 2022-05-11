@@ -21,6 +21,7 @@ const newbooking=ref({
     Date:"",
     Time:"",
     category: {},
+    bookingDuration: 0,
     eventNote: "",
 });
 
@@ -32,6 +33,7 @@ const reset=()=>{
         Date:"",
         Time:"",
         category: {},
+        bookingDuration: 0,
         eventNote: "",
     }
 }
@@ -66,13 +68,13 @@ const reset=()=>{
                 <label> Start (Time) </label>: 
                 <input type="time" v-model="newbooking.Time">
                 <br/>
-                <label>Duration (Minute): {{newbooking.category.duration}}</label>
+                <label>Duration (Minute): {{newbooking.bookingDuration=newbooking.category.duration}}</label>
                 <br/>
                 <label>Note: </label>
                 <textarea rows="5" cols="50" v-model="newbooking.eventNote"></textarea>
                 <!-- <p>(Number of Charecter: {{countNote}})</p> -->
                 <div> 
-                    <button @click="$emit('add',newbooking),reset()" :disabled="checkInput()">OK</button>
+                    <button @click="$emit('add',newbooking),reset()">OK</button>
                     <button @click="reset">Cancle</button>
                 </div>
             </p>

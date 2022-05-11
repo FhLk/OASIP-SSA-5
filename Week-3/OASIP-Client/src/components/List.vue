@@ -73,7 +73,7 @@ const savebooking= (booking)=>{
         <p>Sort By: | <a>Day</a> | <a>Upcoming</a> | <a>Past</a> | <a>Time</a> | </p>
     <ul>
         <li v-for="(data,index) in getList" :key="index">{{data.startTime}}
-            ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}}
+            ({{data.bookingDuration}} min.) {{data.category.categoryName.toLocaleUpperCase()}}
             {{data.bookingName}}
             <div>
             <button @click="showDetail(data.id)">{{isDetail===data.id ? "Closed":"Detail"}}</button>
@@ -89,7 +89,7 @@ const savebooking= (booking)=>{
                         <input type="time" v-model="EditTime"/>
                     </span>
                 </p>
-                <p>Duration: {{getBooking.category.duration}} min.</p>
+                <p>Duration: {{getBooking.bookingDuration}} min.</p>
                 <p>Note: 
                     <span v-if="isEdit===false">{{getBooking.eventNote}}</span>
                     <span v-else>
