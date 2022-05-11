@@ -16,8 +16,8 @@ public class BookingController {
     private BookingService service;
 
     @GetMapping("")
-    public List<BookingDTO> getAllBooking(){
-        return service.getBookings();
+    public List<BookingDTO> getAllBooking(@RequestParam String sort){
+        return service.getBookings(sort);
     }
 
     @GetMapping("/{BookingId}")
@@ -41,5 +41,4 @@ public class BookingController {
     @DeleteMapping("/{bookingId}")
     public void deleteBooking(@PathVariable Integer bookingId){
         service.CancelBooking(bookingId);
-    }
-}
+    }}
