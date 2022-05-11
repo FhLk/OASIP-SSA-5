@@ -59,7 +59,7 @@ const createBooking= async (booking)=>{
         },
         body: JSON.stringify({
             id: Auto_Increment(getListBooking.value.length+1),
-            bookingName: booking.bookingName + ` (${booking.group})`,
+            bookingName: booking.bookingName,
             bookingEmail: booking.bookingEmail,
             category: {
                 id: booking.category.id,
@@ -72,9 +72,10 @@ const createBooking= async (booking)=>{
         })
     })
     if(res.status===201){
-        booking.startTime=moment(booking.startTime).utcOffset(0).format(DateFormat)
-        getListBooking.value.push(booking)
-        SortByDateTime()
+        const newbooking=await res.json()
+        newbooking.startTime=moment(newbooking.startTime).utcOffset(0).format(DateFormat)
+        getListBooking.value.push(newbooking)
+        SortByDateTime()        
     }
 }
 const deleteBooking= async (booking)=>{
