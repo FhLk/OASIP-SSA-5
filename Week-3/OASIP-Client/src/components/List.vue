@@ -13,7 +13,7 @@ const props=defineProps({
   }
 })
 
-const getListBooking=computed(()=>{
+const getList=computed(()=>{
     return props.getListBooking
 })
 const getBooking=ref({});
@@ -69,10 +69,10 @@ const savebooking= (booking)=>{
  
 <template>
 <div>
-    <div v-if="getListBooking.length!==0">
+    <div v-if="getList.length!==0">
         <p>Sort By: | <a>Day</a> | <a>Upcoming</a> | <a>Past</a> | <a>Time</a> | </p>
     <ul>
-        <li v-for="(data,index) in getListBooking" :key="index">{{data.startTime}}
+        <li v-for="(data,index) in getList" :key="index">{{data.startTime}}
             ({{data.category.duration}} min.) {{data.category.categoryName.toLocaleUpperCase()}}
             {{data.bookingName}}
             <div>

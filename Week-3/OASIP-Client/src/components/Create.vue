@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 const isBooking=ref(false)
 
 defineEmits(['add'])
@@ -35,6 +35,15 @@ const reset=()=>{
         eventNote: "",
     }
 }
+// const countName=computed(()=>{
+//     return 100-newbooking.value.bookingName.length
+// })
+// const countNote=computed(()=>{
+//     return 500-newbooking.value.eventNote.length
+// })
+// const checkInput =()=>{
+
+// }
 
 </script>
  
@@ -44,6 +53,7 @@ const reset=()=>{
         <button @click="isBooking= isBooking ? false:true">Booking</button>
         <div v-if="isBooking">
             <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName"></p>
+            <!-- <p>(Number of Charecter: {{countName}})</p> -->
             <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail"></p>
             <p>Category: 
                 <ul v-for="(category,index) in getCategories " :key="index">
@@ -60,8 +70,9 @@ const reset=()=>{
                 <br/>
                 <label>Note: </label>
                 <textarea rows="5" cols="50" v-model="newbooking.eventNote"></textarea>
+                <!-- <p>(Number of Charecter: {{countNote}})</p> -->
                 <div> 
-                    <button @click="$emit('add',newbooking),reset()">OK</button>
+                    <button @click="$emit('add',newbooking),reset()" :disabled="checkInput()">OK</button>
                     <button @click="reset">Cancle</button>
                 </div>
             </p>

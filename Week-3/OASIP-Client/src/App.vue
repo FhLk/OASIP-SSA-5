@@ -41,7 +41,7 @@ onMounted(async ()=>{
 })
 
 const createBooking= async (booking)=>{
-    const Auto_Increment =(increment)=>{
+    const Auto_Increment = (increment)=>{
         getListBooking.value.forEach((data)=>{
             if(increment===data.id){
                 increment=data.id+1
@@ -50,7 +50,7 @@ const createBooking= async (booking)=>{
                 increment=getListBooking.value.length+1
             }
         })
-        return increment
+        return increment===0 ? 1:increment
     }
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
         method: 'POST',
@@ -58,15 +58,10 @@ const createBooking= async (booking)=>{
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            id: Auto_Increment(getListBooking.value.length+1),
+            id:Auto_Increment(getListBooking.value.length),
             bookingName: booking.bookingName,
             bookingEmail: booking.bookingEmail,
-            category: {
-                id: booking.category.id,
-                categoryName: booking.category.categoryName,
-                description: booking.category.description,
-                duration: booking.category.duration
-            },
+            category: booking.category,
             startTime:`${booking.Date}T${booking.Time}:00Z`,
             eventNote: booking.eventNote  
         })
@@ -74,7 +69,7 @@ const createBooking= async (booking)=>{
     if(res.status===201){
         const newbooking=await res.json()
         newbooking.startTime=ShowDateTime(newbooking.startTime)
-        getListBooking.value.push(newbooking)
+        getListBooking.value.push(await newbooking)
         SortByDateTime()        
     }
 }
