@@ -3,17 +3,17 @@ package sit.integrate.oasip.Entity;
 import javax.persistence.*;
 import java.time.Instant;
 
-@Entity
+@Entity(name = "EventBooking")
 public class EventBooking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BookingID", nullable = false)
     private Integer id;
 
-    @Column(name = "BookingName", nullable = false, length = 100)
+    @Column(name = "BookingName", nullable = false, length = 150)
     private String bookingName;
 
-    @Column(name = "BookingEmail", nullable = false, length = 100)
+    @Column(name = "BookingEmail", nullable = false, length = 150)
     private String bookingEmail;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -23,7 +23,7 @@ public class EventBooking {
     @Column(name = "StartTime", nullable = false)
     private Instant startTime;
 
-    @Column(name = "EventNote", length = 500)
+    @Column(name = "EventNote", length = 550)
     private String eventNote;
 
     public Integer getId() {

@@ -4,7 +4,7 @@ insert into `EventCategory` (`CategoryID`,`CategoryName`,`Description`,`Duration
 management clinic ในวิชา INT221 integrated
 project I ให้นักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสEventBookingดง
 ระหว่างขอคำปรึกษา', 30 ),
-(2,'DevOps/Infra Clinic','Use this event category for DevOps/Infra clinic.',20),
+(2,'DevOps/Infra Clinic','Use this event category for DevOps/Infra clinic.',30),
 (3,'Database Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ใน
 วิชา INT221 integrated project I',15),
 (4,'Client-side Clinic','ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ใน

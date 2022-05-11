@@ -22,8 +22,8 @@ USE `oasip_db` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `oasip_db`.`EventCategory` (
   `CategoryID` INT NOT NULL,
-  `CategoryName` VARCHAR(45) NOT NULL,
-  `Description` VARCHAR(500) NULL,
+  `CategoryName` VARCHAR(100) NOT NULL,
+  `Description` VARCHAR(550) NULL,
   `Duration` INT NOT NULL,
   PRIMARY KEY (`CategoryID`),
   UNIQUE INDEX `CategoryName_UNIQUE` (`CategoryName` ASC) VISIBLE)
@@ -35,11 +35,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `oasip_db`.`EventBooking` (
   `BookingID` INT NOT NULL auto_increment,
-  `BookingName` VARCHAR(100) NOT NULL,
-  `BookingEmail` VARCHAR(100) NOT NULL,
+  `BookingName` VARCHAR(150) NOT NULL,
+  `BookingEmail` VARCHAR(150) NOT NULL,
   `Category` INT NOT NULL,
   `StartTime` DATETIME NOT NULL,
-  `EventNote` VARCHAR(500) NULL,
+  `EventNote` VARCHAR(550) NULL,
   PRIMARY KEY (`BookingID`),
   INDEX `fk_EventBooking_EventCategory_idx` (`BookingID` ASC) VISIBLE,
   CONSTRAINT `fk_EventBooking_EventCategory`

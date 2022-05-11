@@ -4,16 +4,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
+@Entity(name = "EventCategory")
 public class EventCategory {
     @Id
     @Column(name = "CategoryID", nullable = false)
     private Integer id;
 
-    @Column(name = "CategoryName", nullable = false, length = 45)
+    @Column(name = "CategoryName", nullable = false, length = 100)
     private String categoryName;
 
-    @Column(name = "Description", length = 500)
+    @Column(name = "Description", length = 550)
     private String description;
 
     @Column(name = "Duration", nullable = false)

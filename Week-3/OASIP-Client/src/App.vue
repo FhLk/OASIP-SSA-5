@@ -20,7 +20,7 @@ const getBookings= async ()=>{
     })
     getListBooking.value=await res.json()
     getListBooking.value.forEach((data)=>{
-        data.startTime=moment(data.startTime).utcOffset(0).format(DateFormat)
+        data.startTime=ShowDateTime(data.startTime)
     })
     SortByDateTime()
 }
@@ -30,10 +30,10 @@ const SortByDateTime=()=>{
         return new Date(b.startTime) - new Date(a.startTime)
     })
 }
-// onBeforeMount(async ()=>{
-//     await getBookings()
-//     await getCategories()
-// })
+
+const ShowDateTime=(datetime)=>{
+    return moment(datetime).utcOffset(0).format(DateFormat)
+}
 
 onMounted(async ()=>{
     await getBookings()
@@ -73,7 +73,7 @@ const createBooking= async (booking)=>{
     })
     if(res.status===201){
         const newbooking=await res.json()
-        newbooking.startTime=moment(newbooking.startTime).utcOffset(0).format(DateFormat)
+        newbooking.startTime=ShowDateTime(newbooking.startTime)
         getListBooking.value.push(newbooking)
         SortByDateTime()        
     }
@@ -104,7 +104,7 @@ const saveBooking= async (updateBooking)=>{
         })
     })
     if(res.status===200){
-        updateBooking.startTime=moment(updateBooking.startTime).utcOffset(0).format(DateFormat)
+        updateBooking.startTime=ShowDateTime(updateBooking.startTime)
         getListBooking.value=getListBooking.value.map((booking)=>{
             return booking.id===updateBooking.id ? {...booking,updateBooking}:booking
         })
