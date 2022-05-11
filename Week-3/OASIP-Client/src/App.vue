@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted,onBeforeMount,ref, onBeforeUpdate, onUpdated, computed} from 'vue';
 import moment from "moment"
-import List from "./components/List.vue"
+import List from './components/List.vue'
 import Create from './components/Create.vue';
 let DateFormat="YYYY-MM-DD HH:mm"
 const getListBooking=ref([])
@@ -22,12 +22,20 @@ const getBookings= async ()=>{
     getListBooking.value.forEach((data)=>{
         data.startTime=moment(data.startTime).utcOffset(0).format(DateFormat)
     })
+    SortByDateTime()
+}
+
+const SortByDateTime=()=>{
     getListBooking.value.sort((a,b)=>{
         return new Date(b.startTime) - new Date(a.startTime)
     })
 }
+// onBeforeMount(async ()=>{
+//     await getBookings()
+//     await getCategories()
+// })
 
-onBeforeMount(async ()=>{
+onMounted(async ()=>{
     await getBookings()
     await getCategories()
 })
@@ -51,7 +59,7 @@ const createBooking= async (booking)=>{
         },
         body: JSON.stringify({
             id: Auto_Increment(getListBooking.value.length+1),
-            bookingName: booking.bookingName,
+            bookingName: booking.bookingName + ` (${booking.group})`,
             bookingEmail: booking.bookingEmail,
             category: {
                 id: booking.category.id,
@@ -64,7 +72,9 @@ const createBooking= async (booking)=>{
         })
     })
     if(res.status===201){
-        await getBookings()
+        booking.startTime=moment(booking.startTime).utcOffset(0).format(DateFormat)
+        getListBooking.value.push(booking)
+        SortByDateTime()
     }
 }
 const deleteBooking= async (booking)=>{
@@ -77,11 +87,28 @@ const deleteBooking= async (booking)=>{
         }
     }
 }
-const saveBooking=(updateBooking)=>{
-    getListBooking.value=getListBooking.value.map((booking)=>{
-        return booking.id===updateBooking.id ? {...booking,updateBooking}:booking
+const saveBooking= async (updateBooking)=>{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${updateBooking.id}`,{
+        method: 'PUT',
+        headers:{
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            id:updateBooking.id,
+            bookingName: updateBooking.bookingName,
+            bookingEmail: updateBooking.bookingEmail,
+            category: updateBooking.category,
+            startTime: updateBooking.startTime,
+            eventNote: updateBooking.eventNote 
+        })
     })
-    location.reload()
+    if(res.status===200){
+        updateBooking.startTime=moment(updateBooking.startTime).utcOffset(0).format(DateFormat)
+        getListBooking.value=getListBooking.value.map((booking)=>{
+            return booking.id===updateBooking.id ? {...booking,updateBooking}:booking
+        })
+        SortByDateTime()
+    }
 }
 </script>
  

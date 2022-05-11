@@ -13,6 +13,9 @@ const props=defineProps({
   }
 })
 
+const getListBooking=computed(()=>{
+    return props.getListBooking
+})
 const getBooking=ref({});
 const isDetail=ref(-1)
 const isEdit=ref(false)
@@ -53,31 +56,13 @@ const EditEvent=(booking)=>{
 }
 
 
-const savebooking= async (booking)=>{
-    if(confirm("You Have Edited Your Event.")){
-        const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${booking.id}`,{
-            method: 'PUT',
-            headers:{
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                id:booking.id,
-                bookingName: booking.bookingName,
-                bookingEmail: booking.bookingEmail,
-                category: booking.category,
-                startTime: `${EditDate.value}T${EditTime.value}:00Z`,
-                eventNote: EditNote.value  
-            })
-        })
-        if(res.status===200){
-            const updateBooking = await res.json()
-            isEdit.value=false
-            return updateBooking
-        }
-        else{
-            return booking
-        }
-    }
+const savebooking= (booking)=>{
+    isEdit.value=false
+    booking.startTime=`${EditDate.value}T${EditTime.value}:00Z`
+    booking.eventNote=EditNote.value
+    count=0
+    isDetail.value= -1
+    return booking
 }
 
 </script>
