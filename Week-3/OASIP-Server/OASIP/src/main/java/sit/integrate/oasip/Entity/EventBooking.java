@@ -23,7 +23,7 @@ public class EventBooking {
     @Column(name = "StartTime", nullable = false)
     private Instant startTime;
 
-    @Column(name = "EventNote")
+    @Column(name = "EventNote", length = 500)
     private String eventNote;
 
     public Integer getId() {
