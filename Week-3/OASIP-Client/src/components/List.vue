@@ -57,11 +57,11 @@ const EditEvent=(booking)=>{
 
 
 const savebooking= (booking)=>{
-    isEdit.value=false
-    booking.startTime=`${EditDate.value}T${EditTime.value}:00Z`
+    booking.startTime=`${EditDate.value}T${EditTime.value}`
     booking.eventNote=EditNote.value
     count=0
     isDetail.value= -1
+    isEdit.value=false
     return booking
 }
 

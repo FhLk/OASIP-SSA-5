@@ -23,10 +23,17 @@ const getBookings= async (sort='startTime')=>{
     getListBooking.value.forEach((data)=>{
         data.startTime=ShowDateTime(data.startTime)
     })
+    getListBooking.value=SortByDateTime(getListBooking.value)
 }
 
 const ShowDateTime=(datetime)=>{
     return moment(datetime).local().format(DateFormat)
+}
+
+const SortByDateTime=(list)=>{
+    return list.sort((a,b)=>{
+        return new Date(b.startTime) - new Date(a.startTime)
+    })
 }
 
 onMounted(async ()=>{
@@ -62,8 +69,11 @@ const createBooking= async (booking)=>{
         })
     })
     if(res.status===201){
-        alert("You Add New Event Booking.")
-        location.reload()
+        const newBooking=await res.json()
+        newBooking.startTime=ShowDateTime(newBooking.startTime)
+        getListBooking.value.push(newBooking)
+        getListBooking.value=SortByDateTime(getListBooking.value)
+        // getBookings()
     }
 }
 const deleteBooking= async (booking)=>{
@@ -93,8 +103,18 @@ const saveBooking= async (updateBooking)=>{
         })
     })
     if(res.status===200){
-        alert("You Have Edited Event Booking.")
-        location.reload()
+        const newBooking=await res.json()
+        newBooking.startTime=ShowDateTime(newBooking.startTime)
+        getListBooking.value.forEach((booking)=>{
+            if(booking.id===newBooking.id){
+                booking=newBooking
+            }
+        })
+        getListBooking.value.forEach((data)=>{
+            data.startTime=ShowDateTime(data.startTime)
+        })
+        getListBooking.value=SortByDateTime(getListBooking.value)
+        // getBookings()
     }
 }
 </script>

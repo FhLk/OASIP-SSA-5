@@ -48,11 +48,6 @@ const reset=()=>{
 
 // }
 
-const test=()=>{
-    console.log(moment(newbooking.value.Date))
-    console.log(moment(newbooking.value.Time))
-}
-
 </script>
  
 <template>
