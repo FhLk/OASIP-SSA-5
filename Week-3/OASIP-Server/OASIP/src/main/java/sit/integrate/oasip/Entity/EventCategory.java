@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @Entity(name = "EventCategory")
 public class EventCategory {
     @Id

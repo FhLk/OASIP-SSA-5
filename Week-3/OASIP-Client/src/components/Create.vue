@@ -1,4 +1,5 @@
 <script setup>
+import moment from 'moment';
 import { computed, onBeforeMount, ref } from 'vue';
 const isBooking=ref(false)
 
@@ -46,6 +47,11 @@ const reset=()=>{
 // const checkInput =()=>{
 
 // }
+
+const test=()=>{
+    console.log(moment(newbooking.value.Date))
+    console.log(moment(newbooking.value.Time))
+}
 
 </script>
  

@@ -19,13 +19,14 @@ const getBookings= async (sort='startTime')=>{
         method: 'GET'
     })
     getListBooking.value=await res.json()
+    
     getListBooking.value.forEach((data)=>{
         data.startTime=ShowDateTime(data.startTime)
     })
 }
 
 const ShowDateTime=(datetime)=>{
-    return moment(datetime).utcOffset(7).format(DateFormat)
+    return moment(datetime).local().format(DateFormat)
 }
 
 onMounted(async ()=>{
@@ -55,7 +56,7 @@ const createBooking= async (booking)=>{
             bookingName: booking.bookingName,
             bookingEmail: booking.bookingEmail,
             category: booking.category,
-            startTime:`${booking.Date}T${booking.Time}:00Z`,
+            startTime:`${booking.Date}T${booking.Time}`,
             bookingDuration:booking.bookingDuration,
             eventNote: booking.eventNote  
         })

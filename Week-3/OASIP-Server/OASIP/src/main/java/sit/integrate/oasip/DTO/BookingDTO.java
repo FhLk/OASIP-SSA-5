@@ -3,6 +3,7 @@ package sit.integrate.oasip.DTO;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +14,7 @@ public class BookingDTO {
     private String bookingName;
     private String bookingEmail;
     private CategoryDTO category;
-    private Instant startTime;
+    private LocalDateTime startTime;
     private Integer bookingDuration;
     private String eventNote;
 
@@ -22,6 +23,6 @@ public class BookingDTO {
     }
 
     public void setStartTime(String startTime) {
-        this.startTime = Instant.parse(startTime);
+        this.startTime = LocalDateTime.parse(startTime);
     }
 }

@@ -4,12 +4,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @Entity(name = "EventBooking")
 public class EventBooking {
     @Id
@@ -22,12 +22,12 @@ public class EventBooking {
     @Column(name = "BookingEmail", nullable = false, length = 150)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER , optional = false)
     @JoinColumn(name = "Category", nullable = false)
     private EventCategory category;
 
     @Column(name = "StartTime", nullable = false)
-    private Instant startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "BookingDuration", nullable = false)
     private Integer bookingDuration;
@@ -51,7 +51,7 @@ public class EventBooking {
         return category;
     }
 
-    public Instant getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
@@ -64,6 +64,6 @@ public class EventBooking {
     }
 
     public void setStartTime(String startTime) {
-        this.startTime = Instant.parse(startTime);
+        this.startTime = LocalDateTime.parse(startTime);
     }
 }

@@ -27,7 +27,7 @@ const showDetail = async (id)=>{
             method: 'GET'
         })
         getBooking.value=await res.json()
-        getBooking.value.startTime=moment(getBooking.value.startTime).utcOffset(0).format(DateFormat)
+        getBooking.value.startTime=moment(getBooking.value.startTime).local().format(DateFormat)
         count=id
     }
     isDetail.value= isDetail.value===id ? -1:id
