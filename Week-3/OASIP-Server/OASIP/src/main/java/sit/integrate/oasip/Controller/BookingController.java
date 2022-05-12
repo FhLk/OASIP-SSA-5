@@ -18,8 +18,11 @@ public class BookingController {
     private BookingService service;
 
     @GetMapping("")
-    public List<BookingDTO> getAllBooking(){
-        return service.getBookings();
+    public List<BookingDTO> getAllBooking(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "bookingName") String sortBy){
+        return service.getBookings(page,pageSize,sortBy);
     }
 
     @GetMapping("/{BookingId}")

@@ -19,9 +19,9 @@ public class BookingService {
     @Autowired private ModelMapper modelMapper;
     @Autowired private ListMapper listMapper;
 
-    public List<BookingDTO> getBookings(){
+    public List<BookingDTO> getBookings(int page, int pageSize, String sortBy){
 //        List<EventBooking> bookingList = repository.findAll(Sort.by(Sort.Direction.DESC,startTime));
-        List<EventBooking> bookingList = repository.findAll();
+        List<EventBooking> bookingList = repository.findAll(PageRequest.of(page,pageSize,Sort.by(sortBy))).getContent();
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 
