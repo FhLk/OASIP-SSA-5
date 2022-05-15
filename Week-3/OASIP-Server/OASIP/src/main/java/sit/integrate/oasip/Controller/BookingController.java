@@ -30,6 +30,11 @@ public class BookingController {
         return service.getBookingId(BookingId);
     }
 
+    @GetMapping("/sortBy/{field}")
+    public List<BookingDTO> getBookingWithSort(@PathVariable String field){
+        return service.getBookingWithSorting(field);
+    }
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public BookingDTO AddBooking(@RequestBody BookingDTO newBooking){

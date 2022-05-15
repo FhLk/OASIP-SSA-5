@@ -32,6 +32,11 @@ public class BookingService {
         return modelMapper.map(booking, BookingDTO.class);
     }
 
+    public List<BookingDTO> getBookingWithSorting(String field){
+        List<Booking> bookingList = repository.findAll(Sort.by(Sort.Direction.DESC,field));
+        return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
+    }
+
     public EventBooking CreateBooking(BookingDTO newBooking){
         EventBooking booking = modelMapper.map(newBooking,EventBooking.class);
         return repository.saveAndFlush(booking);
