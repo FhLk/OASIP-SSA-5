@@ -45,9 +45,9 @@ const reset = () => {
         <div class="ml-10 mt-2 bgm w-32 flex justify-center rounded-full">
             <button @click="isBooking = isBooking ? false : true">Add Booking</button>
         </div>
-        <div class="bg flex justify-start mx-20 rounded-lg my-2">
+        <div class="bg flex justify-start mx-20 rounded-lg py-2">
             <div v-if="isBooking">
-                <div class="tde bgis px-3 pt-1 my-1 rounded-md grow">
+                <div class="tde bgis px-3 pt-1 py-1 rounded-md grow">
                     <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName"
                             class="ml-2 ins rounded-md flex-cols"></p>
                     <p>Group: <input type="text" placeholder="Group" v-model="newbooking.group"
