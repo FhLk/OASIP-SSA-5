@@ -101,7 +101,7 @@ const nonote = "" ;
                             <button @click="showDetail(data.id)" class="h-6 w-15 mt-4 px-2"
                                 :class="isDetail === data.id ? ccl : cdet" >{{ isDetail === data.id ?"Closed" : "Detail" }}</button>
                               <img @click="$emit('delete', data)" src="../assets/trash-can.gif" 
-                              class="h-10 w-10 mt-1 ring-1 ring[#728FCE] rounded-md hover:animate-bounce cursor-pointer shadow-md  hover:shadow-red-500" >
+                              class="h-10 w-10 mt-1 ring-1 ring[#728FCE] rounded-md  cursor-pointer shadow-md  hover:shadow-red-500" >
                                 
                         </div>
                         <div v-if="isDetail === data.id" class="">
@@ -146,7 +146,7 @@ const nonote = "" ;
                 </li>
             </ul>
         </div>
-        <div v-else>
+        <div v-else class="flex justify-center">
             <h2>No Scheduled Events.</h2>
         </div>
     </div>

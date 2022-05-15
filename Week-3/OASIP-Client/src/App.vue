@@ -3,6 +3,8 @@ import { onMounted, onBeforeMount, ref, onBeforeUpdate, onUpdated, computed } fr
 import moment from "moment"
 import List from "./components/List.vue"
 import Create from './components/Create.vue';
+import indexPage from './components/indexPage.vue' ;
+
 let DateFormat = "YYYY-MM-DD HH:mm"
 const getListBooking = ref([])
 const getListCategories = ref([]);
@@ -87,15 +89,16 @@ const saveBooking = (updateBooking) => {
  
 <template>
     <div class="bg h-screen font">
-        <h1 class="text-7xl text-white pl-10 pt-2 pb-2 mb-4 oa">OASIP TEST</h1>
-        
+        <h1 class="text-7xl text-white pl-10 pt-2 pb-2 mb-4 oa">OASIP</h1>
             <div class="scd rounded-lg w-48 ml-10 p-2 flex-none">
                 <h2 class="text-4xl text-white flex justify-center">Schedule</h2>
             </div>
             <div class="bg">
                 <Create @add="createBooking" :getCategories="getListCategories" :getListBooking="getListBooking" />
             </div>
-       
+            <div class="bg"> 
+                <indexPage/> 
+            </div>
         <div class="bg">
             <List @save="saveBooking" @delete="deleteBooking" :getListBooking="getListBooking" />
         </div>
