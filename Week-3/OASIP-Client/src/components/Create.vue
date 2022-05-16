@@ -1,89 +1,130 @@
 <script setup>
-import moment from 'moment';
-import { computed, onBeforeMount, ref } from 'vue';
-const isBooking=ref(false)
+import { onBeforeMount, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+const isBooking = ref(false)
 
-defineEmits(['add'])
+const emits=defineEmits(['add'])
 
-const props=defineProps({
-  getCategories: {
-    type: Array,
-    require: true
-  },
-  getListBooking:{
-      type: Array,
-      require:true
-  }
+const props = defineProps({
+    getCategories: {
+        type: Array,
+        require: true
+    }
 })
 
-const newbooking=ref({
+const newbooking = ref({
     bookingName: "",
     bookingEmail: "",
-    Date:"",
-    Time:"",
+    Date: "",
+    Time: "",
     category: {},
-    bookingDuration: 0,
     eventNote: "",
+    bookingDuration:0
 });
 
-const reset=()=>{
-    isBooking.value=false
-    newbooking.value={
+const reset = () => {
+    isBooking.value = false
+    newbooking.value = {
         bookingName: "",
         bookingEmail: "",
-        Date:"",
-        Time:"",
+        Date: "",
+        Time: "",
         category: {},
-        bookingDuration: 0,
         eventNote: "",
+        bookingDuration:0
+    }
+    // GoHome()
+}
+
+let mailFormat=/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+const CheckInput=async (booking)=>{
+    let isCheck=true
+    if(!booking.bookingEmail.match(mailFormat) || booking.bookingEmail.length > 100){
+        isCheck=false
+        console.log("Not email")
+    }
+    if(booking.bookingName==="" || booking.bookingName.length > 100){
+        isCheck=false
+        console.log("Not name")
+    }
+    if(Object.keys(booking.category).length===0){
+        isCheck=false
+        console.log("Not category")
+    }
+    if(booking.Date==="" || booking.Time===""){
+        isCheck=false
+        console.log("Not DateTime")
+    }
+    if(booking.eventNote.length > 500){
+        isCheck=false
+        console.log("Not Event Note")
+    }
+    if(isCheck){
+        await createBooking(booking)
+        reset()
     }
 }
-// const countName=computed(()=>{
-//     return 100-newbooking.value.bookingName.length
-// })
-// const countNote=computed(()=>{
-//     return 500-newbooking.value.eventNote.length
-// })
-// const checkInput =()=>{
 
-// }
+const myRouter=useRouter()
+const GoHome =()=>{
+    myRouter.push({name:'indexPage'})
+}
 
+const createBooking= async (booking)=>{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
+        method: 'POST',
+        headers:{
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            id:0,
+            bookingName: booking.bookingName,
+            bookingEmail: booking.bookingEmail,
+            category: booking.category,
+            startTime:`${booking.Date}T${booking.Time}`,
+            bookingDuration:booking.bookingDuration,
+            eventNote: booking.eventNote  
+        })
+    })
+    if(res.status===201){
+        const newbooking=await res.json()
+    }
+}
 </script>
  
 <template>
-<div>
     <div>
-        <button @click="isBooking= isBooking ? false:true">Booking</button>
-        <div v-if="isBooking">
-            <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName"></p>
-            <!-- <p>(Number of Charecter: {{countName}})</p> -->
-            <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail"></p>
-            <p>Category: 
-                <ul v-for="(category,index) in getCategories " :key="index">
-                    <input type="radio" :id="index" :value="category" v-model="newbooking.category">
-                    - <label :for="index">{{category.categoryName}}</label>
-                </ul>
-                <label>Date </label>: 
-                <input type="date" v-model="newbooking.Date">
-                <br/>
-                <label> Start (Time) </label>: 
-                <input type="time" v-model="newbooking.Time">
-                <br/>
-                <label>Duration (Minute): {{newbooking.bookingDuration=newbooking.category.duration}}</label>
-                <br/>
-                <label>Note: </label>
-                <textarea rows="5" cols="50" v-model="newbooking.eventNote"></textarea>
-                <!-- <p>(Number of Charecter: {{countNote}})</p> -->
-                <div> 
-                    <button @click="$emit('add',newbooking),reset()">OK</button>
-                    <button @click="reset">Cancle</button>
+        <div>
+            <div>
+                <div>
+                    <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName" maxlength="100"></p>
+                    <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail" maxlength="100"></p>
+                    <p>Category:
+                    <ul v-for="(category, index) in getCategories " :key="index">
+                        <input type="radio" :id="index" :value="category" v-model="newbooking.category">
+                        - <label :for="index">{{ category.categoryName }}</label>
+                    </ul>
+                    <label>Date </label>:
+                    <input type="date" v-model="newbooking.Date">
+                    <br />
+                    <label> Start (Time) </label>:
+                    <input type="time" v-model="newbooking.Time">
+                    <br />
+                    <label>Duration (Minute): {{newbooking.bookingDuration=newbooking.category.duration }}</label>
+                    <br />
+                    <label>Note: </label>
+                    <textarea rows="5" cols="50" v-model="newbooking.eventNote" maxlength="500"></textarea>
+                    <div>
+                        <button @click="CheckInput(newbooking)">OK</button>
+                        <button @click="reset">Cancle</button>
+                    </div>
+                    </p>
                 </div>
-            </p>
+            </div>
         </div>
     </div>
-</div>
 </template>
  
 <style scoped>
-
+@import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap');
 </style>

@@ -2,8 +2,10 @@ package sit.integrate.oasip.DTO;
 
 import lombok.*;
 
+import javax.validation.constraints.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,11 +13,21 @@ import java.time.LocalDateTime;
 @Setter
 public class BookingDTO {
     private Integer id;
+    @NotNull(message = "Name shouldn't be null")
+    @NotEmpty(message = "Name shouldn't be empty")
+    @Size(max = 100,message = "Your Name have length more than 100 character")
+    @NotBlank(message = "Name shouldn't be null/empty")
     private String bookingName;
+    @Email(message = "Email doesn't follow format")
+    @Size(max = 100,message = "Your Email have length more than 100 character")
     private String bookingEmail;
+    @NotNull(message = "Category is null")
     private CategoryDTO category;
+    @NotNull(message = "StartTime is null")
     private LocalDateTime startTime;
+    @NotNull(message = "Duration is null")
     private Integer bookingDuration;
+    @Size(max = 500,message = "Your Note have length more than 500 character")
     private String eventNote;
 
     public String getStartTime(){

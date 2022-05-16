@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity(name = "EventBooking")
 public class EventBooking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BookingID", nullable = false)
     private Integer id;
 
@@ -22,7 +23,7 @@ public class EventBooking {
     @Column(name = "BookingEmail", nullable = false, length = 150)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.EAGER , optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Category", nullable = false)
     private EventCategory category;
 
