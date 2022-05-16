@@ -1,5 +1,6 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 const isBooking = ref(false)
 
 const emits=defineEmits(['add'])
@@ -13,29 +14,30 @@ const props = defineProps({
 
 const newbooking = ref({
     bookingName: "",
-    group: "",
     bookingEmail: "",
     Date: "",
     Time: "",
     category: {},
     eventNote: "",
+    bookingDuration:0
 });
 
 const reset = () => {
     isBooking.value = false
     newbooking.value = {
         bookingName: "",
-        group: "",
         bookingEmail: "",
         Date: "",
         Time: "",
         category: {},
         eventNote: "",
+        bookingDuration:0
     }
+    // GoHome()
 }
 
 let mailFormat=/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-const CheckInput=(booking)=>{
+const CheckInput=async (booking)=>{
     let isCheck=true
     if(!booking.bookingEmail.match(mailFormat) || booking.bookingEmail.length > 100){
         isCheck=false
@@ -58,30 +60,24 @@ const CheckInput=(booking)=>{
         console.log("Not Event Note")
     }
     if(isCheck){
-        createBooking(booking)
+        await createBooking(booking)
         reset()
     }
 }
 
+const myRouter=useRouter()
+const GoHome =()=>{
+    myRouter.push({name:'indexPage'})
+}
+
 const createBooking= async (booking)=>{
-    const Auto_Increment = (increment)=>{
-        getListBooking.value.forEach((data)=>{
-            if(increment===data.id){
-                increment=data.id+1
-            }
-            else{
-                increment=getListBooking.value.length+1
-            }
-        })
-        return increment===0 ? 1:increment
-    }
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
         method: 'POST',
         headers:{
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            id:Auto_Increment(getListBooking.value.length),
+            id:0,
             bookingName: booking.bookingName,
             bookingEmail: booking.bookingEmail,
             category: booking.category,
@@ -92,7 +88,6 @@ const createBooking= async (booking)=>{
     })
     if(res.status===201){
         const newbooking=await res.json()
-        emits=('add',newbooking)
     }
 }
 </script>
@@ -115,7 +110,7 @@ const createBooking= async (booking)=>{
                     <label> Start (Time) </label>:
                     <input type="time" v-model="newbooking.Time">
                     <br />
-                    <label>Duration (Minute): {{ newbooking.category.duration }}</label>
+                    <label>Duration (Minute): {{newbooking.bookingDuration=newbooking.category.duration }}</label>
                     <br />
                     <label>Note: </label>
                     <textarea rows="5" cols="50" v-model="newbooking.eventNote" maxlength="500"></textarea>

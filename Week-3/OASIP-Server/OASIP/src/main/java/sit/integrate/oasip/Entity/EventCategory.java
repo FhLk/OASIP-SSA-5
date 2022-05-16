@@ -10,20 +10,19 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @Entity(name = "EventCategory")
 public class EventCategory {
     @Id
     @Column(name = "CategoryID", nullable = false)
     private Integer id;
 
-    @Column(name = "CategoryName", nullable = false, length = 45)
+    @Column(name = "CategoryName", nullable = false, length = 100)
     private String categoryName;
 
-    @Column(name = "Description")
+    @Column(name = "Description", length = 550)
     private String description;
 
-    @Column(name = "duration", nullable = false)
+    @Column(name = "Duration", nullable = false)
     private Integer duration;
 
     public Integer getId() {

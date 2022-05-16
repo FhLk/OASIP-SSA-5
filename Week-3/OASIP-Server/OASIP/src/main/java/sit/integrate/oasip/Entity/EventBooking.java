@@ -4,9 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity(name = "EventBooking")
 public class EventBooking {
     @Id
@@ -14,23 +18,54 @@ public class EventBooking {
     @Column(name = "BookingID", nullable = false)
     private Integer id;
 
-    @Column(name = "BookingName", nullable = false, length = 50)
+    @Column(name = "BookingName", nullable = false, length = 150)
     private String bookingName;
 
-    @Column(name = "BookingEmail", nullable = false, length = 45)
+    @Column(name = "BookingEmail", nullable = false, length = 150)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Category", nullable = false)
     private EventCategory category;
 
     @Column(name = "StartTime", nullable = false)
-    private Instant startTime;
+    private LocalDateTime startTime;
 
-    @Column(name = "EventNote", length = 50)
+    @Column(name = "BookingDuration", nullable = false)
+    private Integer bookingDuration;
+
+    @Column(name = "EventNote", length = 550)
     private String eventNote;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getBookingName() {
+        return bookingName;
+    }
+
+    public String getBookingEmail() {
+        return bookingEmail;
+    }
+
+    public EventCategory getCategory() {
+        return category;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public Integer getBookingDuration() {
+        return bookingDuration;
+    }
+
+    public String getEventNote() {
+        return eventNote;
+    }
+
     public void setStartTime(String startTime) {
-        this.startTime = Instant.parse(startTime);
+        this.startTime = LocalDateTime.parse(startTime);
     }
 }

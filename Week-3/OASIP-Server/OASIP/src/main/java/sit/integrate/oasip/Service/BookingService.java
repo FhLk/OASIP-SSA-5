@@ -2,6 +2,8 @@ package sit.integrate.oasip.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,10 +21,14 @@ public class BookingService {
     @Autowired private ModelMapper modelMapper;
     @Autowired private ListMapper listMapper;
 
-    public List<BookingDTO> getBookings(int page, int pageSize, String sortBy){
-//        List<EventBooking> bookingList = repository.findAll(Sort.by(Sort.Direction.DESC,startTime));
-        List<EventBooking> bookingList = repository.findAll(PageRequest.of(page,pageSize,Sort.by(sortBy))).getContent();
+    public List<BookingDTO> getBookings(int page, int pageSize, String sort){
+        List<EventBooking> bookingList = repository.findAll(PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,sort))).getContent();
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
+    }
+
+    public EventBooking CreateBooking(BookingDTO newBooking){
+        EventBooking booking = modelMapper.map(newBooking,EventBooking.class);
+        return repository.saveAndFlush(booking);
     }
 
     public BookingDTO getBookingId(Integer bookingId){
@@ -30,16 +36,6 @@ public class BookingService {
                 .orElseThrow(()->new ResponseStatusException(
                         HttpStatus.NOT_FOUND,  "Booking id "+ bookingId +" Does Not Exist !!!"));
         return modelMapper.map(booking, BookingDTO.class);
-    }
-
-    public List<BookingDTO> getBookingWithSorting(String field){
-        List<Booking> bookingList = repository.findAll(Sort.by(Sort.Direction.DESC,field));
-        return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
-    }
-
-    public EventBooking CreateBooking(BookingDTO newBooking){
-        EventBooking booking = modelMapper.map(newBooking,EventBooking.class);
-        return repository.saveAndFlush(booking);
     }
 
     public EventBooking updateBooking(Integer bookingId,BookingDTO updateBooking){

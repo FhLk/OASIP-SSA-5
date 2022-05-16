@@ -192,7 +192,7 @@ const deleteBooking= async (booking)=>{
             <h2>No Scheduled Events.</h2>
         </div>
             <button v-if="page!==0" @click="BackPage" >Back</button>
-            <button v-if="getListBooking.length===2" @click="NextPage" >Next</button>
+            <button v-if="getListBooking.length===5" @click="NextPage" >Next</button>
         </div>
 </template>
  

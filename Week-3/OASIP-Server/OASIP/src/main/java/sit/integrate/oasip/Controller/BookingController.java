@@ -18,39 +18,33 @@ public class BookingController {
     private BookingService service;
 
     @GetMapping("")
-    public List<BookingDTO> getAllBooking(
+    public ResponseEntity<List<BookingDTO>> getAllBooking(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "bookingName") String sortBy){
-        return service.getBookings(page,pageSize,sortBy);
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "startTime") String sort){
+        return ResponseEntity.ok(service.getBookings(page,pageSize,sort));
     }
 
     @GetMapping("/{BookingId}")
-    public BookingDTO getAllBooking(@PathVariable Integer BookingId){
-        return service.getBookingId(BookingId);
-    }
-
-    @GetMapping("/sortBy/{field}")
-    public List<BookingDTO> getBookingWithSort(@PathVariable String field){
-        return service.getBookingWithSorting(field);
+    public ResponseEntity<BookingDTO> getAllBooking(@PathVariable Integer BookingId){
+        return ResponseEntity.ok(service.getBookingId(BookingId));
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingDTO AddBooking(@RequestBody BookingDTO newBooking){
+    public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking){
         service.CreateBooking(newBooking);
-        return newBooking;
+        return new ResponseEntity<>(newBooking,HttpStatus.CREATED);
     }
 
     @PutMapping("/{BookingId}")
-    public BookingDTO update(@PathVariable Integer BookingId,@RequestBody BookingDTO updateBooking){
+    public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking){
         service.updateBooking(BookingId,updateBooking);
-        return updateBooking;
+        return new ResponseEntity<>(updateBooking,HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookingId}")
     public void deleteBooking(@PathVariable Integer bookingId){
         service.CancelBooking(bookingId);
     }
-
 }

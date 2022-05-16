@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/indexPage.vue'
-import AddBooking from '../views/AddBookingPage.vue'
-import Show from '../views/ShowPage.vue'
+import indexPage from '../views/indexPage.vue'
+import AddPage from '../views/AddBookingPage.vue'
+import ShowPage from '../views/ShowPage.vue'
 const history = createWebHistory(import.meta.env.VITE_BASE_URL)
 const routes = [
-    {path: '/',name: 'Home',component: Home},
-    {path: '/AddBooking',name: 'AddBooking',component: AddBooking},
-    {path: '/ShowBooking',name: 'ShowBooking',component: Show},
+    {path: '/',name: 'indexPage',component: indexPage},
+    {path: '/AddPage',name: 'AddPage',component: AddPage},
+    {path: '/ShowPage',name: 'ShowPage',component: ShowPage},
     
 ]
 const router = createRouter({ history, routes })
