@@ -39,7 +39,7 @@ public class BookingService {
     }
 
     public List<BookingDTO> getBookingSortPast(LocalDateTime localDateTime){
-        List<EventBooking> bookinglist = repository.findAllByStartTimeBefore(localDateTime);
+        List<EventBooking> bookinglist = repository.findAllByStartTimeLessThanOrderByStartTimeDesc(localDateTime);
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import sit.integrate.oasip.Entity.EventBooking;
 
 public interface BookingRepository extends JpaRepository<EventBooking, Integer> {
-    List<EventBooking> findAllByStartTimeBefore(LocalDateTime localDateTime);
+    List<EventBooking> findAllByStartTimeLessThanOrderByStartTimeDesc(LocalDateTime localDateTime);
     List<EventBooking> findAllByStartTimeAfter(LocalDateTime localDateTime);
 }
