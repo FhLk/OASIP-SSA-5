@@ -30,6 +30,16 @@ public class BookingController {
         return ResponseEntity.ok(service.getBookingId(BookingId));
     }
 
+    @GetMapping("/sortBypast")
+    public ResponseEntity<List<BookingDTO>> getAllBookingByPast(){
+        return ResponseEntity.ok(service.getBookingSortPast(LocalDateTime.now()));
+    }
+
+    @GetMapping("/sortByupcomming")
+    public ResponseEntity<List<BookingDTO>> getAllBookingByUpcomming(){
+        return ResponseEntity.ok(service.getBookingSortUpcomming(LocalDateTime.now()));
+    }
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking){

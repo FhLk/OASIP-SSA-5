@@ -38,6 +38,16 @@ public class BookingService {
         return modelMapper.map(booking, BookingDTO.class);
     }
 
+    public List<BookingDTO> getBookingSortPast(LocalDateTime localDateTime){
+        List<EventBooking> bookinglist = repository.findAllByStartTimeBefore(localDateTime);
+        return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
+    }
+
+    public List<BookingDTO> getBookingSortUpcomming(LocalDateTime localDateTime){
+        List<EventBooking> bookinglist = repository.findAllByStartTimeAfter(localDateTime);
+        return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
+    }
+
     public EventBooking updateBooking(Integer bookingId,BookingDTO updateBooking){
         EventBooking booking = repository.findById(bookingId).map(b->mapBooking(modelMapper.map(b,BookingDTO.class),updateBooking))
                 .orElseGet(()->{
