@@ -48,6 +48,11 @@ public class BookingService {
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 
+    public List<BookingDTO> getBookingWithSpecify(String startdate,String enddate){
+        List<EventBooking> bookingList = repository.findAllByStartTimeBetweenOrderByStartTimeAsc(LocalDateTime.parse(startdate),LocalDateTime.parse(enddate));
+        return listMapper.mapList(bookingList, BookingDTO.class,modelMapper);
+    }
+
     public EventBooking updateBooking(Integer bookingId,BookingDTO updateBooking){
         EventBooking booking = repository.findById(bookingId).map(b->mapBooking(modelMapper.map(b,BookingDTO.class),updateBooking))
                 .orElseGet(()->{

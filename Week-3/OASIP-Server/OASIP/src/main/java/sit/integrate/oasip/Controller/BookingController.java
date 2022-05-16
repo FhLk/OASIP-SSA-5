@@ -40,6 +40,11 @@ public class BookingController {
         return ResponseEntity.ok(service.getBookingSortUpcomming(LocalDateTime.now()));
     }
 
+    @GetMapping("/sortBySpecify")
+    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(@RequestParam String startdate,@RequestParam String enddate){
+        return ResponseEntity.ok(service.getBookingWithSpecify(startdate,enddate));
+    }
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking){
