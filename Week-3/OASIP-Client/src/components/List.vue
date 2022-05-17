@@ -131,9 +131,9 @@ const deleteBooking= async (booking)=>{
     }
 }
 
-const ced = " edit rounded-full px-2 text-white background-color: rgb(114, 143, 206) " ;
-const ccl = " bg-red-600 rounded-full px-2 text-white " ;
-const cdet = " bg-green-600 rounded-full px-2 text-white " ;
+const ced = " edit rounded-full px-2 text-white background-color: rgb(114, 143, 206) hover:bg-[#AECBFF]" ;
+const ccl = " bg-red-600 rounded-full px-2 text-white hover:bg-[#F87171]" ;
+const cdet = " bg-green-600 rounded-full px-2 text-white hover:bg-[#4ADE80]" ;
 const note = " bgde px-1 mx-1 rounded-md " ;
 const nonote = "" ;
 
@@ -195,7 +195,7 @@ const nonote = "" ;
                                 </div>
                             </div>
                             <div class="mt-2">
-                                <button @click="savebooking(data)" v-if="isEdit" class="bg-green-600 rounded-full px-2 text-white mr-2 ">Save</button>
+                                <button @click="savebooking(data)" v-if="isEdit" class="bg-green-600 rounded-full px-2 text-white mr-2 hover:bg-[#4ADE80]">Save</button>
                                 <button @click="EditEvent(data)" :class="isEdit ? ccl : ced">{{ isEdit ? "Cancel" : "Edit" }}</button>
                             </div>
                         </div>
