@@ -1,15 +1,12 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 const isBooking = ref(false)
 
-defineEmits(['add'])
+const emits=defineEmits(['add'])
 
 const props = defineProps({
     getCategories: {
-        type: Array,
-        require: true
-    },
-    getListBooking: {
         type: Array,
         require: true
     }
@@ -17,63 +14,118 @@ const props = defineProps({
 
 const newbooking = ref({
     bookingName: "",
-    group: "",
     bookingEmail: "",
     Date: "",
     Time: "",
     category: {},
     eventNote: "",
+    bookingDuration:0
 });
 
 const reset = () => {
     isBooking.value = false
     newbooking.value = {
         bookingName: "",
-        group: "",
         bookingEmail: "",
         Date: "",
         Time: "",
         category: {},
         eventNote: "",
+        bookingDuration:0
+    }
+    GoHome()
+}
+
+let mailFormat=/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+const CheckInput=async (booking)=>{
+    let isCheck=true
+    if(!booking.bookingEmail.match(mailFormat) || booking.bookingEmail.length > 100){
+        isCheck=false
+        console.log("Not email")
+    }
+    if(booking.bookingName==="" || booking.bookingName.length > 100){
+        isCheck=false
+        console.log("Not name")
+    }
+    if(Object.keys(booking.category).length===0){
+        isCheck=false
+        console.log("Not category")
+    }
+    if(booking.Date==="" || booking.Time===""){
+        isCheck=false
+        console.log("Not DateTime")
+    }
+    if(booking.eventNote.length > 500){
+        isCheck=false
+        console.log("Not Event Note")
+    }
+    if(isCheck){
+        await createBooking(booking)
+        reset()
     }
 }
 
+const myRouter=useRouter()
+const GoHome =()=>{
+    myRouter.push({name:'indexPage'})
+}
+
+const createBooking= async (booking)=>{
+    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
+        method: 'POST',
+        headers:{
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            id:0,
+            bookingName: booking.bookingName,
+            bookingEmail: booking.bookingEmail,
+            category: booking.category,
+            startTime:`${booking.Date}T${booking.Time}`,
+            bookingDuration:booking.bookingDuration,
+            eventNote: booking.eventNote  
+        })
+    })
+    if(res.status===201){
+        const newbooking=await res.json()
+    }
+}
 </script>
  
 <template>
-    <div class="bg">
-        <div class="ml-10 mt-2 bgm w-32 flex justify-center rounded-full">
-            <button @click="isBooking = isBooking ? false : true">Add Booking</button>
-        </div>
-        <div class="bg flex justify-start mx-20 rounded-lg py-2">
-            <div v-if="isBooking">
-                <div class="tde bgis px-3 pt-1 py-1 rounded-md grow">
-                    <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName"
-                            class="ml-2 ins rounded-md flex-cols"></p>
-                    <p>Group: <input type="text" placeholder="Group" v-model="newbooking.group"
-                            class="ml-2 ins rounded-md flex-col mt-2" /></p>
-                    <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail"
-                            class="ml-2 ins rounded-md flex-col mt-2"></p>
-                    <p>Category:
+    <div class="font ccf text-lg">
+        <div>
+            <div class="flex justify-center">
+                <div class="bgc px-10 py-3 my-4 rounded-lg" >
+                    <div class="mr-2 mt-2">
+                        <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName" maxlength="100"></p>
+                    </div>
+                    <div class="mr-2 mt-1">
+                        <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail" maxlength="100"></p>
+                    </div>
+                    <p class="mr-2 mt-1">Category:
                     <ul v-for="(category, index) in getCategories " :key="index">
-                        <input type="radio" :id="index" :value="category" v-model="newbooking.category"
-                            class="ml-2 ins rounded-md flex-col mt-2">
+                        <input type="radio" :id="index" :value="category" v-model="newbooking.category">
                         - <label :for="index">{{ category.categoryName }}</label>
                     </ul>
-                    <label>Date </label>:
-                    <input type="date" v-model="newbooking.Date" class="ml-2 mt-2 ring-offset-2 ring">
-                    <br />
-                    <label> Start (Time) </label>:
-                    <input type="time" v-model="newbooking.Time" class="ml-2 mt-3 ring-offset-2 ring">
-                    <br />
-                    <label class="mt-2">Duration (Minute): {{ newbooking.category.duration }}</label>
-                    <br />
-                    <label>Note: </label>
-                    <textarea rows="5" cols="50" v-model="newbooking.eventNote"
-                        class="ml-2 ins rounded-md flex-col"></textarea>
-                    <div class="mt-2 flex justify-between">
-                        <button class="mb-2 ok rounded-md px-1 tins" @click="$emit('add', newbooking), reset()">OK</button>
-                        <button class="mb-2 cl rounded-md px-1 tins" @click="reset">Cancle</button>
+                   <div class="mt-1">
+                    <label >Date: </label>
+                    <input type="date" v-model="newbooking.Date">
+                   </div>
+                   <div class="mt-1">
+                    <label> Start (Time): </label>
+                    <input type="time" v-model="newbooking.Time">
+                   </div>
+                   <div class="mt-1"> 
+                    <label class="mr-2 mt-5">Duration (Minute): {{ newbooking.category.duration }}</label>
+                   </div>
+                   <div class="mt-1">
+                       <label class="mr-2 mt-2">Note: </label>
+                    <textarea rows="5" cols="50" v-model="newbooking.eventNote" maxlength="500"></textarea>
+                   </div>
+                    <div>
+                        <button @click="CheckInput(newbooking)" class="bg-green-600 rounded-full px-2 text-white mx-1">OK</button>
+                        <button @click="reset" class="bg-red-600 rounded-full px-2 text-white mx-1">Cancle</button>
                     </div>
                     </p>
                 </div>
@@ -83,72 +135,14 @@ const reset = () => {
 </template>
  
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap');
-
-.bgm {
-    background-color: rgb(254, 252, 255);
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Mali:wght@600&family=Mitr:wght@600;700&family=Titan+One&display=swap');
+.font{
+    font-family: 'Mitr', sans-serif;
 }
-
-.bg {
-    background-color: rgb(25, 25, 112);
+.bgc{
+    background-color: rgb(132, 212, 255);
 }
-
-.font {
-    font-family: 'Titan One', cursive;
-}
-
-.cl {
-    background-color: rgb(215, 45, 45);
-}
-
-.scd {
-    background-color: rgb(86, 165, 236);
-}
-
-.ins {
-    background-color: rgb(130, 202, 255);
-}
-
-.oa {
-    background-color: rgb(66, 155, 219);
-}
-
-.list {
-    background-color: rgb(92, 179, 255);
-}
-
-.dl {
-    background-color: rgb(0, 0, 165);
-}
-
-.bgde {
-    background-color: rgb(254, 252, 255);
-}
-
-.tde {
-    color: rgb(12, 9, 10);
-}
-
-.tins {
-    color: rgb(255, 255, 247);
-}
-
-.bgis {
-    background-color: rgb(255, 250, 250);
-}
-
-.w {
-    width: 120px;
-}
-
-.h {
-    height: 25px;
-}
-
-.bgmm {
-    background-color: rgb(0, 0, 128);
-}
-.ok{
-    background-color:rgb(22, 163, 74) ;
+.ccf {
+    color: rgb(42, 39, 40);
 }
 </style>
