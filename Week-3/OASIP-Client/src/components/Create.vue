@@ -124,8 +124,8 @@ const createBooking= async (booking)=>{
                     <textarea rows="5" cols="50" v-model="newbooking.eventNote" maxlength="500"></textarea>
                    </div>
                     <div>
-                        <button @click="CheckInput(newbooking)" class="bg-green-600 rounded-full px-2 text-white mx-1">OK</button>
-                        <button @click="reset" class="bg-red-600 rounded-full px-2 text-white mx-1">Cancle</button>
+                        <button @click="CheckInput(newbooking)" class="bg-green-600 rounded-full px-2 text-white mx-1 hover:bg-[#4ADE80]">OK</button>
+                        <button @click="reset" class="bg-red-600 rounded-full px-2 text-white mx-1 hover:bg-[#F87171]">Cancle</button>
                     </div>
                     </p>
                 </div>
