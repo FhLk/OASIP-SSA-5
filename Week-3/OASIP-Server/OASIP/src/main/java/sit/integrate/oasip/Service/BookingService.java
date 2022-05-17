@@ -11,6 +11,7 @@ import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.DTO.CategoryDTO;
 import sit.integrate.oasip.DTO.SortListDayDTO;
 import sit.integrate.oasip.Entity.EventBooking;
+import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Repository.BookingRepository;
 import sit.integrate.oasip.Utils.ListMapper;
 
@@ -36,18 +37,25 @@ public class BookingService {
         return modelMapper.map(booking, BookingDTO.class);
     }
 
-    public List<SortListDayDTO> getBookingCategory(CategoryDTO categoryName){
-        List<EventBooking> bookingList = repository.findAllByCategoryOrderByStartTimeDesc(categoryName);
+    public List<SortListDayDTO> getBookingCategory(
+            int page,
+            int pageSize,
+            EventCategory category){
+        List<EventBooking> bookingList = repository.findAllByCategoryOrderByStartTimeDesc(PageRequest.of(page,pageSize),category);
         return listMapper.mapList(bookingList, SortListDayDTO.class,modelMapper);
     }
 
-    public List<BookingDTO> getBookingSortPast(LocalDateTime localDateTime){
-        List<EventBooking> bookingList = repository.findAllByStartTimeLessThanOrderByStartTimeDesc(localDateTime);
+    public List<BookingDTO> getBookingSortPast(int page, int pageSize,LocalDateTime localDateTime){
+        List<EventBooking> bookingList = repository.findAllByStartTimeLessThanOrderByStartTimeDesc(PageRequest.of(page,pageSize),localDateTime);
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 
-    public List<BookingDTO> getBookingWithSpecify(String startdate,String enddate){
-        List<EventBooking> bookingList = repository.findAllByStartTimeBetweenOrderByStartTimeAsc(LocalDateTime.parse(startdate),LocalDateTime.parse(enddate));
+    public List<BookingDTO> getBookingWithSpecify(
+            int page,
+            int pageSize,
+            String startdate,
+            String enddate){
+        List<EventBooking> bookingList = repository.findAllByStartTimeBetweenOrderByStartTimeAsc(PageRequest.of(page,pageSize),LocalDateTime.parse(startdate),LocalDateTime.parse(enddate));
         return listMapper.mapList(bookingList, BookingDTO.class,modelMapper);
     }
 

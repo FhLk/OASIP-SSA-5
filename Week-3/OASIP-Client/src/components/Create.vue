@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const isBooking = ref(false)
 
@@ -37,6 +37,7 @@ const reset = () => {
 }
 
 let mailFormat=/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+const isNameEmpty=ref(false)
 const CheckInput=async (booking)=>{
     let isCheck=true
     if(!booking.bookingEmail.match(mailFormat) || booking.bookingEmail.length > 100){
@@ -45,7 +46,7 @@ const CheckInput=async (booking)=>{
     }
     if(booking.bookingName==="" || booking.bookingName.length > 100){
         isCheck=false
-        console.log("Not name")
+        isNameEmpty.value=true
     }
     if(Object.keys(booking.category).length===0){
         isCheck=false
@@ -90,6 +91,11 @@ const createBooking= async (booking)=>{
         const newbooking=await res.json()
     }
 }
+
+const countName=computed(()=>{
+    return 100-newbooking.value.bookingName.length
+})
+const red="color:red"
 </script>
  
 <template>
@@ -99,6 +105,8 @@ const createBooking= async (booking)=>{
                 <div class="bgc px-10 py-3 my-4 rounded-lg" >
                     <div class="mr-2 mt-2">
                         <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName" maxlength="100"></p>
+                        <!-- <p>(Number of Character : {{countName}})</p> -->
+                        <p v-if="isNameEmpty" :style="red" >Plase Input your name !!!!!</p>
                     </div>
                     <div class="mr-2 mt-1">
                         <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail" maxlength="100"></p>

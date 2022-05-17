@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class SortListDayDTO{
-    private LocalDateTime startTime;
-    private Integer bookingDuration;
     private String bookingName;
+    private Integer bookingDuration;
+    private LocalDateTime startTime;
 
     public String getStartTime(){
         return startTime.toString();

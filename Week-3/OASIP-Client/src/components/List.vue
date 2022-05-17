@@ -7,13 +7,23 @@ let DateFormat = "YYYY-MM-DD HH:mm"
 const getBooking = ref({});
 const isDetail = ref(-1)
 const isEdit = ref(false)
+const isSortByPast=ref(false)
+const isSortByDate=ref(false)
 
 const getListBooking=ref([])
 const Page = async (page=0) => {
+    let res
     if(page >= 0){
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?page=${page}`, {
-            method: 'GET'
-        })
+        if(isSortByPast.value){
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast?page=${page}`, {
+                method: 'GET'
+            })
+        }
+        else{
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?page=${page}`, {
+                method: 'GET'
+            })
+        }
         getListBooking.value = await res.json()
         getListBooking.value.forEach((data) => {
             data.startTime = ShowDateTime(data.startTime)
@@ -106,12 +116,12 @@ const savebooking= async (updateBooking)=>{
         },
         body: JSON.stringify({
             id:updateBooking.id,
-            bookingName: updateBooking.bookingName,
-            bookingEmail: updateBooking.bookingEmail,
+            bookingName: updateBooking.bookingName.trim(),
+            bookingEmail: updateBooking.bookingEmail.trim(),
             category: updateBooking.category,
             startTime: updateBooking.startTime,
             bookingDuration:updateBooking.bookingDuration,
-            eventNote: updateBooking.eventNote 
+            eventNote: updateBooking.eventNote.trim()
         })
     })
     if(res.status===200){
@@ -137,10 +147,35 @@ const cdet = " bg-green-600 rounded-full px-2 text-white hover:bg-[#4ADE80]" ;
 const note = " bgde px-1 mx-1 rounded-md " ;
 const nonote = "" ;
 
+const SortByPast= async ()=>{
+    isSortByPast.value=true
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
+        method: 'GET'
+    })
+    getListBooking.value = await res.json()
+    getListBooking.value.forEach((data) => {
+        data.startTime = ShowDateTime(data.startTime)
+    })
+    getListBooking.value=SortByDateTime(getListBooking.value)
+}
+
+const SortByDate=async ()=>{
+    isSortByDate=true
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
+        method: 'GET'
+    })
+    getListBooking.value = await res.json()
+    getListBooking.value.forEach((data) => {
+        data.startTime = ShowDateTime(data.startTime)
+    })
+    getListBooking.value=SortByDateTime(getListBooking.value)
+}
+
 </script>
  
 <template>
     <div class="font ccf pt-3 rounded-md mx-10 mb-4 pb-3 bgl text-lg">
+        <p>Sort By: <a @click="SortByPast">Past</a> || <a>B</a> || <a>C</a>  </p>
         <div v-if="getListBooking.length !== 0">
             <ul>
                 <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5 rounded-lg pt-2" >
@@ -210,7 +245,7 @@ const nonote = "" ;
         </div>
         <div class="flex justify-center">
         <button v-if="page !== 0" @click="BackPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Back</button>
-        <button v-if="getListBooking.length === 1" @click="NextPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Next</button>
+        <button v-if="getListBooking.length === 5" @click="NextPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Next</button>
         </div>
     </div>
 </template>

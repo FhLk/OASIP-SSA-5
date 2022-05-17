@@ -24,7 +24,7 @@ public class EventBooking {
     @Column(name = "BookingEmail", nullable = false, length = 150)
     private String bookingEmail;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Category", nullable = false)
     private EventCategory category;
 

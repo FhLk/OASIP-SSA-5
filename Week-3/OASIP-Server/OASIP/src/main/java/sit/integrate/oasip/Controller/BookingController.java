@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.DTO.CategoryDTO;
 import sit.integrate.oasip.DTO.SortListDayDTO;
+import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Service.BookingService;
 
 import javax.validation.Valid;
@@ -36,18 +37,33 @@ public class BookingController {
     }
 
     @GetMapping("/sortByCategory")
-    public ResponseEntity<List<SortListDayDTO>> getBookingByCategory(@RequestParam CategoryDTO category){
-        return ResponseEntity.ok(service.getBookingCategory(category));
+    public ResponseEntity<List<SortListDayDTO>> getBookingByCategory(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam EventCategory category){
+        return ResponseEntity.ok(service.getBookingCategory(page,pageSize,category));
     }
 
     @GetMapping("/sortByPast")
-    public ResponseEntity<List<BookingDTO>> getAllBookingByPast(){
-        return ResponseEntity.ok(service.getBookingSortPast(LocalDateTime.now()));
+    public ResponseEntity<List<BookingDTO>> getAllBookingByPast(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int pageSize
+    ){
+        return ResponseEntity.ok(service.getBookingSortPast(page,pageSize,LocalDateTime.now()));
     }
 
     @GetMapping("/sortBySpecify")
-    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(@RequestParam String startDate,@RequestParam String endDate){
-        return ResponseEntity.ok(service.getBookingWithSpecify(startDate,endDate));
+    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam String startDate,
+            @RequestParam String endDate){
+        return ResponseEntity.ok(service.getBookingWithSpecify(
+                page,
+                pageSize,
+                startDate+"T00:00",
+                endDate+"T23:59"
+        ));
     }
 
     @PostMapping("")

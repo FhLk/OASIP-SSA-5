@@ -1,6 +1,8 @@
 package sit.integrate.oasip.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import sit.integrate.oasip.Entity.EventCategory;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
