@@ -46,7 +46,7 @@ public class BookingController {
     }
 
     @GetMapping("/sortBySpecify")
-    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(@RequestParam String startdate,@RequestParam String enddate){
+    public ResponseEntity<List<SortListDayDTO>> getBookingBySpecify(@RequestParam String startdate,@RequestParam String enddate){
         return ResponseEntity.ok(service.getBookingWithSpecify(startdate,enddate));
     }
 
