@@ -30,6 +30,11 @@ public class BookingController {
         return ResponseEntity.ok(service.getBookingId(BookingId));
     }
 
+    @GetMapping("/sortByCategory")
+    public ResponseEntity<List<BookingDTO>> getBookingByCategory(@RequestParam Category categoryName){
+        return ResponseEntity.ok(service.getBookingCategory(categoryName));
+    }
+
     @GetMapping("/sortBypast")
     public ResponseEntity<List<BookingDTO>> getAllBookingByPast(){
         return ResponseEntity.ok(service.getBookingSortPast(LocalDateTime.now()));
