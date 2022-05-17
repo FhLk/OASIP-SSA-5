@@ -2,6 +2,8 @@ package sit.integrate.oasip.DTO;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

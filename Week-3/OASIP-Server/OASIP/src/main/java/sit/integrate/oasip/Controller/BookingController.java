@@ -3,10 +3,15 @@ package sit.integrate.oasip.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.BookingDTO;
+import sit.integrate.oasip.DTO.CategoryDTO;
+import sit.integrate.oasip.DTO.SortListDayDTO;
 import sit.integrate.oasip.Service.BookingService;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,28 +31,23 @@ public class BookingController {
     }
 
     @GetMapping("/{BookingId}")
-    public ResponseEntity<BookingDTO> getAllBooking(@PathVariable Integer BookingId){
+    public ResponseEntity<BookingDTO> getBooking(@PathVariable Integer BookingId){
         return ResponseEntity.ok(service.getBookingId(BookingId));
     }
 
     @GetMapping("/sortByCategory")
-    public ResponseEntity<List<BookingDTO>> getBookingByCategory(@RequestParam Category categoryName){
-        return ResponseEntity.ok(service.getBookingCategory(categoryName));
+    public ResponseEntity<List<SortListDayDTO>> getBookingByCategory(@RequestParam CategoryDTO category){
+        return ResponseEntity.ok(service.getBookingCategory(category));
     }
 
-    @GetMapping("/sortBypast")
+    @GetMapping("/sortByPast")
     public ResponseEntity<List<BookingDTO>> getAllBookingByPast(){
         return ResponseEntity.ok(service.getBookingSortPast(LocalDateTime.now()));
     }
 
-    @GetMapping("/sortByupcomming")
-    public ResponseEntity<List<BookingDTO>> getAllBookingByUpcomming(){
-        return ResponseEntity.ok(service.getBookingSortUpcomming(LocalDateTime.now()));
-    }
-
     @GetMapping("/sortBySpecify")
-    public ResponseEntity<List<SortListDayDTO>> getBookingBySpecify(@RequestParam String startdate,@RequestParam String enddate){
-        return ResponseEntity.ok(service.getBookingWithSpecify(startdate,enddate));
+    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(@RequestParam String startDate,@RequestParam String endDate){
+        return ResponseEntity.ok(service.getBookingWithSpecify(startDate,endDate));
     }
 
     @PostMapping("")
@@ -59,12 +59,16 @@ public class BookingController {
 
     @PutMapping("/{BookingId}")
     public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking){
-        service.updateBooking(BookingId,updateBooking);
+        ResponseEntity<BookingDTO> test = getBooking(BookingId);
+        if(test.getBody().getBookingName()!=updateBooking.getBookingName()){
+            return new ResponseEntity<>(updateBooking,HttpStatus.BAD_GATEWAY);
+        }
+        service.UpdateBooking(BookingId,updateBooking);
         return new ResponseEntity<>(updateBooking,HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookingId}")
     public void deleteBooking(@PathVariable Integer bookingId){
-        service.CancelBooking(bookingId);
+        service.DeleteBooking(bookingId);
     }
 }

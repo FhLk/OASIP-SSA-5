@@ -2,7 +2,10 @@ package sit.integrate.oasip.DTO;
 
 import lombok.*;
 
+import javax.validation.constraints.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
