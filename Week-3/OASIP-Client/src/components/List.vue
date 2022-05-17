@@ -125,10 +125,13 @@ const savebooking= async (updateBooking)=>{
         })
     })
     if(res.status===200){
+        alert("success")
         await Page(page.value)
         reset()
     }
 }
+
+
 
 const deleteBooking= async (booking)=>{
     if(confirm("Do you want cancel this Booking ?")){
@@ -159,17 +162,17 @@ const SortByPast= async ()=>{
     getListBooking.value=SortByDateTime(getListBooking.value)
 }
 
-const SortByDate=async ()=>{
-    isSortByDate=true
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
-        method: 'GET'
-    })
-    getListBooking.value = await res.json()
-    getListBooking.value.forEach((data) => {
-        data.startTime = ShowDateTime(data.startTime)
-    })
-    getListBooking.value=SortByDateTime(getListBooking.value)
-}
+// const SortByDate=async ()=>{
+//     isSortByDate=true
+//     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
+//         method: 'GET'
+//     })
+//     getListBooking.value = await res.json()
+//     getListBooking.value.forEach((data) => {
+//         data.startTime = ShowDateTime(data.startTime)
+//     })
+//     getListBooking.value=SortByDateTime(getListBooking.value)
+// }
 
 </script>
  
