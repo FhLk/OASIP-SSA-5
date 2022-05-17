@@ -9,6 +9,8 @@ const isDetail = ref(-1)
 const isEdit = ref(false)
 const isSortByPast=ref(false)
 const isSortByDate=ref(false)
+const isSortCategory=ref(false)
+const sortDay=ref(moment().local().format(DateFormat).slice(0,10).trim())
 
 const getListBooking=ref([])
 const Page = async (page=0) => {
@@ -148,6 +150,8 @@ const note = " bgde px-1 mx-1 rounded-md " ;
 const nonote = "" ;
 
 const SortByPast= async ()=>{
+    isSortByDate.value=false
+    isSortCategory.value=false
     isSortByPast.value=true
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
         method: 'GET'
@@ -159,9 +163,12 @@ const SortByPast= async ()=>{
     getListBooking.value=SortByDateTime(getListBooking.value)
 }
 
-const SortByDate=async ()=>{
-    isSortByDate=true
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
+const SortByDate=async (StartDate)=>{
+    isSortByDate.value=true
+    isSortCategory.value=false
+    isSortByPast.value=false
+    console.log(StartDate);
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate.trim()}`, {
         method: 'GET'
     })
     getListBooking.value = await res.json()
@@ -175,7 +182,11 @@ const SortByDate=async ()=>{
  
 <template>
     <div class="font ccf pt-3 rounded-md mx-10 mb-4 pb-3 bgl text-lg">
-        <p>Sort By: <a @click="SortByPast">Past</a> || <a>B</a> || <a>C</a>  </p>
+        <div v-if="isSortByDate">
+            <input type="date" v-model="sortDay"/>
+            <button @click="SortByDate(sortDay)">Sort</button>
+        </div>
+        <p>Sort By: <a @click="SortByPast">Past</a> || <a>Category</a> || <a @click="isSortByDate=true" >Day</a>  </p>
         <div v-if="getListBooking.length !== 0">
             <ul>
                 <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5 rounded-lg pt-2" >

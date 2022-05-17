@@ -88,7 +88,7 @@ const createBooking= async (booking)=>{
         })
     })
     if(res.status===201){
-        const newbooking=await res.json()
+        
     }
 }
 
@@ -105,7 +105,7 @@ const red="color:red"
                 <div class="bgc px-10 py-3 my-4 rounded-lg" >
                     <div class="mr-2 mt-2">
                         <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName" maxlength="100"></p>
-                        <!-- <p>(Number of Character : {{countName}})</p> -->
+                        <p>(Number of Character : {{countName}})</p>
                         <p v-if="isNameEmpty" :style="red" >Plase Input your name !!!!!</p>
                     </div>
                     <div class="mr-2 mt-1">
