@@ -1,0 +1,35 @@
+{
+    "Events":
+    [
+        {
+            "id":1,
+            "name":"Somchai Jaidee",
+            "email":"somchai.jai@mail.kmutt.ac.th",
+            "group":"OR-7",
+            "date":"2022-05-23",
+            "startTime":"13:30" ,
+            "category":{"name":"DevOps/Infra Clinic","duration":30},
+            "note":""
+        },
+        {
+            "id":2,
+            "name":"Somsri Rakdee",
+            "email":"somchai.jai@mail.kmutt.ac.th",
+            "group":"SJ-3",
+            "date":"2022-04-27",
+            "startTime":"09:30" ,
+            "category":{"name":"Project Management Clinic","duration":30},
+            "note":"ขอปรึกษาปVญหาเพื่อนไม่ช่วยงาน"
+        },
+        {
+            "id":3,
+            "name":"สมเกียรติ ขยันเรียน",
+            "email":"somkiat.kay@kmutt.ac.th",
+            "group":"TT-4",
+            "date":"2002-05-23",
+            "startTime":"16:30" ,
+            "category":{"name":"Database Clinic","duration":15},
+            "note":""
+        }
+    ]
+}

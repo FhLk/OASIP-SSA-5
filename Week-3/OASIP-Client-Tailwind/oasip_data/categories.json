@@ -1,0 +1,36 @@
+{
+    "categories":
+    [
+        {
+            "id":1,
+            "categoryName":"Project Management Clinic",
+            "description":"ตารางนัดหมายนี้ใช้สำหรับนัดหมาย project-management clinic ในวิชา INT221 integrated project I ใหKนักศึกษาเตรียมเอกสารที่เกี่ยวข้องเพื่อแสดงระหว่างขอคำปรึกษา",
+            "duration":30
+            
+        },
+        {
+            "id":2,
+            "categoryName":"DevOps/Infra Clinic",
+            "description":"Use this event category for DevOps/Infra clinic.",
+            "duration":20
+        },
+        {
+            "id":3,
+            "categoryName":"Database Clinic",
+            "description":"ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ในวิชา INT221 integrated project I",
+            "duration":15
+        },
+        {
+            "id":4,
+            "categoryName":"Client-side Clinic",
+            "description":"ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ในวิชา INT221 integrated project",
+            "duration":30
+        },
+        {
+            "id":5,
+            "categoryName":"Server-side Clinic",
+            "description":" ",
+            "duration":30
+        }
+    ]
+}
