@@ -127,10 +127,13 @@ const savebooking= async (updateBooking)=>{
         })
     })
     if(res.status===200){
+        alert("success")
         await Page(page.value)
         reset()
     }
 }
+
+
 
 const deleteBooking= async (booking)=>{
     if(confirm("Do you want cancel this Booking ?")){

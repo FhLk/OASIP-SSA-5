@@ -37,12 +37,17 @@ const reset = () => {
 }
 
 let mailFormat=/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-const isNameEmpty=ref(false)
+const isNameEmpty=ref(false);
+const isEmailEmpty=ref(false);
+const isCategoryEmpty=ref(false);
+const isDateEmpty=ref(false);
+const isTime=ref(false);
+
 const CheckInput=async (booking)=>{
     let isCheck=true
     if(!booking.bookingEmail.match(mailFormat) || booking.bookingEmail.length > 100){
         isCheck=false
-        console.log("Not email")
+        isEmailEmpty.value=true
     }
     if(booking.bookingName==="" || booking.bookingName.length > 100){
         isCheck=false
@@ -50,15 +55,18 @@ const CheckInput=async (booking)=>{
     }
     if(Object.keys(booking.category).length===0){
         isCheck=false
-        console.log("Not category")
+        isCategoryEmpty.value=true
     }
-    if(booking.Date==="" || booking.Time===""){
+    if(booking.Date===""){
         isCheck=false
-        console.log("Not DateTime")
+        isDateEmpty=true
+    }
+    if(booking.Time===""){
+        isCheck=false
+        isTime.value=true
     }
     if(booking.eventNote.length > 500){
         isCheck=false
-        console.log("Not Event Note")
     }
     if(isCheck){
         await createBooking(booking)
@@ -88,14 +96,20 @@ const createBooking= async (booking)=>{
         })
     })
     if(res.status===201){
-        
+        alert("success")
+        // const newbooking=await res.json()
     }
 }
 
 const countName=computed(()=>{
     return 100-newbooking.value.bookingName.length
 })
-const red="color:red"
+
+const checkNote=computed(()=>{
+    return 500-newbooking.value.eventNote.length
+})
+
+
 </script>
  
 <template>
@@ -105,24 +119,28 @@ const red="color:red"
                 <div class="bgc px-10 py-3 my-4 rounded-lg" >
                     <div class="mr-2 mt-2">
                         <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName" maxlength="100"></p>
-                        <p>(Number of Character : {{countName}})</p>
-                        <p v-if="isNameEmpty" :style="red" >Plase Input your name !!!!!</p>
+                        <p v-if="isNameEmpty" class="text-xs text-red-600">Plase Input your name !!!!!</p>
+                        <p class="text-sm text-stone-500">(Number of Character : {{countName}})</p>
                     </div>
                     <div class="mr-2 mt-1">
                         <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail" maxlength="100"></p>
+                        <p v-if="isNameEmpty" class="text-xs text-red-600">Plase Input your e-mail !!!!!</p>
                     </div>
                     <p class="mr-2 mt-1">Category:
                     <ul v-for="(category, index) in getCategories " :key="index">
                         <input type="radio" :id="index" :value="category" v-model="newbooking.category">
                         - <label :for="index">{{ category.categoryName }}</label>
                     </ul>
+                    <p v-if="isNameEmpty" class="text-xs text-red-600">Plase select category !!!!!</p>
                    <div class="mt-1">
                     <label >Date: </label>
                     <input type="date" v-model="newbooking.Date">
+                    <p v-if="isNameEmpty" class="text-xs text-red-600">Plase Input your date !!!!!</p>
                    </div>
                    <div class="mt-1">
                     <label> Start (Time): </label>
                     <input type="time" v-model="newbooking.Time">
+                    <p v-if="isNameEmpty" class="text-xs text-red-600">Plase Input your time !!!!!</p>
                    </div>
                    <div class="mt-1"> 
                     <label class="mr-2 mt-5">Duration (Minute): {{ newbooking.category.duration }}</label>
@@ -130,6 +148,7 @@ const red="color:red"
                    <div class="mt-1">
                        <label class="mr-2 mt-2">Note: </label>
                     <textarea rows="5" cols="50" v-model="newbooking.eventNote" maxlength="500"></textarea>
+                    <p class="text-sm text-stone-500">(Number of Character : {{checkNote}})</p>
                    </div>
                     <div>
                         <button @click="CheckInput(newbooking)" class="bg-green-600 rounded-full px-2 text-white mx-1 hover:bg-[#4ADE80]">OK</button>
