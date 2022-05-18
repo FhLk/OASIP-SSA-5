@@ -4,6 +4,7 @@ package sit.integrate.oasip.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.DTO.CategoryDTO;
@@ -56,29 +57,29 @@ public class BookingController {
     public ResponseEntity<List<BookingDTO>> getBookingBySpecify(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
-            @RequestParam String startDate,
-            @RequestParam String endDate){
+            @RequestParam String date){
         return ResponseEntity.ok(service.getBookingWithSpecify(
                 page,
                 pageSize,
-                startDate+"T00:00",
-                endDate+"T23:59"
+                date+"T00:00",
+                date+"T23:59"
         ));
     }
 
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking){
+    public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking, BindingResult bindingResult){
         service.CreateBooking(newBooking);
         return new ResponseEntity<>(newBooking,HttpStatus.CREATED);
     }
 
     @PutMapping("/{BookingId}")
     public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking){
-        ResponseEntity<BookingDTO> test = getBooking(BookingId);
-        if(test.getBody().getBookingName()!=updateBooking.getBookingName()){
-            return new ResponseEntity<>(updateBooking,HttpStatus.BAD_GATEWAY);
-        }
+//        ResponseEntity<BookingDTO> test = getBooking(BookingId);
+//        if(test.getBody().getBookingName()!=updateBooking.getBookingName()){
+//            return new ResponseEntity<>(updateBooking,HttpStatus.BAD_REQUEST);
+//        }
         service.UpdateBooking(BookingId,updateBooking);
         return new ResponseEntity<>(updateBooking,HttpStatus.OK);
     }

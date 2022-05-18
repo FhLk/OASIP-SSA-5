@@ -55,7 +55,10 @@ public class BookingService {
             int pageSize,
             String startdate,
             String enddate){
-        List<EventBooking> bookingList = repository.findAllByStartTimeBetweenOrderByStartTimeAsc(PageRequest.of(page,pageSize),LocalDateTime.parse(startdate),LocalDateTime.parse(enddate));
+        List<EventBooking> bookingList = repository.findAllByStartTimeBetweenOrderByStartTimeAsc(
+                PageRequest.of(page,pageSize),
+                LocalDateTime.parse(startdate),
+                LocalDateTime.parse(enddate));
         return listMapper.mapList(bookingList, BookingDTO.class,modelMapper);
     }
 

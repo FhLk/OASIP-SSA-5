@@ -41,7 +41,7 @@ const isNameEmpty=ref(false);
 const isEmailEmpty=ref(false);
 const isCategoryEmpty=ref(false);
 const isDateEmpty=ref(false);
-const isTime=ref(false);
+const isTimeEmpty=ref(false);
 
 const CheckInput=async (booking)=>{
     let isCheck=true
@@ -63,7 +63,7 @@ const CheckInput=async (booking)=>{
     }
     if(booking.Time===""){
         isCheck=false
-        isTime.value=true
+        isTimeEmpty.value=true
     }
     if(booking.eventNote.length > 500){
         isCheck=false
@@ -123,24 +123,24 @@ const checkNote=computed(()=>{
                         <p class="text-sm text-stone-500">(Number of Character : {{countName}})</p>
                     </div>
                     <div class="mr-2 mt-1">
-                        <p>E-mail: <input type="email" placeholder="E-mail..." v-model="newbooking.bookingEmail" maxlength="100"></p>
-                        <p v-if="isNameEmpty" class="text-xs text-red-600">Plase Input your e-mail !!!!!</p>
+                        <p>E-mail: <input type="email" placeholder="example@example.com" v-model="newbooking.bookingEmail" maxlength="100"></p>
+                        <p v-if="isEmailEmpty" class="text-xs text-red-600">Plase Input your e-mail !!!!!</p>
                     </div>
                     <p class="mr-2 mt-1">Category:
                     <ul v-for="(category, index) in getCategories " :key="index">
                         <input type="radio" :id="index" :value="category" v-model="newbooking.category">
                         - <label :for="index">{{ category.categoryName }}</label>
                     </ul>
-                    <p v-if="isNameEmpty" class="text-xs text-red-600">Plase select category !!!!!</p>
+                    <p v-if="isCategoryEmpty" class="text-xs text-red-600">Plase select category !!!!!</p>
                    <div class="mt-1">
                     <label >Date: </label>
                     <input type="date" v-model="newbooking.Date">
-                    <p v-if="isNameEmpty" class="text-xs text-red-600">Plase Input your date !!!!!</p>
+                    <p v-if="isDateEmpty" class="text-xs text-red-600">Plase Input your date !!!!!</p>
                    </div>
                    <div class="mt-1">
                     <label> Start (Time): </label>
                     <input type="time" v-model="newbooking.Time">
-                    <p v-if="isNameEmpty" class="text-xs text-red-600">Plase Input your time !!!!!</p>
+                    <p v-if="isTimeEmpty" class="text-xs text-red-600">Plase Input your time !!!!!</p>
                    </div>
                    <div class="mt-1"> 
                     <label class="mr-2 mt-5">Duration (Minute): {{ newbooking.category.duration }}</label>
