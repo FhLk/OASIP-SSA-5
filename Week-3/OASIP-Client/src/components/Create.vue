@@ -59,7 +59,7 @@ const CheckInput=async (booking)=>{
     }
     if(booking.Date===""){
         isCheck=false
-        isDateEmpty=true
+        isDateEmpty.value=true
     }
     if(booking.Time===""){
         isCheck=false

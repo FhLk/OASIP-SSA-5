@@ -9,8 +9,10 @@ const isDetail = ref(-1)
 const isEdit = ref(false)
 const isSortByPast=ref(false)
 const isSortByDate=ref(false)
-const isSortCategory=ref(false)
+const isSortByCategory=ref(false)
+const isClear=ref(true)
 const sortDay=ref(moment().local().format(DateFormat).slice(0,10).trim())
+const categoryID=ref(0)
 
 const getListBooking=ref([])
 const Page = async (page=0) => {
@@ -20,6 +22,14 @@ const Page = async (page=0) => {
             res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast?page=${page}`, {
                 method: 'GET'
             })
+        }
+        else if(isSortByCategory.value){
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?page=${page}&category=${categoryID.value}`, {
+                method: 'GET'
+            })
+        }
+        else if(isSortByDate.value){
+
         }
         else{
             res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?page=${page}`, {
@@ -153,25 +163,29 @@ const note = " bgde px-1 mx-1 rounded-md " ;
 const nonote = "" ;
 
 const SortByPast= async ()=>{
+    isClear.value=false
     isSortByDate.value=false
-    isSortCategory.value=false
-    isSortByPast.value=true
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
-        method: 'GET'
-    })
-    getListBooking.value = await res.json()
-    getListBooking.value.forEach((data) => {
-        data.startTime = ShowDateTime(data.startTime)
-    })
-    getListBooking.value=SortByDateTime(getListBooking.value)
+    isSortByCategory.value=false
+    if(isSortByPast.value===false){
+        isSortByPast.value=true
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
+            method: 'GET'
+        })
+        getListBooking.value = await res.json()
+        getListBooking.value.forEach((data) => {
+            data.startTime = ShowDateTime(data.startTime)
+        })
+        getListBooking.value=SortByDateTime(getListBooking.value)
+    }
 }
 
 const SortByDate=async (StartDate)=>{
-    isSortByDate.value=true
-    isSortCategory.value=false
+    isClear.value=false
+    isSortByCategory.value=false
     isSortByPast.value=false
-    console.log(StartDate);
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate.trim()}`, {
+    if(isSortByDate.value){
+    isSortByDate.value=false
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate}`, {
         method: 'GET'
     })
     getListBooking.value = await res.json()
@@ -179,18 +193,65 @@ const SortByDate=async (StartDate)=>{
         data.startTime = ShowDateTime(data.startTime)
     })
     getListBooking.value=SortByDateTime(getListBooking.value)
+    }
 }
+const SortByCategory= async (id)=>{
+    isClear.value=false
+    isSortByCategory.value=false
+    isSortByPast.value=false
+    isSortByDate.value=false
+    if(isSortCategory.value){
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?category=${id}`, {
+        method: 'GET'
+    })
+    getListBooking.value = await res.json()
+    getListBooking.value.forEach((data) => {
+        data.startTime = ShowDateTime(data.startTime)
+    })
+    getListBooking.value=SortByDateTime(getListBooking.value)
+    }
+}
+
+
+const btso1 = "cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
+const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
+
+
+const ClearSort=()=>{
+    isClear.value=true
+    isSortByDate.value=false
+    isSortByCategory.value=false
+    isSortByPast.value=false
+    Page()
+}
+
 
 </script>
  
 <template>
     <div class="font ccf pt-3 rounded-md mx-10 mb-4 pb-3 bgl text-lg">
-        <div v-if="isSortByDate">
-            <input type="date" v-model="sortDay"/>
-            <button @click="SortByDate(sortDay)">Sort</button>
+        <div class="bg-white flex py-2 justify-between">
+            <p class="ml-5">Sort By : </p>
+            <button @click="SortByPast" :class="isSortByPast ? btso2 : btso1">Past</button> 
+            <button @click="" >Category</button>  
+            <button @click="isSortByDate=true,isSortByPast=false" :class="isSortByDate ? btso2 : btso1">Day</button> 
+            <button @click="ClearSort" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
         </div>
-        <p>Sort By: <a @click="SortByPast">Past</a> || <a>Category</a> || <a @click="isSortByDate=true" >Day</a>  </p>
-        <div v-if="getListBooking.length !== 0">
+        <div v-if="!isSortByDate===false">
+            <input type="date" v-model="sortDay" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md"/>
+            <button @click="SortByDate(sortDay)" class="cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2">Sort</button>
+        </div>
+        <div v-if="!isSortByCategory===false">
+            <select v-model="categoryID">
+                <option disabled value="">Select Clinic</option>
+                <option :value="1" @click="SortByCategory(categoryID)">Project Management</option>
+                <option :value="2" @click="SortByCategory(categoryID)">DevOps/Infra</option>
+                <option :value="3" @click="SortByCategory(categoryID)">Database</option>
+                <option :value="4" @click="SortByCategory(categoryID)">Client-side</option>
+                <option :value="5" @click="SortByCategory(categoryID)">Server-side</option>
+            </select>
+        </div>
+        <div v-if="getListBooking.length !== 0" class="mt-4">
             <ul>
                 <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5 rounded-lg pt-2" >
                     {{ data.startTime }}
@@ -303,5 +364,14 @@ const SortByDate=async (StartDate)=>{
 }
 .cf {
     color: rgb(251, 251, 249);
+}
+.cbts{
+    background-color: rgb(0, 0, 128);
+}
+.cbtso{
+    background-color: rgb(60, 60, 188);
+}
+.clear{
+    background-color: rgb(88, 0, 88);
 }
 </style>
