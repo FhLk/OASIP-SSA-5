@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-//@ControllerAdvice
 public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -35,9 +34,13 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(BookingNotFoundException.class)
-    public Map<String, String> handleBusinessException(BookingNotFoundException ex) {
+    public ShowException handleBusinessException(BookingNotFoundException ex) {
+        ShowException errors=new ShowException();
+        errors.setStatusCode("500");
+        errors.setError("INTERNAL SERVER ERROR");
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
+        errorMap.put("Message", ex.getMessage());
+        errors.setErrorField(errorMap);
+        return errors;
     }
 }

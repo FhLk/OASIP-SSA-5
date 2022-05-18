@@ -37,12 +37,12 @@ public class BookingService {
         return modelMapper.map(booking, BookingDTO.class);
     }
 
-    public List<SortListDayDTO> getBookingCategory(
+    public List<BookingDTO> getBookingCategory(
             int page,
             int pageSize,
             EventCategory category){
         List<EventBooking> bookingList = repository.findAllByCategoryOrderByStartTimeDesc(PageRequest.of(page,pageSize),category);
-        return listMapper.mapList(bookingList, SortListDayDTO.class,modelMapper);
+        return listMapper.mapList(bookingList, BookingDTO.class,modelMapper);
     }
 
     public List<BookingDTO> getBookingSortPast(int page, int pageSize,LocalDateTime localDateTime){
@@ -50,7 +50,7 @@ public class BookingService {
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 
-    public List<BookingDTO> getBookingWithSpecify(
+    public List<SortListDayDTO> getBookingWithSpecify(
             int page,
             int pageSize,
             String startdate,
@@ -59,7 +59,7 @@ public class BookingService {
                 PageRequest.of(page,pageSize),
                 LocalDateTime.parse(startdate),
                 LocalDateTime.parse(enddate));
-        return listMapper.mapList(bookingList, BookingDTO.class,modelMapper);
+        return listMapper.mapList(bookingList, SortListDayDTO.class,modelMapper);
     }
 
     public EventBooking CreateBooking(BookingDTO newBooking){

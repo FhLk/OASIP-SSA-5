@@ -11,10 +11,15 @@ import sit.integrate.oasip.DTO.CategoryDTO;
 import sit.integrate.oasip.DTO.SortListDayDTO;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Service.BookingService;
+import sit.integrate.oasip.exeption.BookingNotFoundException;
+import sit.integrate.oasip.exeption.ShowException;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -38,7 +43,7 @@ public class BookingController {
     }
 
     @GetMapping("/sortByCategory")
-    public ResponseEntity<List<SortListDayDTO>> getBookingByCategory(
+    public ResponseEntity<List<BookingDTO>> getBookingByCategory(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam EventCategory category){
@@ -54,7 +59,7 @@ public class BookingController {
     }
 
     @GetMapping("/sortBySpecify")
-    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(
+    public ResponseEntity<List<SortListDayDTO>> getBookingBySpecify(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam String date){
@@ -75,11 +80,16 @@ public class BookingController {
     }
 
     @PutMapping("/{BookingId}")
-    public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking){
-//        ResponseEntity<BookingDTO> test = getBooking(BookingId);
-//        if(test.getBody().getBookingName()!=updateBooking.getBookingName()){
-//            return new ResponseEntity<>(updateBooking,HttpStatus.BAD_REQUEST);
-//        }
+    public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking) throws BookingNotFoundException {
+        ResponseEntity<BookingDTO> test = getBooking(BookingId);
+        List errors = new ArrayList();
+        if(!test.getBody().getBookingName().equals(updateBooking.getBookingName())){
+            errors.add("The bookingName can't change");
+            if(!test.getBody().getBookingEmail().equals(updateBooking.getBookingEmail())){
+                errors.add("The bookingEmail can't change");
+            }
+            throw new BookingNotFoundException(errors.toString());
+        }
         service.UpdateBooking(BookingId,updateBooking);
         return new ResponseEntity<>(updateBooking,HttpStatus.OK);
     }
