@@ -29,7 +29,9 @@ const Page = async (page=0) => {
             })
         }
         else if(isSortByDate.value){
-
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?page=${page}&date=${StartDate}`, {
+            method: 'GET'
+            })
         }
         else{
             res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?page=${page}`, {
@@ -40,7 +42,12 @@ const Page = async (page=0) => {
         getListBooking.value.forEach((data) => {
             data.startTime = ShowDateTime(data.startTime)
         })
-        getListBooking.value=SortByDateTime(getListBooking.value)
+        if(isSortByDate.value){
+            getListBooking.value=SortByDateTimeASC(getListBooking.value)
+        }
+        else{
+            getListBooking.value=SortByDateTimeDESC(getListBooking.value)
+        }
     }
 }
 
@@ -65,9 +72,15 @@ const ShowDateTime=(datatime)=>{
     return moment(datatime).local().format(DateFormat)
 }
 
-const SortByDateTime=(list)=>{
+const SortByDateTimeDESC=(list)=>{
     return list.sort((a,b)=>{
         return new Date(b.startTime) - new Date(a.startTime)
+    })
+}
+
+const SortByDateTimeASC=(list)=>{
+    return list.sort((a,b)=>{
+        return new Date(a.startTime) - new Date(b.startTime)
     })
 }
 
@@ -143,8 +156,6 @@ const savebooking= async (updateBooking)=>{
     }
 }
 
-
-
 const deleteBooking= async (booking)=>{
     if(confirm("Do you want cancel this Booking ?")){
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${booking.id}`, {
@@ -175,7 +186,7 @@ const SortByPast= async ()=>{
         getListBooking.value.forEach((data) => {
             data.startTime = ShowDateTime(data.startTime)
         })
-        getListBooking.value=SortByDateTime(getListBooking.value)
+        getListBooking.value=SortByDateTimeDESC(getListBooking.value)
     }
 }
 
@@ -184,7 +195,6 @@ const SortByDate=async (StartDate)=>{
     isSortByCategory.value=false
     isSortByPast.value=false
     if(isSortByDate.value){
-    isSortByDate.value=false
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate}`, {
         method: 'GET'
     })
@@ -192,23 +202,23 @@ const SortByDate=async (StartDate)=>{
     getListBooking.value.forEach((data) => {
         data.startTime = ShowDateTime(data.startTime)
     })
-    getListBooking.value=SortByDateTime(getListBooking.value)
+    getListBooking.value=SortByDateTimeASC(getListBooking.value)
     }
 }
+
 const SortByCategory= async (id)=>{
     isClear.value=false
-    isSortByCategory.value=false
     isSortByPast.value=false
     isSortByDate.value=false
-    if(isSortCategory.value){
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?category=${id}`, {
-        method: 'GET'
-    })
-    getListBooking.value = await res.json()
-    getListBooking.value.forEach((data) => {
-        data.startTime = ShowDateTime(data.startTime)
-    })
-    getListBooking.value=SortByDateTime(getListBooking.value)
+    if(isSortByCategory.value&&id!==0){
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?category=${id}`, {
+            method: 'GET'
+        })
+        getListBooking.value = await res.json()
+        getListBooking.value.forEach((data) => {
+            data.startTime = ShowDateTime(data.startTime)
+        })
+        getListBooking.value=SortByDateTimeDESC(getListBooking.value)
     }
 }
 
@@ -224,8 +234,6 @@ const ClearSort=()=>{
     isSortByPast.value=false
     Page()
 }
-
-
 </script>
  
 <template>
@@ -233,8 +241,8 @@ const ClearSort=()=>{
         <div class="bg-white flex py-2 justify-between">
             <p class="ml-5">Sort By : </p>
             <button @click="SortByPast" :class="isSortByPast ? btso2 : btso1">Past</button> 
-            <button @click="" >Category</button>  
-            <button @click="isSortByDate=true,isSortByPast=false" :class="isSortByDate ? btso2 : btso1">Day</button> 
+            <button @click="isSortByCategory= isSortByCategory? false:true,isSortByDate=false,isSortByPast=false" :class="isSortByCategory ? btso2 : btso1" >Category</button>  
+            <button @click="isSortByDate= isSortByDate? false:true,isSortByPast=false,isSortByCategory=false" :class="isSortByDate ? btso2 : btso1">Day</button> 
             <button @click="ClearSort" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
         </div>
         <div v-if="!isSortByDate===false">
@@ -242,13 +250,13 @@ const ClearSort=()=>{
             <button @click="SortByDate(sortDay)" class="cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2">Sort</button>
         </div>
         <div v-if="!isSortByCategory===false">
-            <select v-model="categoryID">
-                <option disabled value="">Select Clinic</option>
-                <option :value="1" @click="SortByCategory(categoryID)">Project Management</option>
-                <option :value="2" @click="SortByCategory(categoryID)">DevOps/Infra</option>
-                <option :value="3" @click="SortByCategory(categoryID)">Database</option>
-                <option :value="4" @click="SortByCategory(categoryID)">Client-side</option>
-                <option :value="5" @click="SortByCategory(categoryID)">Server-side</option>
+            <select v-model="categoryID" @click="SortByCategory(categoryID)">
+                <option disabled :value="0" hidden>Select Clinic</option>
+                <option :value="1" >Project Management</option>
+                <option :value="2">DevOps/Infra</option>
+                <option :value="3">Database</option>
+                <option :value="4">Client-side</option>
+                <option :value="5">Server-side</option>
             </select>
         </div>
         <div v-if="getListBooking.length !== 0" class="mt-4">
@@ -316,7 +324,8 @@ const ClearSort=()=>{
             </ul>
         </div>
         <div v-else class="flex justify-center">
-            <h2>No Scheduled Events.</h2>
+            <h2 v-if="isSortByPast">No Past Events.</h2>
+            <h2 v-else >No Scheduled Events.</h2>
         </div>
         <div class="flex justify-center">
         <button v-if="page !== 0" @click="BackPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Back</button>
