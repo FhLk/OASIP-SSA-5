@@ -10,7 +10,6 @@ const isShow=ref(false)
 <div class="font">
     <h1 class="ccf cr text-5xl mt-5 mb-4 ml-5 flex justify-between rounded-md p-2">Schedule</h1>
     <List/>
-    
 </div>
 </template>
  
