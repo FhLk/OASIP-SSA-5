@@ -42,5 +42,18 @@ onBeforeMount(async ()=>{
 </template>
  
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Mali:wght@600&family=Mitr:wght@600;700&family=Titan+One&display=swap');
+.font{
+    font-family: 'Mitr', sans-serif;
+}
+.bg{
+    background-color: rgb(255, 255, 247);
+}
+.ccf {
+    color: rgb(42, 39, 40);
+}
+.bgcat{
+    background-color: rgb(167, 214, 255);
+}
 
 </style>
