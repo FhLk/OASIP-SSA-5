@@ -5,7 +5,7 @@ import { rewriter } from 'json-server'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base:'/ssa5/',
+  // base:'/ssa5/',
   server:{
     proxy:{
       '/api':{
