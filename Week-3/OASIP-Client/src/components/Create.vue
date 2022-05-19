@@ -101,12 +101,12 @@ const createBooking= async (booking)=>{
         },
         body: JSON.stringify({
             id:0,
-            bookingName: booking.bookingName,
-            bookingEmail: booking.bookingEmail,
+            bookingName: booking.bookingName.trim(),
+            bookingEmail: booking.bookingEmail.trim(),
             category: booking.category,
             startTime:`${booking.Date}T${booking.Time}`,
             bookingDuration:booking.bookingDuration,
-            eventNote: booking.eventNote
+            eventNote: booking.eventNote.trim()
         })
     })
     if(res.status===201){
