@@ -3,8 +3,12 @@ services:
   oasip_DB:
     container_name: oasip_DB
     volumes:
+<<<<<<< HEAD
       - /home/spadmin/OASIP/OASIP-SSA-5/Week-3/OASIP-DataBase/script/tablescript.sql:/docker-entrypoint-initdb.d/tablescript.sql
       - /home/spadmin/OASIP/OASIP-SSA-5/Week-3/OASIP-DataBase/my.cnf:/etc/mysql/my.cnf  
+=======
+      - ./script/tablescript.sql:/docker-entrypoint-initdb.d/tablescript.sql
+>>>>>>> localhost
     environment:
       - MYSQL_USER=oasip_user
       - MYSQL_DATABASE=oasip_db
@@ -12,7 +16,7 @@ services:
       - MYSQL_ROOT_PASSWORD=1234
       - TZ=Asia/Bangkok
     ports:
-      - '3306:3306'
+      - '3307:3306'
     image: mysql:8
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone= +07:00

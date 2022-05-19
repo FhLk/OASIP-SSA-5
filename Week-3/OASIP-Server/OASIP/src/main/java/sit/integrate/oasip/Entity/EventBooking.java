@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+<<<<<<< HEAD
+=======
+@ToString(onlyExplicitlyIncluded = true)
+>>>>>>> localhost
 @Entity(name = "EventBooking")
 public class EventBooking {
     @Id

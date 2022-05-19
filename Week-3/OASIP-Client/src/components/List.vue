@@ -7,6 +7,7 @@ let DateFormat = "YYYY-MM-DD HH:mm"
 const getBooking = ref({});
 const isDetail = ref(-1)
 const isEdit = ref(false)
+<<<<<<< HEAD
 
 const getListBooking=ref([])
 const Page = async (page=0) => {
@@ -14,11 +15,53 @@ const Page = async (page=0) => {
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?page=${page}`, {
             method: 'GET'
         })
+=======
+const isSortByPast=ref(false)
+const isSortByDate=ref(false)
+const isSortByCategory=ref(false)
+const isClear=ref(true)
+const sortDay=ref(moment().local().format(DateFormat).slice(0,10).trim())
+const categoryID=ref(0)
+
+const getListBooking=ref([])
+const Page = async (page=0) => {
+    let res
+    if(page >= 0){
+        if(isSortByPast.value){
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast?page=${page}`, {
+                method: 'GET'
+            })
+        }
+        else if(isSortByCategory.value){
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?page=${page}&category=${categoryID.value}`, {
+                method: 'GET'
+            })
+        }
+        else if(isSortByDate.value){
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?page=${page}&date=${StartDate}`, {
+            method: 'GET'
+            })
+        }
+        else{
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?page=${page}`, {
+                method: 'GET'
+            })
+        }
+>>>>>>> localhost
         getListBooking.value = await res.json()
         getListBooking.value.forEach((data) => {
             data.startTime = ShowDateTime(data.startTime)
         })
+<<<<<<< HEAD
         getListBooking.value=SortByDateTime(getListBooking.value)
+=======
+        if(isSortByDate.value){
+            getListBooking.value=SortByDateTimeASC(getListBooking.value)
+        }
+        else{
+            getListBooking.value=SortByDateTimeDESC(getListBooking.value)
+        }
+>>>>>>> localhost
     }
 }
 
@@ -43,12 +86,25 @@ const ShowDateTime=(datatime)=>{
     return moment(datatime).local().format(DateFormat)
 }
 
+<<<<<<< HEAD
 const SortByDateTime=(list)=>{
+=======
+const SortByDateTimeDESC=(list)=>{
+>>>>>>> localhost
     return list.sort((a,b)=>{
         return new Date(b.startTime) - new Date(a.startTime)
     })
 }
 
+<<<<<<< HEAD
+=======
+const SortByDateTimeASC=(list)=>{
+    return list.sort((a,b)=>{
+        return new Date(a.startTime) - new Date(b.startTime)
+    })
+}
+
+>>>>>>> localhost
 onBeforeMount(async ()=>{
     await Page()
 })
@@ -106,6 +162,7 @@ const savebooking= async (updateBooking)=>{
         },
         body: JSON.stringify({
             id:updateBooking.id,
+<<<<<<< HEAD
             bookingName: updateBooking.bookingName,
             bookingEmail: updateBooking.bookingEmail,
             category: updateBooking.category,
@@ -115,6 +172,18 @@ const savebooking= async (updateBooking)=>{
         })
     })
     if(res.status===200){
+=======
+            bookingName: updateBooking.bookingName.trim(),
+            bookingEmail: updateBooking.bookingEmail.trim(),
+            category: updateBooking.category,
+            startTime: updateBooking.startTime,
+            bookingDuration:updateBooking.bookingDuration,
+            eventNote: updateBooking.eventNote.trim()
+        })
+    })
+    if(res.status===200){
+        alert("success")
+>>>>>>> localhost
         await Page(page.value)
         reset()
     }
@@ -130,6 +199,7 @@ const deleteBooking= async (booking)=>{
         }
     }
 }
+<<<<<<< HEAD
 </script>
  
 <template>
@@ -183,11 +253,166 @@ const deleteBooking= async (booking)=>{
                                 <button @click="EditEvent(data)">{{ isEdit ? "Cancel" : "Edit" }}</button>
                             </div>
                        </div>
+=======
+
+const ced = " edit rounded-full px-2 text-white background-color: rgb(114, 143, 206) hover:bg-[#AECBFF]" ;
+const ccl = " bg-red-600 rounded-full px-2 text-white hover:bg-[#F87171]" ;
+const cdet = " bg-green-600 rounded-full px-2 text-white hover:bg-[#4ADE80]" ;
+const note = " bgde px-1 mx-1 rounded-md " ;
+const nonote = "" ;
+
+const SortByPast= async ()=>{
+    isClear.value=false
+    isSortByDate.value=false
+    isSortByCategory.value=false
+    if(isSortByPast.value===false){
+        isSortByPast.value=true
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
+            method: 'GET'
+        })
+        getListBooking.value = await res.json()
+        getListBooking.value.forEach((data) => {
+            data.startTime = ShowDateTime(data.startTime)
+        })
+        getListBooking.value=SortByDateTimeDESC(getListBooking.value)
+    }
+}
+
+const SortByDate=async (StartDate)=>{
+    isClear.value=false
+    isSortByCategory.value=false
+    isSortByPast.value=false
+    if(isSortByDate.value){
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate}`, {
+        method: 'GET'
+    })
+    getListBooking.value = await res.json()
+    getListBooking.value.forEach((data) => {
+        data.startTime = ShowDateTime(data.startTime)
+    })
+    getListBooking.value=SortByDateTimeASC(getListBooking.value)
+    }
+}
+
+const SortByCategory= async (id)=>{
+    isClear.value=false
+    isSortByPast.value=false
+    isSortByDate.value=false
+    if(isSortByCategory.value&&id!==0){
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?category=${id}`, {
+            method: 'GET'
+        })
+        getListBooking.value = await res.json()
+        getListBooking.value.forEach((data) => {
+            data.startTime = ShowDateTime(data.startTime)
+        })
+        getListBooking.value=SortByDateTimeDESC(getListBooking.value)
+    }
+}
+
+
+const btso1 = "cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
+const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
+
+
+const ClearSort=()=>{
+    isClear.value=true
+    isSortByDate.value=false
+    isSortByCategory.value=false
+    isSortByPast.value=false
+    Page()
+}
+</script>
+ 
+<template>
+    <div class="font ccf pt-3 rounded-md mx-10 mb-4 pb-3 bgl text-lg">
+        <div class="bg-white flex py-2 justify-between">
+            <p class="ml-5">Sort By : </p>
+            <button @click="SortByPast" :class="isSortByPast ? btso2 : btso1">Past</button> 
+            <button @click="isSortByCategory= isSortByCategory? false:true,isSortByDate=false,isSortByPast=false" :class="isSortByCategory ? btso2 : btso1" >Category</button>  
+            <button @click="isSortByDate= isSortByDate? false:true,isSortByPast=false,isSortByCategory=false" :class="isSortByDate ? btso2 : btso1">Day</button> 
+            <button @click="ClearSort" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
+        </div>
+        <div v-if="!isSortByDate===false">
+            <input type="date" v-model="sortDay" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md"/>
+            <button @click="SortByDate(sortDay)" class="cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2">Sort</button>
+        </div>
+        <div v-if="!isSortByCategory===false">
+            <select v-model="categoryID" @click="SortByCategory(categoryID)">
+                <option disabled :value="0" hidden>Select Clinic</option>
+                <option :value="1" >Project Management</option>
+                <option :value="2">DevOps/Infra</option>
+                <option :value="3">Database</option>
+                <option :value="4">Client-side</option>
+                <option :value="5">Server-side</option>
+            </select>
+        </div>
+        <div v-if="getListBooking.length !== 0" class="mt-4">
+            <ul>
+                <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5 rounded-lg pt-2" >
+                    {{ data.startTime }}
+                    ({{ data.category.duration }} min.) {{ data.category.categoryName.toLocaleUpperCase() }}
+                    {{ data.bookingName }}
+                    <div>
+                        <div class="flex justify-between mt-1">
+                            <div>
+                                <button @click="showDetail(data.id)" :class="isDetail === data.id ? ccl : cdet" class="mt-4" >{{ isDetail === data.id ? "Closed" : "Detail"
+                                }}</button>
+                            </div>
+                            <div>
+                                <img @click="deleteBooking(data)" src="../assets/trash-can.gif" 
+                                class="del ring-1 ring[#728FCE] hover:ring-red-500 rounded-md cursor-pointer shadow-md hover:shadow-red-500">
+                            </div>
+                        </div>
+                        <div v-if="isDetail === data.id" class="bgl3 px-5 pt-2 mt-2 pb-3 rounded-md">
+                            <div>
+                                <div class="flex">
+                                    <p class="pr-2">Name : </p>
+                                    <p>{{ getBooking.bookingName }}</p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">E-mail : </p>
+                                    <p>{{ getBooking.bookingEmail }}</p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">Category : </p>
+                                    <p>{{ getBooking.category.categoryName }}</p>
+                                </div>
+                                <div class="flex">
+                                    <p>Date & Time :
+                                        <span v-if="isEdit === false" class="pl-2">{{ getBooking.startTime }}</span>
+                                        <span v-else>
+                                            <input type="date" v-model="EditDate" /> |
+                                            <input type="time" v-model="EditTime" />
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">Duration : </p>
+                                    <p>{{ getBooking.category.duration }} min.</p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">Note :
+                                        <span v-if="isEdit === false" :class="getBooking.eventNote ? note : nonote">{{ getBooking.eventNote }}</span>
+                                        <span v-else>
+                                            <textarea rows="5" cols="50" v-model="EditNote" maxlength="500"></textarea>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button @click="savebooking(data)" v-if="isEdit" class="bg-green-600 rounded-full px-2 text-white mr-2 hover:bg-[#4ADE80]">Save</button>
+                                <button @click="EditEvent(data)" :class="isEdit ? ccl : ced">{{ isEdit ? "Cancel" : "Edit" }}</button>
+                            </div>
+                        </div>
+                        
+>>>>>>> localhost
                     </div>
                     <br />
                 </li>
             </ul>
         </div>
+<<<<<<< HEAD
         <div v-else>
             <h2>No Scheduled Events.</h2>
         </div>
@@ -197,4 +422,66 @@ const deleteBooking= async (booking)=>{
 </template>
  
 <style scoped>
+=======
+        <div v-else class="flex justify-center">
+            <h2 v-if="isSortByPast">No Past Events.</h2>
+            <h2 v-else >No Scheduled Events.</h2>
+        </div>
+        <div class="flex justify-center">
+        <button v-if="page !== 0" @click="BackPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Back</button>
+        <button v-if="getListBooking.length === 5" @click="NextPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Next</button>
+        </div>
+    </div>
+</template>
+ 
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Mali:wght@600&family=Mitr:wght@600;700&family=Titan+One&display=swap');
+.font{
+    font-family: 'Mitr', sans-serif;
+}
+
+.bg {
+    background-color: rgb(173, 216, 230);
+}
+
+.ccf {
+    color: rgb(42, 39, 40);
+}
+
+.bgl2 {
+    background-color: rgb(164, 220, 255);
+}
+.del{
+    width: 2.5rem ;
+    height: 2.5rem ;
+    margin-top: 0.25rem;
+}
+.edit {
+    background-color: rgb(114, 143, 206);
+}
+.bgde {
+    background-color: rgb(254, 252, 255);
+}
+.bgl{
+    background-color: rgb(92, 179, 255);
+}
+.bgl3{
+    background-color: rgb(135, 206, 235);
+}
+.btt{
+    background-color: rgb(25, 25, 112);
+}
+.cf {
+    color: rgb(251, 251, 249);
+}
+.cbts{
+    background-color: rgb(0, 0, 128);
+}
+.cbtso{
+    background-color: rgb(60, 60, 188);
+}
+.clear{
+    background-color: rgb(88, 0, 88);
+}
+>>>>>>> localhost
 </style>
