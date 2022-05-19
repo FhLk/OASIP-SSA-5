@@ -1,12 +1,12 @@
 <script setup>
-import ShowBookingPage from '../views/ShowPage.vue';
+import ShowPage from '../views/ShowPage.vue';
 
 
 </script>
  
 <template>
 <div class="bg h-screen">
-    <ShowBookingPage/>
+    <ShowPage/>
 </div>
 </template>
  

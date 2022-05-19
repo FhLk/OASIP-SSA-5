@@ -174,6 +174,8 @@ const note = " bgde px-1 mx-1 rounded-md " ;
 const nonote = "" ;
 
 const SortByPast= async ()=>{
+    isEdit.value = false
+    isDetail.value= -1
     isClear.value=false
     isSortByDate.value=false
     isSortByCategory.value=false
@@ -191,6 +193,8 @@ const SortByPast= async ()=>{
 }
 
 const SortByDate=async (StartDate)=>{
+    isEdit.value = false
+    isDetail.value= -1
     isClear.value=false
     isSortByCategory.value=false
     isSortByPast.value=false
@@ -207,6 +211,8 @@ const SortByDate=async (StartDate)=>{
 }
 
 const SortByCategory= async (id)=>{
+    isEdit.value = false
+    isDetail.value= -1
     isClear.value=false
     isSortByPast.value=false
     isSortByDate.value=false
@@ -228,6 +234,8 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
 
 
 const ClearSort=()=>{
+    isEdit.value = false
+    isDetail.value= -1
     isClear.value=true
     isSortByDate.value=false
     isSortByCategory.value=false
@@ -249,8 +257,8 @@ const ClearSort=()=>{
             <input type="date" v-model="sortDay" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md"/>
             <button @click="SortByDate(sortDay)" class="cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2">Sort</button>
         </div>
-        <div v-if="!isSortByCategory===false">
-            <select v-model="categoryID" @click="SortByCategory(categoryID)">
+        <div v-if="!isSortByCategory===false" >
+            <select v-model="categoryID" @click="SortByCategory(categoryID)" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md">
                 <option disabled :value="0" hidden>Select Clinic</option>
                 <option :value="1" >Project Management</option>
                 <option :value="2">DevOps/Infra</option>
@@ -263,7 +271,7 @@ const ClearSort=()=>{
             <ul>
                 <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5 rounded-lg pt-2" >
                     {{ data.startTime }}
-                    ({{ data.category.duration }} min.) {{ data.category.categoryName.toLocaleUpperCase() }}
+                    ({{ data.bookingDuration }} min.) {{ data.category.categoryName.toLocaleUpperCase() }}
                     {{ data.bookingName }}
                     <div>
                         <div class="flex justify-between mt-1">
@@ -301,7 +309,7 @@ const ClearSort=()=>{
                                 </div>
                                 <div class="flex">
                                     <p class="pr-2">Duration : </p>
-                                    <p>{{ getBooking.category.duration }} min.</p>
+                                    <p>{{ getBooking.bookingDuration }} min.</p>
                                 </div>
                                 <div class="flex">
                                     <p class="pr-2">Note :

@@ -1,7 +1,16 @@
 <script setup>
+import moment from 'moment';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const isBooking = ref(false)
+let mailFormat=/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+const isNameEmpty=ref(false);
+const isEmailEmpty=ref(false);
+const isCategoryEmpty=ref(false);
+const isDateEmpty=ref(false);
+const isTimeEmpty=ref(false);
+
+let DateFormat = "YYYY-MM-DD HH:mm"
 
 const emits=defineEmits(['add'])
 
@@ -36,13 +45,6 @@ const reset = () => {
     GoHome()
 }
 
-let mailFormat=/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-const isNameEmpty=ref(false);
-const isEmailEmpty=ref(false);
-const isCategoryEmpty=ref(false);
-const isDateEmpty=ref(false);
-const isTimeEmpty=ref(false);
-
 const CheckInput=async (booking)=>{
     let isCheck=true
     if(!booking.bookingEmail.match(mailFormat) || booking.bookingEmail.length > 100){
@@ -69,8 +71,20 @@ const CheckInput=async (booking)=>{
         isCheck=false
     }
     if(isCheck){
-        await createBooking(booking)
-        reset()
+        let test=moment(`${booking.Date} ${booking.Time}`).local().format(DateFormat);
+        let now=moment().local().format(DateFormat)
+        if(test <= now){
+            isDateEmpty.value=true
+            isCheck=false
+        }
+        else{
+            isNameEmpty.value=false
+            isCategoryEmpty.value=false
+            isDateEmpty.value=false
+            isTimeEmpty.value=false
+            await createBooking(booking)
+            reset()
+        }
     }
 }
 
@@ -133,12 +147,12 @@ const countNote=computed(()=>{
                    <div class="mt-1">
                     <label >Date: </label>
                     <input type="date" v-model="newbooking.Date">
-                    <p v-if="isDateEmpty && newbooking.Date === '' " class="text-xs text-red-600">Plase Input your date !!!!!</p>
+                    <p v-if="isDateEmpty" class="text-xs text-red-600">Plase Input your date/Can't choose date in past or now !!!!!</p>
                    </div>
                    <div class="mt-1">
                     <label> Start (Time): </label>
                     <input type="time" v-model="newbooking.Time">
-                    <p v-if="isTimeEmpty && newbooking.Time === '' " class="text-xs text-red-600">Plase Input your time !!!!!</p>
+                    <p v-if="isTimeEmpty" class="text-xs text-red-600">Plase Input your time/Can't choose time in past or now !!!!!</p>
                    </div>
                    <div class="mt-1"> 
                     <label class="mr-2 mt-5">Duration (Minute): {{  newbooking.bookingDuration= newbooking.category.duration===undefined ? 0:newbooking.category.duration }}</label>

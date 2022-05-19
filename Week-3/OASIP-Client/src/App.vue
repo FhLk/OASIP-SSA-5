@@ -10,6 +10,7 @@
         <button class="oa hover:bg-[#294592] rounded-md px-1 mt-4 h-8 cf"><router-link to="/AddPage">Add New Schedule</router-link></button>
     </div>
 </nav>
+
 <router-view> </router-view> 
 
 </template>
