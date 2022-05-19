@@ -32,10 +32,6 @@ public class BookingController {
     }
 
     @GetMapping("/{BookingId}")
-    public ResponseEntity<BookingDTO> getAllBooking(@PathVariable Integer BookingId){
-        return ResponseEntity.ok(service.getBookingId(BookingId));
-    }
-
     public ResponseEntity<BookingDTO> getBooking(@PathVariable Integer BookingId){
         return ResponseEntity.ok(service.getBookingId(BookingId));
     }
@@ -57,7 +53,7 @@ public class BookingController {
     }
 
     @GetMapping("/sortBySpecify")
-    public ResponseEntity<List<SortListDayDTO>> getBookingBySpecify(
+    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam String date){

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.integrate.oasip.DTO.BookingDTO;
+import sit.integrate.oasip.DTO.CategoryDTO;
 import sit.integrate.oasip.DTO.SortListDayDTO;
 import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
@@ -49,7 +50,7 @@ public class BookingService {
         return listMapper.mapList(bookingList, BookingDTO.class, modelMapper);
     }
 
-    public List<SortListDayDTO> getBookingWithSpecify(
+    public List<BookingDTO> getBookingWithSpecify(
             int page,
             int pageSize,
             String startdate,
@@ -58,14 +59,13 @@ public class BookingService {
                 PageRequest.of(page,pageSize),
                 LocalDateTime.parse(startdate),
                 LocalDateTime.parse(enddate));
-        return listMapper.mapList(bookingList, SortListDayDTO.class,modelMapper);
+        return listMapper.mapList(bookingList, BookingDTO.class,modelMapper);
     }
 
     public EventBooking CreateBooking(BookingDTO newBooking){
         EventBooking booking = modelMapper.map(newBooking,EventBooking.class);
         return repository.saveAndFlush(booking);
     }
-
     public EventBooking UpdateBooking(Integer bookingId,BookingDTO updateBooking){
         EventBooking booking = repository.findById(bookingId).map(b->mapBooking(modelMapper.map(b,BookingDTO.class),updateBooking))
                 .orElseGet(()->{
