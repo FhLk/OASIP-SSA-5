@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import indexPage1 from '../views/indexPage.vue'
 import AddPage1 from '../views/AddBookingPage.vue'
 import ShowPage1 from '../views/ShowPage.vue'
-const history = createWebHistory(import.meta.env.VITE_BASE_URL)
+const history = createWebHistory('ssa5')
 const routes = [
     {path: '/',name: 'indexPage',component: indexPage1},
     {path: '/AddPage',name: 'AddPage',component: AddPage1},
