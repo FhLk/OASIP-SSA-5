@@ -3,12 +3,7 @@ services:
   oasip_DB:
     container_name: oasip_DB
     volumes:
-<<<<<<< HEAD
-      - /home/spadmin/OASIP/OASIP-SSA-5/Week-3/OASIP-DataBase/script/tablescript.sql:/docker-entrypoint-initdb.d/tablescript.sql
-      - /home/spadmin/OASIP/OASIP-SSA-5/Week-3/OASIP-DataBase/my.cnf:/etc/mysql/my.cnf  
-=======
       - ./script/tablescript.sql:/docker-entrypoint-initdb.d/tablescript.sql
->>>>>>> localhost
     environment:
       - MYSQL_USER=oasip_user
       - MYSQL_DATABASE=oasip_db
