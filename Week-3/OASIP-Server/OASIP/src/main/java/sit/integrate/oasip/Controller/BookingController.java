@@ -7,12 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.BookingDTO;
-import sit.integrate.oasip.DTO.CategoryDTO;
 import sit.integrate.oasip.DTO.SortListDayDTO;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Service.BookingService;
 import sit.integrate.oasip.exeption.BookingNotFoundException;
-import sit.integrate.oasip.exeption.ShowException;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -59,7 +57,7 @@ public class BookingController {
     }
 
     @GetMapping("/sortBySpecify")
-    public ResponseEntity<List<SortListDayDTO>> getBookingBySpecify(
+    public ResponseEntity<List<BookingDTO>> getBookingBySpecify(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam String date){
@@ -74,7 +72,7 @@ public class BookingController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking, BindingResult bindingResult){
+    public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking){
         service.CreateBooking(newBooking);
         return new ResponseEntity<>(newBooking,HttpStatus.CREATED);
     }

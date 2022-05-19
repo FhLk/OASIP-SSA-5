@@ -3,10 +3,11 @@ services:
   oasipSVR:
     container_name: oasipSVR
     image: oasip_back_img
+    build: ./
     environment:
       - spring.datasource.url=jdbc:mysql://oasip_DB:3307/oasip_db
     ports:
-      - '8086:8080'
+      - '8080:8080'
     restart: always
 networks:
   default:

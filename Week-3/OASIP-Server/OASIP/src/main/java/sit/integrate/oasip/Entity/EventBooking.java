@@ -3,7 +3,6 @@ package sit.integrate.oasip.Entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor

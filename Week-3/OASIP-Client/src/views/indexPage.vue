@@ -7,7 +7,6 @@ import ShowBookingPage from '../views/ShowPage.vue';
 <template>
 <div class="bg h-screen">
     <ShowBookingPage/>
-    <!-- <button><router-link to="/AddBooking">Add New Booking</router-link></button> -->
 </div>
 </template>
  

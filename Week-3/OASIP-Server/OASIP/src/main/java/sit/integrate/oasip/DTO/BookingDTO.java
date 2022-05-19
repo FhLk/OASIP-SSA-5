@@ -22,12 +22,17 @@ public class BookingDTO {
     @NotBlank(message = "Name shouldn't be null/empty")
     private String bookingName;
     @Email(message = "Email doesn't follow format")
+    @NotBlank(message = "Email shouldn't be null/empty")
+    @NotNull(message = "Email shouldn't be null")
+    @NotEmpty(message = "Email shouldn't be empty")
     @Size(max = 100,message = "Your Email have length more than 100 character")
     private String bookingEmail;
     @NotNull(message = "Category is null")
     @Valid
     private CategoryDTO category;
+//    @Past
     private LocalDateTime startTime;
+    @Min(1)@Max(480)
     private Integer bookingDuration;
     @Size(max = 500,message = "Your Note have length more than 500 character")
     private String eventNote;
