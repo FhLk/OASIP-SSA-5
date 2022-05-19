@@ -34,11 +34,7 @@ ENGINE = InnoDB;
 -- Table `oasip_db`.`EventBooking`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `oasip_db`.`EventBooking` (
-<<<<<<< HEAD
-  `BookingID` INT NOT NULL ,
-=======
   `BookingID` INT NOT NULL auto_increment ,
->>>>>>> localhost
   `BookingName` VARCHAR(150) NOT NULL,
   `BookingEmail` VARCHAR(150) NOT NULL,
   `Category` INT NOT NULL,
