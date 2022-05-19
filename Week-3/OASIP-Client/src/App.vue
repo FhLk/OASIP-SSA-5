@@ -4,13 +4,15 @@
  
 <template>
 
-<nav class="scd  border-gray-200 px-2 sm:px-4 py-5 font">
+<nav class="scd  border-gray-200 px-2 sm:px-4 py-5 font fixed top-0 left-0 right-0">
     <div class="flex justify-between">
         <router-link to="/"><h1 class="text-7xl cf px-2 ml-8 rounded-md hover:ring ring-[#FBFBF9] font-bold" >OASIP</h1></router-link>
         <button class="oa hover:bg-[#294592] rounded-md px-1 mt-4 h-8 cf"><router-link to="/AddPage">Add New Schedule</router-link></button>
     </div>
 </nav>
-
+<div class="navbar pt-1 flex justify-end">
+    <button class="ab hover:bg-[#294592] rounded-md px-1 h-6 cf font"><router-link to="/AboutPage">About Us</router-link></button>
+</div>
 <router-view> </router-view> 
 
 </template>
@@ -33,6 +35,16 @@
 }
 .hoa{
     background-color: rgb(101, 129, 206);
+}
+.navbar {
+  background-color: rgb(189, 237, 255);
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%; 
+}
+.ab{
+    background-color: rgb(0, 32, 194);
 }
 
 </style>
