@@ -60,11 +60,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-<<<<<<< HEAD
-            <version>5.3.19</version>
-=======
             <version>5.3.20</version>
->>>>>>> localhost
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

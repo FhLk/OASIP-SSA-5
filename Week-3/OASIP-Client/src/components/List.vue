@@ -7,15 +7,6 @@ let DateFormat = "YYYY-MM-DD HH:mm"
 const getBooking = ref({});
 const isDetail = ref(-1)
 const isEdit = ref(false)
-<<<<<<< HEAD
-
-const getListBooking=ref([])
-const Page = async (page=0) => {
-    if(page >= 0){
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings?page=${page}`, {
-            method: 'GET'
-        })
-=======
 const isSortByPast=ref(false)
 const isSortByDate=ref(false)
 const isSortByCategory=ref(false)
@@ -47,21 +38,16 @@ const Page = async (page=0) => {
                 method: 'GET'
             })
         }
->>>>>>> localhost
         getListBooking.value = await res.json()
         getListBooking.value.forEach((data) => {
             data.startTime = ShowDateTime(data.startTime)
         })
-<<<<<<< HEAD
-        getListBooking.value=SortByDateTime(getListBooking.value)
-=======
         if(isSortByDate.value){
             getListBooking.value=SortByDateTimeASC(getListBooking.value)
         }
         else{
             getListBooking.value=SortByDateTimeDESC(getListBooking.value)
         }
->>>>>>> localhost
     }
 }
 
@@ -86,25 +72,18 @@ const ShowDateTime=(datatime)=>{
     return moment(datatime).local().format(DateFormat)
 }
 
-<<<<<<< HEAD
-const SortByDateTime=(list)=>{
-=======
 const SortByDateTimeDESC=(list)=>{
->>>>>>> localhost
     return list.sort((a,b)=>{
         return new Date(b.startTime) - new Date(a.startTime)
     })
 }
 
-<<<<<<< HEAD
-=======
 const SortByDateTimeASC=(list)=>{
     return list.sort((a,b)=>{
         return new Date(a.startTime) - new Date(b.startTime)
     })
 }
 
->>>>>>> localhost
 onBeforeMount(async ()=>{
     await Page()
 })
@@ -162,17 +141,6 @@ const savebooking= async (updateBooking)=>{
         },
         body: JSON.stringify({
             id:updateBooking.id,
-<<<<<<< HEAD
-            bookingName: updateBooking.bookingName,
-            bookingEmail: updateBooking.bookingEmail,
-            category: updateBooking.category,
-            startTime: updateBooking.startTime,
-            bookingDuration:updateBooking.bookingDuration,
-            eventNote: updateBooking.eventNote 
-        })
-    })
-    if(res.status===200){
-=======
             bookingName: updateBooking.bookingName.trim(),
             bookingEmail: updateBooking.bookingEmail.trim(),
             category: updateBooking.category,
@@ -183,7 +151,6 @@ const savebooking= async (updateBooking)=>{
     })
     if(res.status===200){
         alert("success")
->>>>>>> localhost
         await Page(page.value)
         reset()
     }
@@ -199,61 +166,6 @@ const deleteBooking= async (booking)=>{
         }
     }
 }
-<<<<<<< HEAD
-</script>
- 
-<template>
-    <div>
-        <div v-if="getListBooking.length !== 0">
-            <ul>
-                <li v-for="(data, index) in getListBooking" :key="index">{{ data.startTime }}
-                    ({{ data.category.duration }} min.) {{ data.category.categoryName.toLocaleUpperCase() }}
-                    {{ data.bookingName }}
-                    <div>
-                        <div>
-                            <button @click="showDetail(data.id)">{{ isDetail === data.id ?"Closed" : "Detail" }}</button>                             
-                        </div>
-                        <div>
-                            <button @click="deleteBooking(data)">Delete</button>
-                        </div>
-                        <div v-if="isDetail === data.id">
-                            <div>
-                                <div>
-                                    <p>Name : </p><p>{{ getBooking.bookingName }}</p>
-                                </div>
-                                <div >
-                                    <p>E-mail : </p><p>{{ getBooking.bookingEmail }}</p>
-                                </div>
-                                <div>
-                                    <p>Category : </p><p>{{ getBooking.category.categoryName }}</p>
-                                </div>
-                                <div>
-                                    <p>Date & Time :
-                                    <span v-if="isEdit === false">{{ getBooking.startTime }}</span>
-                                    <span v-else >
-                                        <input type="date" v-model="EditDate"/> |
-                                        <input type="time" v-model="EditTime"/>
-                                    </span>
-                                </p>
-                                </div>
-                                <div>
-                                    <p>Duration : </p><p>{{ getBooking.category.duration }} min.</p>
-                                </div>
-                                <div>
-                                    <p>Note :
-                                    <span v-if="isEdit === false">{{ getBooking.eventNote }}</span>
-                                    <span v-else>
-                                        <textarea rows="5" cols="50" v-model="EditNote" maxlength="500"></textarea>
-                                    </span>
-                                </p>
-                                </div>
-                            </div>
-                            <div>
-                                <button @click="savebooking(data)" v-if="isEdit" >Save</button>
-                                <button @click="EditEvent(data)">{{ isEdit ? "Cancel" : "Edit" }}</button>
-                            </div>
-                       </div>
-=======
 
 const ced = " edit rounded-full px-2 text-white background-color: rgb(114, 143, 206) hover:bg-[#AECBFF]" ;
 const ccl = " bg-red-600 rounded-full px-2 text-white hover:bg-[#F87171]" ;
@@ -406,23 +318,11 @@ const ClearSort=()=>{
                             </div>
                         </div>
                         
->>>>>>> localhost
                     </div>
                     <br />
                 </li>
             </ul>
         </div>
-<<<<<<< HEAD
-        <div v-else>
-            <h2>No Scheduled Events.</h2>
-        </div>
-            <button v-if="page!==0" @click="BackPage" >Back</button>
-            <button v-if="getListBooking.length===5" @click="NextPage" >Next</button>
-        </div>
-</template>
- 
-<style scoped>
-=======
         <div v-else class="flex justify-center">
             <h2 v-if="isSortByPast">No Past Events.</h2>
             <h2 v-else >No Scheduled Events.</h2>
@@ -483,5 +383,4 @@ const ClearSort=()=>{
 .clear{
     background-color: rgb(88, 0, 88);
 }
->>>>>>> localhost
 </style>

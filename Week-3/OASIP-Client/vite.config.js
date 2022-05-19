@@ -7,11 +7,7 @@ export default defineConfig({
   base:'/ssa5/',
   server:{
     proxy:{
-<<<<<<< HEAD
       '/api':'http://oasipSVR:8080/api'
-=======
-      '/api':'http://localhost:8080/api'
->>>>>>> localhost
     }
   }
 })

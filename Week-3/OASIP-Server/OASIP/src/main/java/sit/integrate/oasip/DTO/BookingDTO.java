@@ -1,19 +1,9 @@
 package sit.integrate.oasip.DTO;
 
-<<<<<<< HEAD
 import lombok.*;
-
-=======
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import sit.integrate.oasip.Entity.EventCategory;
-
 import javax.validation.Valid;
->>>>>>> localhost
 import javax.validation.constraints.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,16 +20,9 @@ public class BookingDTO {
     @Size(max = 100,message = "Your Email have length more than 100 character")
     private String bookingEmail;
     @NotNull(message = "Category is null")
-<<<<<<< HEAD
-    private CategoryDTO category;
-    @NotNull(message = "StartTime is null")
-    private LocalDateTime startTime;
-    @NotNull(message = "Duration is null")
-=======
     @Valid
     private CategoryDTO category;
     private LocalDateTime startTime;
->>>>>>> localhost
     private Integer bookingDuration;
     @Size(max = 500,message = "Your Note have length more than 500 character")
     private String eventNote;

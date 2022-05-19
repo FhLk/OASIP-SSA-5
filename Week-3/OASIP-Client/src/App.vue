@@ -3,12 +3,6 @@
 </script>
  
 <template>
-<<<<<<< HEAD
-<router-view> </router-view> 
-</template>
- 
-<style scoped>
-=======
 
 <nav class="scd  border-gray-200 px-2 sm:px-4 py-5 font">
     <div class="flex justify-between">
@@ -39,6 +33,5 @@
 .hoa{
     background-color: rgb(101, 129, 206);
 }
->>>>>>> localhost
 
 </style>
