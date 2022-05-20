@@ -23,6 +23,6 @@ public class CategoryDTO {
     private String description;
     @Max(value = 480,message = "Duration have more than 480 minute")
     @Min(value = 1,message = "Duration have less 1 minute")
-    @NotBlank(message = "Category duration shouldn't null/empty")
+    @NotNull(message = "Duration shouldn't be null")
     private Integer duration;
 }
