@@ -31,7 +31,7 @@ public class BookingDTO {
     @Valid
     private CategoryDTO category;
     @Past(message = "Can't Change to Date and Time in Past")
-    @NotBlank(message = "Date and Time shouldn't be empty")
+//    @NotBlank(message = "Date and Time shouldn't be empty")
     private LocalDateTime startTime;
     @Min(1)@Max(480)
     private Integer bookingDuration;
