@@ -70,9 +70,9 @@ public class BookingService {
                     updateBooking.setId(bookingId);
                     return modelMapper.map(updateBooking,EventBooking.class);
                 });
-        updateBooking.setBookingName(updateBooking.getBookingName().trim());
-        updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
-        updateBooking.setEventNote(updateBooking.getEventNote().trim());
+//        updateBooking.setBookingName(updateBooking.getBookingName().trim());
+//        updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
+//        updateBooking.setEventNote(updateBooking.getEventNote().trim());
         return repository.saveAndFlush(booking);
     }
 
