@@ -138,7 +138,7 @@ const reset=()=>{
     isSortByDate.value=false
     isSortByCategory.value=false
     isSortByPast.value=false
-    Page()
+    Page(page.value)
 }
 
 const savebooking= async (updateBooking)=>{
@@ -161,7 +161,7 @@ const savebooking= async (updateBooking)=>{
     })
     if(res.status===200){
         alert("You have change Booking")
-        await Page(page.value)
+        reset()
     }
     else{
         alert("Can't change this Booking")
