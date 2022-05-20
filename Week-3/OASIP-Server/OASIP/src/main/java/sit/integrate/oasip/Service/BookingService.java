@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.integrate.oasip.DTO.BookingDTO;
-import sit.integrate.oasip.DTO.CategoryDTO;
-import sit.integrate.oasip.DTO.SortListDayDTO;
 import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Repository.BookingRepository;
@@ -72,9 +70,11 @@ public class BookingService {
                     updateBooking.setId(bookingId);
                     return modelMapper.map(updateBooking,EventBooking.class);
                 });
+        updateBooking.setBookingName(updateBooking.getBookingName().trim());
+        updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
+        updateBooking.setEventNote(updateBooking.getEventNote().trim());
         return repository.saveAndFlush(booking);
     }
-
 
     private EventBooking mapBooking(BookingDTO oldBooking,BookingDTO newBooking){
         oldBooking=newBooking;
