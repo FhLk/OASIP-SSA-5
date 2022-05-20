@@ -7,6 +7,7 @@ let DateFormat = "YYYY-MM-DD HH:mm"
 const getBooking = ref({});
 const isDetail = ref(-1)
 const isEdit = ref(false)
+const isEditId=ref(0)
 const isSortByPast=ref(false)
 const isSortByDate=ref(false)
 const isSortByCategory=ref(false)
@@ -110,12 +111,14 @@ const EditDateTime = ref("")
 const EditEvent = (booking) => {
     isEdit.value = isEdit.value ? false : true
     if (isEdit.value) {
+        isEditId.value=booking.id
         EditNote.value = booking.eventNote
         EditDateTime.value = booking.startTime
         EditDate.value = EditDateTime.value.slice(0, 10)
         EditTime.value = EditDateTime.value.slice(10).trim()
     }
     else {
+        isEditId.value=0
         EditNote.value = getBooking.value.eventNote
         EditDateTime.value = getBooking.value.startTime
         EditDate.value = ""
@@ -124,11 +127,18 @@ const EditEvent = (booking) => {
 }
 
 const reset=()=>{
+    isEditId.value=0
     isDetail.value= -1
     count=0
     isEdit.value=false
     EditDate.value=""
     EditNote.value=""
+    isEdit.value = false
+    isClear.value=true
+    isSortByDate.value=false
+    isSortByCategory.value=false
+    isSortByPast.value=false
+    Page()
 }
 
 const savebooking= async (updateBooking)=>{
@@ -150,9 +160,11 @@ const savebooking= async (updateBooking)=>{
         })
     })
     if(res.status===200){
-        alert("success")
+        alert("You have change Booking")
         await Page(page.value)
-        reset()
+    }
+    else{
+        alert("Can't change this Booking")
     }
 }
 
@@ -164,6 +176,9 @@ const deleteBooking= async (booking)=>{
         if(res.status===200){
             await Page(page.value)
         }
+        else{
+            alert("Can't Delete this Booking")
+        }
     }
 }
 
@@ -174,11 +189,7 @@ const note = " bgde px-1 mx-1 rounded-md " ;
 const nonote = "" ;
 
 const SortByPast= async ()=>{
-    isEdit.value = false
-    isDetail.value= -1
-    isClear.value=false
-    isSortByDate.value=false
-    isSortByCategory.value=false
+    reset()
     if(isSortByPast.value===false){
         isSortByPast.value=true
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
@@ -193,11 +204,7 @@ const SortByPast= async ()=>{
 }
 
 const SortByDate=async (StartDate)=>{
-    isEdit.value = false
-    isDetail.value= -1
-    isClear.value=false
-    isSortByCategory.value=false
-    isSortByPast.value=false
+    reset()
     if(isSortByDate.value){
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate}`, {
         method: 'GET'
@@ -211,11 +218,7 @@ const SortByDate=async (StartDate)=>{
 }
 
 const SortByCategory= async (id)=>{
-    isEdit.value = false
-    isDetail.value= -1
-    isClear.value=false
-    isSortByPast.value=false
-    isSortByDate.value=false
+    reset()
     if(isSortByCategory.value&&id!==0){
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?category=${id}`, {
             method: 'GET'
@@ -232,16 +235,6 @@ const SortByCategory= async (id)=>{
 const btso1 = "cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
 const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
 
-
-const ClearSort=()=>{
-    isEdit.value = false
-    isDetail.value= -1
-    isClear.value=true
-    isSortByDate.value=false
-    isSortByCategory.value=false
-    isSortByPast.value=false
-    Page()
-}
 </script>
  
 <template>
@@ -251,7 +244,7 @@ const ClearSort=()=>{
             <button @click="SortByPast" :class="isSortByPast ? btso2 : btso1">Past</button> 
             <button @click="isSortByCategory= isSortByCategory? false:true,isSortByDate=false,isSortByPast=false" :class="isSortByCategory ? btso2 : btso1" >Category</button>  
             <button @click="isSortByDate= isSortByDate? false:true,isSortByPast=false,isSortByCategory=false" :class="isSortByDate ? btso2 : btso1">Day</button> 
-            <button @click="ClearSort" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
+            <button @click="reset" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
         </div>
         <div v-if="!isSortByDate===false">
             <input type="date" v-model="sortDay" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md"/>
@@ -312,12 +305,15 @@ const ClearSort=()=>{
                                     <p>{{ getBooking.bookingDuration }} min.</p>
                                 </div>
                                 <div class="flex">
-                                    <p class="pr-2">Note :
-                                        <span v-if="isEdit === false" :class="getBooking.eventNote ? note : nonote">{{ getBooking.eventNote }}</span>
-                                        <span v-else>
+                                    <p class="pr-2">Note :</p>
+                                        <span v-if="isEdit && isEditId===data.id" :class="getBooking.eventNote ? note : nonote">
                                             <textarea rows="5" cols="50" v-model="EditNote" maxlength="500"></textarea>
                                         </span>
-                                    </p>
+                                        <span v-else>
+                                            <div>
+                                                {{ getBooking.eventNote }}
+                                            </div>
+                                        </span>
                                 </div>
                             </div>
                             <div class="mt-2">

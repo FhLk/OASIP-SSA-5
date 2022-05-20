@@ -101,12 +101,12 @@ const createBooking= async (booking)=>{
         },
         body: JSON.stringify({
             id:0,
-            bookingName: booking.bookingName,
-            bookingEmail: booking.bookingEmail,
+            bookingName: booking.bookingName.trim(),
+            bookingEmail: booking.bookingEmail.trim(),
             category: booking.category,
             startTime:`${booking.Date}T${booking.Time}`,
             bookingDuration:booking.bookingDuration,
-            eventNote: booking.eventNote
+            eventNote: booking.eventNote.trim()
         })
     })
     if(res.status===201){
@@ -126,7 +126,7 @@ const countNote=computed(()=>{
 </script>
  
 <template>
-    <div class="font ccf text-lg">
+    <div class="font ccf text-lg mt-28">
         <div>
             <div class="flex justify-center">
                 <div class="bgc px-10 py-3 my-4 rounded-lg" >
@@ -158,7 +158,7 @@ const countNote=computed(()=>{
                     <label class="mr-2 mt-5">Duration (Minute): {{  newbooking.bookingDuration= newbooking.category.duration===undefined ? 0:newbooking.category.duration }}</label>
                    </div>
                    <div class="mt-1">
-                       <label class="mr-2 mt-2">Note: </label>
+                       <p class="mr-2 mt-2">Note: </p>
                     <textarea rows="5" cols="50" v-model="newbooking.eventNote" maxlength="500"></textarea>
                     <p class="text-sm text-stone-500">(Number of Character : {{countNote}})</p>
                    </div>

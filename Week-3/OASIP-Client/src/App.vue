@@ -7,7 +7,7 @@
 <nav class="scd  border-gray-200 px-2 sm:px-4 py-5 font fixed top-0 left-0 right-0">
     <div class="flex justify-between">
         <router-link to="/"><h1 class="text-7xl cf px-2 ml-8 rounded-md hover:ring ring-[#FBFBF9] font-bold" >OASIP</h1></router-link>
-        <button class="oa hover:bg-[#294592] rounded-md px-1 mt-4 h-8 cf"><router-link to="/AddPage">Add New Schedule</router-link></button>
+        <button class="btAddNew hover:bg-[#294592] rounded-md px-1 mt-4 h-8 cf"><router-link to="/AddPage">Add New Schedule</router-link></button>
     </div>
 </nav>
 <div class="navbar pt-1 flex justify-end">
@@ -30,7 +30,7 @@
 .cf {
     color: rgb(251, 251, 249);
 }
-.oa{
+.btAddNew{
     background-color: rgb(21, 49, 126);
 }
 .hoa{

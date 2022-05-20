@@ -21,8 +21,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*",allowCredentials = "true",
-        methods = {RequestMethod.DELETE,RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT})
+// @CrossOrigin(origins = "http://localhost:3000/",allowedHeaders = "*",allowCredentials = "true",
+//         methods = {RequestMethod.DELETE,RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT})
 public class BookingController {
     @Autowired
     private BookingService service;
@@ -73,6 +73,9 @@ public class BookingController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking){
+        newBooking.setBookingName(newBooking.getBookingName().trim());
+        newBooking.setBookingEmail(newBooking.getBookingEmail().trim());
+        newBooking.setEventNote(newBooking.getEventNote().trim());
         service.CreateBooking(newBooking);
         return new ResponseEntity<>(newBooking,HttpStatus.CREATED);
     }
