@@ -2,7 +2,7 @@
 import { ref } from "vue";
 const mem = ref( [
     {
-        Picture : "https://raw.githubusercontent.com/FhLk/OASIP-SSA-5/SIT_Server/picture/Note/224814776_569579017394700_1348715486412544157_n%20(1).jpg?token=GHSAT0AAAAAABUZVH7AZCM3WB6TZW6MJAT4YUI5Y7A" ,
+        Picture : "https://raw.githubusercontent.com/FhLk/OASIP-SSA-5/SIT_Server/picture/Note/224814776_569579017394700_1348715486412544157_n%20(1).jpg?token=GHSAT0AAAAAABUC2TLRXY5SW7KTA6SBC6JEYUJAENA" ,
         Id : 63130500015 ,
         Name : "Chanatip Ampla" ,
         Occupation : "Student of the School of Information Technology",
@@ -10,7 +10,7 @@ const mem = ref( [
 
     },
     {
-        Picture : "https://raw.githubusercontent.com/FhLk/OASIP-SSA-5/SIT_Server/picture/Note/1633779977767.jpg?token=GHSAT0AAAAAABUZVH7AG3OLONK6P3BDG7AKYUI6F6Q" ,
+        Picture : "https://raw.githubusercontent.com/FhLk/OASIP-SSA-5/SIT_Server/picture/Note/1633779977767.jpg?token=GHSAT0AAAAAABUC2TLQBHHQAMPR7F75IGGSYUJAEMA" ,
         Id : 63130500043 ,
         Name : "Trongsit Sinnuruk" ,
         Occupation : "Student of the School of Information Technology",
