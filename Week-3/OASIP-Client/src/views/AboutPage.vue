@@ -2,7 +2,7 @@
 import { ref } from "vue";
 const mem = ref( [
     {
-        Picture : "https://raw.githubusercontent.com/FhLk/OASIP-SSA-5/SIT_Server/picture/Note/224814776_569579017394700_1348715486412544157_n%20(1).jpg?token=GHSAT0AAAAAABUC2TLRXY5SW7KTA6SBC6JEYUJAENA" ,
+        Picture : "./PicFilm.jpg" ,
         Id : 63130500015 ,
         Name : "Chanatip Ampla" ,
         Occupation : "Student of the School of Information Technology",
@@ -10,14 +10,14 @@ const mem = ref( [
 
     },
     {
-        Picture : "https://raw.githubusercontent.com/FhLk/OASIP-SSA-5/SIT_Server/picture/Note/1633779977767.jpg?token=GHSAT0AAAAAABUC2TLQBHHQAMPR7F75IGGSYUJAEMA" ,
+        Picture : "./PicNote.jpg" ,
         Id : 63130500043 ,
         Name : "Trongsit Sinnuruk" ,
         Occupation : "Student of the School of Information Technology",
         github : "https://github.com/FhLk"
     },
     {
-        Picture : "https://raw.githubusercontent.com/FhLk/OASIP-SSA-5/SIT_Server/picture/Note/PicFight.jpg?token=GHSAT0AAAAAABUC2TLQAYUJCNPYSRRYP2MMYUJAB2A" ,
+        Picture : "./PicFight.jpg" ,
         Id : 63130500078 ,
         Name : "Paramet Pet-in" ,
         Occupation : "Student of the School of Information Technology",
