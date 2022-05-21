@@ -140,6 +140,7 @@ const reset=()=>{
 const savebooking= async (updateBooking)=>{
     updateBooking.startTime=`${EditDate.value}T${EditTime.value}`
     updateBooking.eventNote=EditNote.value
+    if(confirm("You sure change this Booking ?")){
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${updateBooking.id}`,{
         method: 'PUT',
         headers:{
@@ -156,17 +157,19 @@ const savebooking= async (updateBooking)=>{
         })
     })
     if(res.status===200){
+        alert("You have a change Booking.")
         await Page(page.value)
         reset()
     }
     else{
-        alert("Can't change this Booking")
+        alert("You can't change this Booking")
         reset()
+    }
     }
 }
 
 const deleteBooking= async (booking)=>{
-    if(confirm("Do you want cancel this Booking ?")){
+    if(confirm("Do you want delete this Booking ?")){
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${booking.id}`, {
             method: 'DELETE'
         })
@@ -305,7 +308,7 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
                                 <div class="flex">
                                     <p>Date & Time :
                                         <span v-if="isEdit && isEditId===data.id" class="pl-2">
-                                            <input type="date" v-model="EditDate" /> |
+                                            <input type="date" v-model="EditDate" :min="new Date().toISOString().split('T')[0]" /> |
                                             <input type="time" v-model="EditTime" />
                                         </span>
                                         <span v-else>

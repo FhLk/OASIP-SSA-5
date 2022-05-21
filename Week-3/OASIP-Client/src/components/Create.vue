@@ -164,7 +164,7 @@ const createBooking= async (booking)=>{
         })
     })
     if(res.status===201){
-        alert("success")
+        alert("You have a new Booking")
     }
     }
 }
