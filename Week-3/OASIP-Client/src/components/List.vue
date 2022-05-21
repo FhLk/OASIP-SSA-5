@@ -109,7 +109,7 @@ const EditDate = ref("")
 const EditTime = ref("")
 const EditDateTime = ref("")
 const EditEvent = (booking) => {
-    isEdit.value = true
+    isEdit.value = isEdit.value ? false:true
     if (isEdit.value) {
         isEditId.value=booking.id
         EditNote.value = booking.eventNote
@@ -258,13 +258,13 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
             <button @click="SortByPast" :class="isSortByPast ? btso2 : btso1">Past</button> 
             <button @click="isSortByCategory= isSortByCategory? false:true,isSortByDate=false,isSortByPast=false" :class="isSortByCategory ? btso2 : btso1" >Category</button>  
             <button @click="isSortByDate= isSortByDate? false:true,isSortByPast=false,isSortByCategory=false" :class="isSortByDate ? btso2 : btso1">Day</button> 
-            <button @click="ClearSort" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
+            <button @click="ClearSort" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">All</button> 
         </div>
         <div v-if="!isSortByDate===false">
             <input type="date" v-model="sortDay" @input="SortByDate(sortDay)" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md"/>
         </div>
         <div v-if="!isSortByCategory===false" >
-            <select v-model="categoryID" @="SortByCategory(categoryID)" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md">
+            <select v-model="categoryID" @click="SortByCategory(categoryID)" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md">
                 <option disabled :value="0">Select Clinic</option>
                 <option :value="1" >Project Management</option>
                 <option :value="2">DevOps/Infra</option>
@@ -274,10 +274,10 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
             </select>
         </div>
         <div v-if="getListBooking.length !== 0" class="mt-4 pd-10">
-            <ul>
+            <ul v-if="isSortByDate===false">
                 <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5  rounded-lg pt-2" >
                     {{ data.startTime }}
-                    ({{ data.bookingDuration }} min.) {{ data.category.categoryName.toLocaleUpperCase() }}
+                    ({{ data.bookingDuration }} mins.) {{ data.category.categoryName.toLocaleUpperCase() }}
                     {{ data.bookingName }}
                     <div>
                         <div class="flex justify-between mt-1">
@@ -285,8 +285,74 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
                                 <button @click="showDetail(data.id)" :class="isDetail === data.id ? ccl : cdet" class="mt-4" >{{ isDetail === data.id ? "Closed" : "Detail"}}</button>
                             </div>
                             <div>
-                                <img @click="deleteBooking(data)" src="../assets/trash-can.gif" 
-                                class="del ring-1 ring[#728FCE] hover:ring-red-500 rounded-md cursor-pointer shadow-md hover:shadow-red-500">
+                                <img @click="deleteBooking(data)" src="../assets/trash.png" 
+                                class="del ring bg-[#FFFFFF] ring-[#FFFFFF] hover:bg-red-500 hover:ring-red-500 rounded-md cursor-pointer shadow-md hover:shadow-red-500">
+                            </div>
+                        </div>
+                        <div v-if="isDetail === data.id" class="bgl3 px-5 pt-2 mt-2 pb-3 rounded-md">
+                            <div>
+                                <div class="flex">
+                                    <p class="pr-2">Name : </p>
+                                    <p>{{ getBooking.bookingName }}</p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">E-mail : </p>
+                                    <p>{{ getBooking.bookingEmail }}</p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">Category : </p>
+                                    <p>{{ getBooking.category.categoryName }}</p>
+                                </div>
+                                <div class="flex">
+                                    <p>Date & Time :
+                                        <span v-if="isEdit && isEditId===data.id" class="pl-2">
+                                            <input type="date" v-model="EditDate" /> |
+                                            <input type="time" v-model="EditTime" />
+                                        </span>
+                                        <span v-else>
+                                            {{ getBooking.startTime }}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">Duration : </p>
+                                    <p>{{ getBooking.bookingDuration }} mins.</p>
+                                </div>
+                                <div class="flex">
+                                    <p class="pr-2">Note :</p>
+                                        <span v-if="isEdit && isEditId===data.id" :class="getBooking.eventNote ? note : nonote">
+                                            <textarea rows="5" cols="50" v-model="EditNote" maxlength="500"></textarea>
+                                        </span>
+                                        <span v-else>
+                                            <div>
+                                                {{ getBooking.eventNote }}
+                                            </div>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button @click="savebooking(data)" v-if="isEdit" class="bg-green-600 rounded-full px-2 text-white mr-2 hover:bg-[#4ADE80]">Save</button>
+                                <button @click="EditEvent(data)" :class="isEdit ? ccl : ced">{{ isEdit ? "Cancel" : "Edit" }}</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <br />
+                </li>
+            </ul>
+            <ul v-else>
+                <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5  rounded-lg pt-2" >
+                    {{ data.startTime }}
+                    ({{ data.bookingDuration }} min.)
+                    {{ data.bookingName }}
+                    <div>
+                        <div class="flex justify-between mt-1">
+                            <div>
+                                <button @click="showDetail(data.id)" :class="isDetail === data.id ? ccl : cdet" class="mt-4" >{{ isDetail === data.id ? "Closed" : "Detail"}}</button>
+                            </div>
+                            <div>
+                                <img @click="deleteBooking(data)" src="../assets/trash.png" 
+                                class="del ring bg-[#FFFFFF] ring-[#FFFFFF] hover:bg-red-500 hover:ring-red-500 rounded-md cursor-pointer shadow-md hover:shadow-red-500">
                             </div>
                         </div>
                         <div v-if="isDetail === data.id" class="bgl3 px-5 pt-2 mt-2 pb-3 rounded-md">

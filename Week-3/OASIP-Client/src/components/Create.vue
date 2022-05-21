@@ -143,7 +143,7 @@ const CheckInput=async (booking)=>{
 
 const myRouter=useRouter()
 const GoHome =()=>{
-    myRouter.push({name:'indexPage'})
+    myRouter.push({name:'ShowPage'})
 }
 
 const createBooking= async (booking)=>{
@@ -205,7 +205,7 @@ const countEmail=computed(()=>{
                     <p v-if="isCategoryEmpty && Object.keys(newbooking.category).length===0" class="text-xs text-red-600">Plase select category</p>
                    <div class="mt-1">
                     <label >Date: </label>
-                    <input type="date" v-model="newbooking.Date">
+                    <input type="date" v-model="newbooking.Date" :min="new Date().toISOString().split('T')[0]" >
                     <p v-if="isDateEmpty && newbooking.Date===''" class="text-xs text-red-600">Plase Input your date.</p>
                     <p v-else-if="isDatePast" class="text-xs text-red-600">Can't choose Date in Past or Present</p>
                    </div>
