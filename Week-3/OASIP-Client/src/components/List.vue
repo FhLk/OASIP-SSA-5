@@ -342,7 +342,7 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
             <ul v-else>
                 <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5  rounded-lg pt-2" >
                     {{ data.startTime }}
-                    ({{ data.bookingDuration }} min.)
+                    ({{ data.bookingDuration }} mins.)
                     {{ data.bookingName }}
                     <div>
                         <div class="flex justify-between mt-1">
@@ -381,7 +381,7 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
                                 </div>
                                 <div class="flex">
                                     <p class="pr-2">Duration : </p>
-                                    <p>{{ getBooking.bookingDuration }} min.</p>
+                                    <p>{{ getBooking.bookingDuration }} mins.</p>
                                 </div>
                                 <div class="flex">
                                     <p class="pr-2">Note :</p>
