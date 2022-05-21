@@ -61,6 +61,9 @@ public class BookingService {
     }
 
     public EventBooking CreateBooking(BookingDTO newBooking){
+        newBooking.setBookingName(newBooking.getBookingName().trim());
+        newBooking.setBookingEmail(newBooking.getBookingEmail().trim());
+        newBooking.setEventNote(newBooking.getEventNote().trim());
         EventBooking booking = modelMapper.map(newBooking,EventBooking.class);
         return repository.saveAndFlush(booking);
     }
@@ -70,9 +73,9 @@ public class BookingService {
                     updateBooking.setId(bookingId);
                     return modelMapper.map(updateBooking,EventBooking.class);
                 });
-//        updateBooking.setBookingName(updateBooking.getBookingName().trim());
-//        updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
-//        updateBooking.setEventNote(updateBooking.getEventNote().trim());
+        updateBooking.setBookingName(updateBooking.getBookingName().trim());
+        updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
+        updateBooking.setEventNote(updateBooking.getEventNote().trim());
         return repository.saveAndFlush(booking);
     }
 
