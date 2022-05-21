@@ -7,8 +7,8 @@ const isShow=ref(false)
 </script>
  
 <template>
-<div class="font">
-    <h1 class=" ccf cr text-5xl mt-32 mb-4 ml-5 flex justify-between rounded-md p-2">Schedule</h1>
+<div class="bg1 font h-full">
+    <h1 class=" ccf cr text-5xl pt-32 mb-4 ml-5 flex justify-between rounded-md p-2">Schedule</h1>
     <List/>
 </div>
 </template>
@@ -26,5 +26,8 @@ const isShow=ref(false)
 }
 .cr{
     --tw-ring-color: rgb(42, 39, 40);
+}
+.bg1{
+    background-color: rgb(255, 255, 247);
 }
 </style>

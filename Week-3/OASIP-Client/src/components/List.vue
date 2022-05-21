@@ -30,7 +30,7 @@ const Page = async (page=0) => {
             })
         }
         else if(isSortByDate.value){
-            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?page=${page}&date=${StartDate}`, {
+            res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?page=${page}&date=${sortDay.value}`, {
             method: 'GET'
             })
         }
@@ -109,7 +109,7 @@ const EditDate = ref("")
 const EditTime = ref("")
 const EditDateTime = ref("")
 const EditEvent = (booking) => {
-    isEdit.value = isEdit.value ? false : true
+    isEdit.value = true
     if (isEdit.value) {
         isEditId.value=booking.id
         EditNote.value = booking.eventNote
@@ -118,6 +118,7 @@ const EditEvent = (booking) => {
         EditTime.value = EditDateTime.value.slice(10).trim()
     }
     else {
+        isEdit.value=false
         isEditId.value=0
         EditNote.value = getBooking.value.eventNote
         EditDateTime.value = getBooking.value.startTime
@@ -134,11 +135,6 @@ const reset=()=>{
     EditDate.value=""
     EditNote.value=""
     isEdit.value = false
-    isClear.value=true
-    isSortByDate.value=false
-    isSortByCategory.value=false
-    isSortByPast.value=false
-    Page()
 }
 
 const savebooking= async (updateBooking)=>{
@@ -162,9 +158,11 @@ const savebooking= async (updateBooking)=>{
     if(res.status===200){
         alert("You have change Booking")
         await Page(page.value)
+        reset()
     }
     else{
         alert("Can't change this Booking")
+        reset()
     }
 }
 
@@ -175,9 +173,11 @@ const deleteBooking= async (booking)=>{
         })
         if(res.status===200){
             await Page(page.value)
+            reset()
         }
         else{
             alert("Can't Delete this Booking")
+            reset()
         }
     }
 }
@@ -189,7 +189,10 @@ const note = " bgde px-1 mx-1 rounded-md " ;
 const nonote = "" ;
 
 const SortByPast= async ()=>{
-    reset()
+    isClear.value=false
+    isSortByCategory.value=false
+    isSortByDate.value=false
+    categoryID.value=0
     if(isSortByPast.value===false){
         isSortByPast.value=true
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
@@ -204,21 +207,23 @@ const SortByPast= async ()=>{
 }
 
 const SortByDate=async (StartDate)=>{
-    reset()
+    isClear.value=false
+    categoryID.value=0
     if(isSortByDate.value){
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate}`, {
-        method: 'GET'
-    })
-    getListBooking.value = await res.json()
-    getListBooking.value.forEach((data) => {
-        data.startTime = ShowDateTime(data.startTime)
-    })
-    getListBooking.value=SortByDateTimeASC(getListBooking.value)
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate}`, {
+            method: 'GET'
+        })
+        getListBooking.value = await res.json()
+        getListBooking.value.forEach((data) => {
+            data.startTime = ShowDateTime(data.startTime)
+        })
+         getListBooking.value=SortByDateTimeASC(getListBooking.value)
     }
 }
 
 const SortByCategory= async (id)=>{
-    reset()
+    isClear.value=false
+    sortDay.value=""
     if(isSortByCategory.value&&id!==0){
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?category=${id}`, {
             method: 'GET'
@@ -231,6 +236,15 @@ const SortByCategory= async (id)=>{
     }
 }
 
+const ClearSort=()=>{
+    sortDay.value=""
+    categoryID.value=0
+    isClear.value=true
+    isSortByDate.value=false
+    isSortByCategory.value=false
+    isSortByPast.value=false
+    Page(page.value)
+}
 
 const btso1 = "cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
 const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
@@ -244,15 +258,14 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
             <button @click="SortByPast" :class="isSortByPast ? btso2 : btso1">Past</button> 
             <button @click="isSortByCategory= isSortByCategory? false:true,isSortByDate=false,isSortByPast=false" :class="isSortByCategory ? btso2 : btso1" >Category</button>  
             <button @click="isSortByDate= isSortByDate? false:true,isSortByPast=false,isSortByCategory=false" :class="isSortByDate ? btso2 : btso1">Day</button> 
-            <button @click="reset" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
+            <button @click="ClearSort" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">Clear Sort</button> 
         </div>
         <div v-if="!isSortByDate===false">
-            <input type="date" v-model="sortDay" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md"/>
-            <button @click="SortByDate(sortDay)" class="cbts rounded-md px-2 text-white hover:bg-[#5050D0] mx-2">Sort</button>
+            <input type="date" v-model="sortDay" @input="SortByDate(sortDay)" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md"/>
         </div>
         <div v-if="!isSortByCategory===false" >
-            <select v-model="categoryID" @click="SortByCategory(categoryID)" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md">
-                <option disabled :value="0" hidden>Select Clinic</option>
+            <select v-model="categoryID" @="SortByCategory(categoryID)" class="ring-2 ring-offset-2 ring-black ml-2 mt-2 rounded-md">
+                <option disabled :value="0">Select Clinic</option>
                 <option :value="1" >Project Management</option>
                 <option :value="2">DevOps/Infra</option>
                 <option :value="3">Database</option>
@@ -260,17 +273,16 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
                 <option :value="5">Server-side</option>
             </select>
         </div>
-        <div v-if="getListBooking.length !== 0" class="mt-4">
+        <div v-if="getListBooking.length !== 0" class="mt-4 pd-10">
             <ul>
-                <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5 rounded-lg pt-2" >
+                <li v-for="(data, index) in getListBooking" :key="index" class="bgl2 mb-5 px-8 mx-5  rounded-lg pt-2" >
                     {{ data.startTime }}
                     ({{ data.bookingDuration }} min.) {{ data.category.categoryName.toLocaleUpperCase() }}
                     {{ data.bookingName }}
                     <div>
                         <div class="flex justify-between mt-1">
                             <div>
-                                <button @click="showDetail(data.id)" :class="isDetail === data.id ? ccl : cdet" class="mt-4" >{{ isDetail === data.id ? "Closed" : "Detail"
-                                }}</button>
+                                <button @click="showDetail(data.id)" :class="isDetail === data.id ? ccl : cdet" class="mt-4" >{{ isDetail === data.id ? "Closed" : "Detail"}}</button>
                             </div>
                             <div>
                                 <img @click="deleteBooking(data)" src="../assets/trash-can.gif" 
@@ -293,10 +305,12 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
                                 </div>
                                 <div class="flex">
                                     <p>Date & Time :
-                                        <span v-if="isEdit === false" class="pl-2">{{ getBooking.startTime }}</span>
-                                        <span v-else>
+                                        <span v-if="isEdit && isEditId===data.id" class="pl-2">
                                             <input type="date" v-model="EditDate" /> |
                                             <input type="time" v-model="EditTime" />
+                                        </span>
+                                        <span v-else>
+                                            {{ getBooking.startTime }}
                                         </span>
                                     </p>
                                 </div>
@@ -331,7 +345,7 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
             <h2 v-if="isSortByPast">No Past Events.</h2>
             <h2 v-else >No Scheduled Events.</h2>
         </div>
-        <div class="flex justify-center">
+        <div class="flex justify-center pb-5">
         <button v-if="page !== 0" @click="BackPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Back</button>
         <button v-if="getListBooking.length === 5" @click="NextPage" class="mx-10 px-4 py-2 btt cf hover:bg-[#5555AC] rounded-md">Next</button>
         </div>
