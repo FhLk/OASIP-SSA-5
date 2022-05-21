@@ -2,7 +2,7 @@
 import { ref } from "vue";
 const mem = ref( [
     {
-        Picture : "./PicFilm.jpg" ,
+        Picture : "./pictureProfile/PicFilm.jpg" ,
         Id : 63130500015 ,
         Name : "Chanatip Ampla" ,
         Occupation : "Student of the School of Information Technology",
@@ -10,14 +10,14 @@ const mem = ref( [
 
     },
     {
-        Picture : "./PicNote.jpg" ,
+        Picture : "./pictureProfile/PicNote.jpg" ,
         Id : 63130500043 ,
         Name : "Trongsit Sinnuruk" ,
         Occupation : "Student of the School of Information Technology",
         github : "https://github.com/FhLk"
     },
     {
-        Picture : "./PicFight.jpg" ,
+        Picture : "./pictureProfile/PicFight.jpg" ,
         Id : 63130500078 ,
         Name : "Paramet Pet-in" ,
         Occupation : "Student of the School of Information Technology",
