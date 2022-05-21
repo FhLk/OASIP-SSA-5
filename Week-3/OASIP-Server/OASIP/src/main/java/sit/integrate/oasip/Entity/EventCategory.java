@@ -10,24 +10,27 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
 @Entity(name = "EventCategory")
 public class EventCategory {
     @Id
     @Column(name = "CategoryID", nullable = false)
     private Integer id;
 
-    @Column(name = "CategoryName", nullable = false, length = 100)
+    @Column(name = "CategoryName", nullable = false, length = 110)
     private String categoryName;
 
-    @Column(name = "Description", length = 550)
+    @Column(name = "Description", length = 510)
     private String description;
 
     @Column(name = "Duration", nullable = false)
     private Integer duration;
 
+
     public Integer getId() {
         return id;
     }
+
 
     public String getCategoryName() {
         return categoryName;

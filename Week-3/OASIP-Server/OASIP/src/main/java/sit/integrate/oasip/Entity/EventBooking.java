@@ -17,10 +17,10 @@ public class EventBooking {
     @Column(name = "BookingID", nullable = false)
     private Integer id;
 
-    @Column(name = "BookingName", nullable = false, length = 150)
+    @Column(name = "BookingName", nullable = false, length = 110)
     private String bookingName;
 
-    @Column(name = "BookingEmail", nullable = false, length = 150)
+    @Column(name = "BookingEmail", nullable = false, length = 110)
     private String bookingEmail;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -33,38 +33,45 @@ public class EventBooking {
     @Column(name = "BookingDuration", nullable = false)
     private Integer bookingDuration;
 
-    @Column(name = "EventNote", length = 550)
+    @Column(name = "EventNote", length = 510)
     private String eventNote;
+
 
     public Integer getId() {
         return id;
     }
 
+
     public String getBookingName() {
         return bookingName;
     }
+
 
     public String getBookingEmail() {
         return bookingEmail;
     }
 
+
     public EventCategory getCategory() {
         return category;
     }
 
+
     public LocalDateTime getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = LocalDateTime.parse(startTime);
     }
 
     public Integer getBookingDuration() {
         return bookingDuration;
     }
 
+
     public String getEventNote() {
         return eventNote;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = LocalDateTime.parse(startTime);
-    }
 }
