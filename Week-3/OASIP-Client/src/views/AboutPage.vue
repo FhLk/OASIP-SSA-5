@@ -4,9 +4,9 @@ const mem = ref( [
     {
         Picture : "./pictureProfile/PicFilm.jpg" ,
         Id : 63130500015 ,
-        Name : "Chanatip Ampla" ,
+        Name : "Chanatip Ampia" ,
         Occupation : "Student of the School of Information Technology",
-        github : "https://github.com/Batbloody"
+        github : "https://github.com/taohoo3698"
 
     },
     {
@@ -14,14 +14,14 @@ const mem = ref( [
         Id : 63130500043 ,
         Name : "Trongsit Sinnuruk" ,
         Occupation : "Student of the School of Information Technology",
-        github : "https://github.com/FhLk"
+        github : "https://github.com/Batbloody"
     },
     {
         Picture : "./pictureProfile/PicFight.jpg" ,
         Id : 63130500078 ,
         Name : "Paramet Pet-in" ,
         Occupation : "Student of the School of Information Technology",
-        github : "https://github.com/taohoo3698"
+        github : "https://github.com/FhLk"
     }
 ] );
 
