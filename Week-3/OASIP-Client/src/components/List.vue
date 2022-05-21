@@ -305,7 +305,7 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
                                 <div class="flex">
                                     <p>Date & Time :
                                         <span v-if="isEdit && isEditId===data.id" class="pl-2">
-                                            <input type="date" v-model="EditDate" /> |
+                                            <input type="date" v-model="EditDate" :min="new Date().toISOString().split('T')[0]" /> |
                                             <input type="time" v-model="EditTime" />
                                         </span>
                                         <span v-else>
