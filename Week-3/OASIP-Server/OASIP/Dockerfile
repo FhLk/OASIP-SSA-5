@@ -3,10 +3,10 @@ RUN mkdir -p /spring-build
 WORKDIR /spring-build
 COPY pom.xml /spring-build
 COPY src /spring-build/src
-RUN mvn clean install package -DskipTests
+RUN mvn -Dmaven.test.skip package
 
 FROM openjdk:11 as production-stage
-ARG JAR_FILE=target/OASIP-0.0.1-SNAPSHOT.jar
+ARG --from=build-stage JAR_FILE=target/OASIP-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar
 ENV TZ=Asia/Bangkok
 EXPOSE 8080
