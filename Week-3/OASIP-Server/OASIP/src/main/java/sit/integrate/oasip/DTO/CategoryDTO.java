@@ -1,9 +1,6 @@
 package sit.integrate.oasip.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 import javax.validation.constraints.*;
 
@@ -27,4 +24,5 @@ public class CategoryDTO {
     @Min(value = 1,message = "Duration have less 1 minute")
     @NotNull(message = "Duration shouldn't be null")
     private Integer duration;
+
 }

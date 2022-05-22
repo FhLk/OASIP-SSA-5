@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class BookingDTO {
     private Integer id;
     @NotNull(message = "Name shouldn't be null")
@@ -26,8 +27,7 @@ public class BookingDTO {
     private String bookingEmail;
 
     @NotNull(message = "Category is null")
-    @Valid
-    private CategoryDTO category;
+    private CategoryDTONoValidate category;
 
     @Future(message = "Can't Change to Date and Time in Past")
     @NotNull(message = "Date and Time shouldn't be null")

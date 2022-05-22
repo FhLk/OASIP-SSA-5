@@ -1,11 +1,13 @@
 package sit.integrate.oasip.Controller;
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.BookingDTO;
+import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Service.BookingService;
 import sit.integrate.oasip.exeption.BookingNotFoundException;
@@ -22,6 +24,9 @@ import java.util.List;
 public class BookingController {
     @Autowired
     private BookingService service;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("")
     public ResponseEntity<List<BookingDTO>> getAllBooking(
@@ -72,8 +77,8 @@ public class BookingController {
         newBooking.setBookingName(newBooking.getBookingName().trim());
         newBooking.setBookingEmail(newBooking.getBookingEmail().trim());
         newBooking.setEventNote(newBooking.getEventNote().trim());
-        service.CreateBooking(newBooking);
-        return new ResponseEntity<>(newBooking,HttpStatus.CREATED);
+        EventBooking eventBooking=service.CreateBooking(newBooking);
+        return new ResponseEntity<>(modelMapper.map(eventBooking,BookingDTO.class),HttpStatus.CREATED);
     }
 
     @PutMapping("/{BookingId}")
