@@ -157,7 +157,10 @@ const createBooking= async (booking)=>{
             id:0,
             bookingName: booking.bookingName.trim(),
             bookingEmail: booking.bookingEmail.trim(),
-            category: booking.category.id,
+            category: {
+                id:booking.category.id,
+                categoryName: booking.category.categoryName
+                },
             startTime:`${booking.Date}T${booking.Time}`,
             bookingDuration:booking.bookingDuration,
             eventNote: booking.eventNote.trim()
