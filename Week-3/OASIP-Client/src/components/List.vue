@@ -242,12 +242,11 @@ const SortByDate=async (StartDate=sortDay.value)=>{
 
 const isSortCategory=()=>{
     reset()
-    // page.value=0
     isSortByCategory.value=true
     isSortByDate.value=false
     isSortByPast.value=false
     isClear.value=false
-    sortDay.value=
+    sortDay.value=moment().local().format(DateFormat).slice(0,10).trim()
     SortByCategory()
 }
 let getcategoryId=0
