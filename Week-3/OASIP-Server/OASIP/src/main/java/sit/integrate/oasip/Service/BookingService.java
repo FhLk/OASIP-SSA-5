@@ -5,16 +5,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Repository.BookingRepository;
 import sit.integrate.oasip.Utils.ListMapper;
-import sit.integrate.oasip.exeption.BookingNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,6 +68,16 @@ public class BookingService {
         return repository.saveAndFlush(booking);
     }
     public EventBooking UpdateBooking(Integer bookingId,BookingDTO updateBooking){
+        BookingDTO oldBooking = getBookingId(bookingId);
+        String errorsEmail="";
+        String errorsName="";
+        if(!oldBooking.getBookingName().equals(updateBooking.getBookingName())){
+            errorsName = "The bookingName can't change";
+            if(!oldBooking.getBookingEmail().equals(updateBooking.getBookingEmail())){
+                errorsEmail = "The bookingEmail can't change";
+            }
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,errorsName +" "+errorsEmail) ;
+        }
         updateBooking.setBookingName(updateBooking.getBookingName().trim());
         updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
         updateBooking.setEventNote(updateBooking.getEventNote().trim());

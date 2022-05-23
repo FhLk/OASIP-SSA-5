@@ -6,15 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Service.BookingService;
-import sit.integrate.oasip.exeption.BookingNotFoundException;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -82,16 +81,7 @@ public class BookingController {
     }
 
     @PutMapping("/{BookingId}")
-    public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking) throws BookingNotFoundException {
-        ResponseEntity<BookingDTO> test = getBooking(BookingId);
-        List errors = new ArrayList();
-        if(!test.getBody().getBookingName().equals(updateBooking.getBookingName())){
-            errors.add("The bookingName can't change");
-            if(!test.getBody().getBookingEmail().equals(updateBooking.getBookingEmail())){
-                errors.add("The bookingEmail can't change");
-            }
-            throw new BookingNotFoundException(errors.toString());
-        }
+    public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking) throws ResponseStatusException {
         service.UpdateBooking(BookingId,updateBooking);
         return new ResponseEntity<>(updateBooking,HttpStatus.OK);
     }

@@ -34,30 +34,24 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(BookingNotFoundException.class)
-    public ShowException handleBusinessException(BookingNotFoundException ex) {
-        ShowException errors=new ShowException();
-        errors.setStatusCode(500);
-        errors.setError("INTERNAL SERVER ERROR");
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("Message", ex.getMessage());
-        errors.setErrorMessage(errorMap);
-        return errors;
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = ResponseStatusException.class)
     public ShowException handleNotFoundException(ResponseStatusException ex) {
         ShowException errors= new ShowException();
-        errors.setStatusCode(404);
-        errors.setError("NOT FOUND");
-        Map<String, String> errorMap = new HashMap<>();
-        if(ex.getMessage().length()==45){
-            errorMap.put("Message", ex.getMessage().substring(15,44));
+        errors.setStatusCode(ex.getRawStatusCode());
+        if(ex.getRawStatusCode()==400){
+            errors.setError("Bad Request");
+        }
+        else if(ex.getRawStatusCode()==500){
+            errors.setError("Internal Sever Error");
+        }
+        else if(ex.getRawStatusCode()==404){
+            errors.setError("Not Found");
         }
         else{
-            errorMap.put("Message", ex.getMessage().substring(15,43));
+            errors.setError(ex.getReason());
         }
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("Message",ex.getReason());
         errors.setErrorMessage(errorMap);
         return errors;
     }
