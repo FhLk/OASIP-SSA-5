@@ -30,7 +30,7 @@ const Page = async (page=0) => {
             })
         }
         else if(isSortByDate.value){
-            res = await fetch(`${fetchUrl}/bookings/sortBySpecify?page=${page}&date=${sortDay.value}`, {
+            res = await fetch(`${fetchUrl}/bookings/sortByDay?page=${page}&date=${sortDay.value}`, {
             method: 'GET'
             })
         }
@@ -228,7 +228,7 @@ const isSortDate=()=>{
 const SortByDate=async (StartDate=sortDay.value)=>{
     page.value=0
     if(isSortByDate.value){
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortBySpecify?date=${StartDate}`, {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByDay?date=${StartDate}`, {
             method: 'GET'
         })
         getListBooking.value = await res.json()
