@@ -12,9 +12,7 @@ services:
       - TZ=Asia/Bangkok
     image: mysql:8
     restart: always
-    ports:
-      - "3306:3306"
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=+07:00
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=+07:00 --default-character-set=utf8mb4
 networks:
   default:
     external:
