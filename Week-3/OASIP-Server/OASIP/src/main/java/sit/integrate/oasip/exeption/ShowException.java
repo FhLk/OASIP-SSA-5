@@ -10,7 +10,7 @@ import java.util.Map;
 @NoArgsConstructor
 @ToString
 public class ShowException{
-    private String statusCode;
+    private Integer statusCode;
     private String error;
-    private Map<String,String> errorField;
+    private Map<String,String> errorMessage;
 }
