@@ -73,9 +73,6 @@ public class BookingController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookingDTO> AddBooking(@Valid @RequestBody BookingDTO newBooking){
-        newBooking.setBookingName(newBooking.getBookingName().trim());
-        newBooking.setBookingEmail(newBooking.getBookingEmail().trim());
-        newBooking.setEventNote(newBooking.getEventNote().trim());
         EventBooking eventBooking=service.CreateBooking(newBooking);
         return new ResponseEntity<>(modelMapper.map(eventBooking,BookingDTO.class),HttpStatus.CREATED);
     }

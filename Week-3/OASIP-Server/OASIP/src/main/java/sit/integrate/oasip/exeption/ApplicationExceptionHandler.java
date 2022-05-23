@@ -38,10 +38,7 @@ public class ApplicationExceptionHandler {
     public ShowException handleNotFoundException(ResponseStatusException ex) {
         ShowException errors= new ShowException();
         errors.setStatusCode(ex.getRawStatusCode());
-        if(ex.getRawStatusCode()==400){
-            errors.setError("Bad Request");
-        }
-        else if(ex.getRawStatusCode()==500){
+        if(ex.getRawStatusCode()==500){
             errors.setError("Internal Sever Error");
         }
         else if(ex.getRawStatusCode()==404){
