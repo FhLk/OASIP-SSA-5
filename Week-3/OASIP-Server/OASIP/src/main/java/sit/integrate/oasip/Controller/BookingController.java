@@ -57,7 +57,7 @@ public class BookingController {
         return ResponseEntity.ok(service.getBookingSortPast(page,pageSize,LocalDateTime.now()));
     }
 
-    @GetMapping("/sortBySpecify")
+    @GetMapping("/sortByDay")
     public ResponseEntity<List<BookingDTO>> getBookingBySpecify(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int pageSize,
