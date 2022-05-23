@@ -239,7 +239,6 @@ const SortByDate=async (StartDate=sortDay.value)=>{
     }
 }
 
-
 const isSortCategory=()=>{
     reset()
     isSortByCategory.value=true
@@ -249,10 +248,9 @@ const isSortCategory=()=>{
     sortDay.value=moment().local().format(DateFormat).slice(0,10).trim()
     SortByCategory()
 }
-let getcategoryId=0
 const SortByCategory= async (id=1)=>{
     page.value=0
-    if(isSortByCategory.value&&id!==getcategoryId){
+    if(isSortByCategory.value){
         getcategoryId=id
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?category=${id}`, {
             method: 'GET'
@@ -286,7 +284,7 @@ const btso2 = "cbtso rounded-md px-2 text-white hover:bg-[#5050D0] mx-2" ;
             <p class="ml-5">Sort By : </p>
             <button @click="SortByPast" :class="isSortByPast ? btso2 : btso1">Past</button> 
             <button @click="isSortCategory" :class="isSortByCategory ? btso2 : btso1" :disabled="isSortByCategory" >Category</button>  
-            <button @click="isSortDate" :class="isSortByDate ? btso2 : btso1">Day</button> 
+            <button @click="isSortDate" :class="isSortByDate ? btso2 : btso1" :disabled="isSortByDate">Day</button> 
             <button @click="GetAll" class="clear rounded-md px-2 text-white hover:bg-[#763276] mx-2" :disabled="isClear">All</button> 
         </div>
         <div v-if="!isSortByDate===false">
