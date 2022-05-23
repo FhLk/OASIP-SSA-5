@@ -13,7 +13,7 @@ services:
       - LANG=en_US.UTF-8
     image: mysql:8
     restart: always
-    command: --character-set-server=utf8mb4 --default-time-zone=+07:00
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_cis --default-time-zone=+07:00 
 networks:
   default:
     external:
