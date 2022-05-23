@@ -7,11 +7,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Repository.BookingRepository;
 import sit.integrate.oasip.Utils.ListMapper;
+import sit.integrate.oasip.exeption.BookingNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,8 +33,7 @@ public class BookingService {
 
     public BookingDTO getBookingId(Integer bookingId){
         EventBooking booking = repository.findById(bookingId)
-                .orElseThrow(()->new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,  "Booking id "+ bookingId +" Does Not Exist !!!"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Booking id "+bookingId+" does not exits."));
         return modelMapper.map(booking, BookingDTO.class);
     }
 
@@ -65,14 +67,14 @@ public class BookingService {
         return repository.saveAndFlush(booking);
     }
     public EventBooking UpdateBooking(Integer bookingId,BookingDTO updateBooking){
+        updateBooking.setBookingName(updateBooking.getBookingName().trim());
+        updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
+        updateBooking.setEventNote(updateBooking.getEventNote().trim());
         EventBooking booking = repository.findById(bookingId).map(b->mapBooking(modelMapper.map(b,BookingDTO.class),updateBooking))
                 .orElseGet(()->{
                     updateBooking.setId(bookingId);
                     return modelMapper.map(updateBooking,EventBooking.class);
                 });
-        updateBooking.setBookingName(updateBooking.getBookingName().trim());
-        updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());
-        updateBooking.setEventNote(updateBooking.getEventNote().trim());
         return repository.saveAndFlush(booking);
     }
 

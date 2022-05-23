@@ -4,10 +4,8 @@ package sit.integrate.oasip.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sit.integrate.oasip.DTO.BookingDTO;
-import sit.integrate.oasip.DTO.SortListDayDTO;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Service.BookingService;
 import sit.integrate.oasip.exeption.BookingNotFoundException;
@@ -15,9 +13,7 @@ import sit.integrate.oasip.exeption.BookingNotFoundException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bookings")
