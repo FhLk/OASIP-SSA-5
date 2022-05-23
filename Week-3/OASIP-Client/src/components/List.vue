@@ -98,7 +98,7 @@ onBeforeMount(async ()=>{
 let count = 0
 const showDetail = async (id) => {
     if (id !== count) {
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${id}`, {
+        const res = await fetch(`${fetchUrl}/bookings/${id}`, {
             method: 'GET'
         })
         getBooking.value = await res.json()
@@ -147,7 +147,7 @@ const savebooking= async (updateBooking)=>{
     updateBooking.startTime=`${EditDate.value}T${EditTime.value}`
     updateBooking.eventNote=EditNote.value
     if(confirm("You sure change this Booking ?")){
-    const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${updateBooking.id}`,{
+    const res=await fetch(`${fetchUrl}/bookings/${updateBooking.id}`,{
         method: 'PUT',
         headers:{
             'content-type':'application/json'
@@ -176,7 +176,7 @@ const savebooking= async (updateBooking)=>{
 
 const deleteBooking= async (booking)=>{
     if(confirm("Do you want delete this Booking ?")){
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/${booking.id}`, {
+        const res = await fetch(`${fetchUrl}/bookings/${booking.id}`, {
             method: 'DELETE'
         })
         if(res.status===200){
@@ -204,7 +204,7 @@ const SortByPast= async ()=>{
     categoryID.value=1
     if(isSortByPast.value===false){
         isSortByPast.value=true
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByPast`, {
+        const res = await fetch(`${fetchUrl}/bookings/sortByPast`, {
             method: 'GET'
         })
         getListBooking.value = await res.json()
@@ -228,7 +228,7 @@ const isSortDate=()=>{
 const SortByDate=async (StartDate=sortDay.value)=>{
     page.value=0
     if(isSortByDate.value){
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByDay?date=${StartDate}`, {
+        const res = await fetch(`${fetchUrl}/bookings/sortByDay?date=${StartDate}`, {
             method: 'GET'
         })
         getListBooking.value = await res.json()
@@ -251,8 +251,7 @@ const isSortCategory=()=>{
 const SortByCategory= async (id=1)=>{
     page.value=0
     if(isSortByCategory.value){
-        getcategoryId=id
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/bookings/sortByCategory?category=${id}`, {
+        const res = await fetch(`${fetchUrl}/bookings/sortByCategory?category=${id}`, {
             method: 'GET'
         })
         getListBooking.value = await res.json()
