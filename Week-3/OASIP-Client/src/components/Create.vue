@@ -52,7 +52,7 @@ const reset = () => {
     GoHome()
 }
 
-const CheckInput=async (booking)=>{
+const CheckInput=(booking)=>{
     let isCheck=true
     if(booking.bookingName===""){
         isCheck=false
@@ -136,7 +136,7 @@ const CheckInput=async (booking)=>{
         isCategoryEmpty.value=false
         isDateEmpty.value=false
         isTimeEmpty.value=false
-        await createBooking(booking)
+        createBooking(booking)
         reset()
     }
 }
@@ -147,7 +147,7 @@ const GoHome =()=>{
 }
 
 const createBooking= async (booking)=>{
-    if(confirm("You sure ?")){
+    if(confirm("Are You sure ?")){
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
         method: 'POST',
         headers:{

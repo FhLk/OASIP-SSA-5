@@ -221,7 +221,7 @@ const isSortDate=()=>{
     isSortByPast.value=false
     isSortByCategory.value=false
     isClear.value=false
-    categoryID.value=0
+    categoryID.value=1
     SortByDate()
 }
 
