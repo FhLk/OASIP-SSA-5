@@ -14,7 +14,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema oasip_db
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `oasip_db` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `oasip_db` DEFAULT CHARACTER SET utf8mb4 ;
 USE `oasip_db` ;
 
 -- -----------------------------------------------------
