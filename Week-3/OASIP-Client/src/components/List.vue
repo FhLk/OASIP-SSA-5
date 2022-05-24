@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
-import moment from "moment"
+import moment, { now } from "moment"
 const fetchUrl=import.meta.env.VITE_BASE_URL
 let DateFormat = "YYYY-MM-DD HH:mm"
 
@@ -146,7 +146,10 @@ const reset=()=>{
 const savebooking= async (updateBooking)=>{
     updateBooking.startTime=`${EditDate.value}T${EditTime.value}`
     updateBooking.eventNote=EditNote.value
-    if(confirm("You sure change this Booking ?")){
+    if(moment(updateBooking.startTime).local().format(DateFormat)<=sortDay.value){
+        alert("You can't change Booking in past")
+    }
+    else if(confirm("You sure change this Booking ?")){
     const res=await fetch(`${fetchUrl}/bookings/${updateBooking.id}`,{
         method: 'PUT',
         headers:{
