@@ -148,6 +148,8 @@ const savebooking= async (updateBooking)=>{
     updateBooking.eventNote=EditNote.value
     if(moment(updateBooking.startTime).local().format(DateFormat)<=sortDay.value){
         alert("You can't change Booking in past")
+        await Page(page.value)
+        reset()
     }
     else if(confirm("You sure change this Booking ?")){
     const res=await fetch(`${fetchUrl}/bookings/${updateBooking.id}`,{
