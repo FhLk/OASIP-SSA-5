@@ -1,6 +1,5 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue';
-import moment, { now } from "moment"
 const fetchUrl=import.meta.env.VITE_BASE_URL
 let DateFormat = "YYYY-MM-DD HH:mm"
 
