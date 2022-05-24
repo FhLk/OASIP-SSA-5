@@ -44,9 +44,6 @@ public class ApplicationExceptionHandler {
         else if(ex.getRawStatusCode()==404){
             errors.setError("Not Found");
         }
-        else{
-            errors.setError(ex.getReason());
-        }
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("Message",ex.getReason());
         errors.setErrorMessage(errorMap);
