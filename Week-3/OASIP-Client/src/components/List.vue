@@ -158,7 +158,7 @@ const savebooking= async (updateBooking)=>{
             bookingEmail: updateBooking.bookingEmail.trim(),
             category: {
                 id:updateBooking.category.id,
-                categoryName: updatebooking.category.categoryName
+                categoryName: updateBooking.category.categoryName
             },
             startTime: updateBooking.startTime,
             bookingDuration:updateBooking.bookingDuration,
