@@ -52,7 +52,7 @@ const reset = () => {
     GoHome()
 }
 
-const CheckInput=(booking)=>{
+const CheckInput= async (booking)=>{
     let isCheck=true
     if(booking.bookingName===""){
         isCheck=false
@@ -136,7 +136,7 @@ const CheckInput=(booking)=>{
         isCategoryEmpty.value=false
         isDateEmpty.value=false
         isTimeEmpty.value=false
-        createBooking(booking)
+        await createBooking(booking)
         reset()
     }
 }
