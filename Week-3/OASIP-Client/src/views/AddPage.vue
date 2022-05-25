@@ -19,7 +19,7 @@ const isEdit=ref(false)
 const isEditId=ref(0)
 const EditDescription = ref("")
 const EditName = ref("")
-const EditDuration= ref("")
+const EditDuration= ref(0)
 const EditCategoryOpen = (category) => {
     isEdit.value = true
     isEditId.value=category.id
@@ -29,6 +29,8 @@ const EditCategoryOpen = (category) => {
 }
 
 const EditCategoryClose =()=>{
+    isDuration.value=false
+    isNameEmpty.value=false
     isEditId.value=0
     isEdit.value=false
 }
@@ -44,22 +46,22 @@ const reset=()=>{
 const isNameEmpty=ref(false)
 const isDuration=ref(false)
 const CheckInput= async (updateCategory)=>{
-    updateCategory.categoryName=EditName.value;
-    updateCategory.description=EditDescription.value
-    updateCategory.duration=EditDuration.value
     let isCheck=true
-    if(updateCategory.categoryName === ''){
+    if(EditName.value === ''){
         isCheck=false
         isNameEmpty.value=true
     }
-    if(updateCategory.duration < 1 || updateCategory.duration > 480){
+    if(EditDuration.value < 1 || EditDuration.value > 480){
         isCheck=false
         isDuration.value=true
     }
-    else if(updateCategory.duration >= 1 && updateCategory.duration <= 480){
+    else if(EditDuration.value >= 1 && EditDuration.value <= 480){
         isDuration.value=false
     }
     if(isCheck){
+        EditDuration.value=updateCategory.duration
+        EditName.value=updateCategory.categoryName
+        EditDescription.value=updateCategory.description
         isDuration.value=false
         isNameEmpty.value=false
         if(confirm("Are you sure")){
@@ -72,7 +74,7 @@ const CheckInput= async (updateCategory)=>{
 const saveCategory= async (updateCategory)=>{
     updateCategory.categoryName=EditName.value
     updateCategory.description=EditDescription.value
-    updateCategory.duration=EditDuration.value
+    updateCategory.duration= EditDuration.value
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/categories/${updateCategory.id}`, {
         method: 'PUT',
         headers:{
