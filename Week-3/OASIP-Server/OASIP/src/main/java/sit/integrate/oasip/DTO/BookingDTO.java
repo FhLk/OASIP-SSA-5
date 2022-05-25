@@ -13,14 +13,13 @@ import java.time.LocalDateTime;
 @ToString
 public class BookingDTO {
     private Integer id;
+
     @NotNull(message = "Name shouldn't be null")
     @NotEmpty(message = "Name shouldn't be empty")
     @Size(max = 100,message = "Your Name have length more than 100 character")
-    @NotBlank(message = "Name shouldn't be null/empty")
     private String bookingName;
 
     @Email(message = "Email doesn't follow format")
-    @NotBlank(message = "Email shouldn't be null/empty")
     @NotNull(message = "Email shouldn't be null")
     @NotEmpty(message = "Email shouldn't be empty")
     @Size(max = 100,message = "Your Email have length more than 100 character")

@@ -5,7 +5,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.integrate.oasip.DTO.BookingDTO;
@@ -13,8 +12,10 @@ import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Repository.BookingRepository;
 import sit.integrate.oasip.Utils.ListMapper;
+import sit.integrate.oasip.exeption.BookingException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,16 +68,15 @@ public class BookingService {
         EventBooking booking = modelMapper.map(newBooking,EventBooking.class);
         return repository.saveAndFlush(booking);
     }
-    public EventBooking UpdateBooking(Integer bookingId,BookingDTO updateBooking){
+    public EventBooking UpdateBooking(Integer bookingId,BookingDTO updateBooking) throws BookingException {
         BookingDTO oldBooking = getBookingId(bookingId);
-        String errorsEmail="";
-        String errorsName="";
+        List<String> errors=new ArrayList<>();
         if(!oldBooking.getBookingName().equals(updateBooking.getBookingName())){
-            errorsName = "The bookingName can't change";
+            errors.add("The bookingName can't change");
             if(!oldBooking.getBookingEmail().equals(updateBooking.getBookingEmail())){
-                errorsEmail = "The bookingEmail can't change";
+                errors.add("The bookingEmail can't change");
             }
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,errorsName +" "+errorsEmail) ;
+            throw new BookingException(errors.toString());
         }
         updateBooking.setBookingName(updateBooking.getBookingName().trim());
         updateBooking.setBookingEmail(updateBooking.getBookingEmail().trim());

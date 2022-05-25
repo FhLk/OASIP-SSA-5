@@ -11,6 +11,7 @@ import sit.integrate.oasip.DTO.BookingDTO;
 import sit.integrate.oasip.Entity.EventBooking;
 import sit.integrate.oasip.Entity.EventCategory;
 import sit.integrate.oasip.Service.BookingService;
+import sit.integrate.oasip.exeption.BookingException;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -78,7 +79,7 @@ public class BookingController {
     }
 
     @PutMapping("/{BookingId}")
-    public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking) throws ResponseStatusException {
+    public ResponseEntity<BookingDTO> update(@PathVariable Integer BookingId,@Valid @RequestBody BookingDTO updateBooking) throws BookingException {
         service.UpdateBooking(BookingId,updateBooking);
         return new ResponseEntity<>(updateBooking,HttpStatus.OK);
     }

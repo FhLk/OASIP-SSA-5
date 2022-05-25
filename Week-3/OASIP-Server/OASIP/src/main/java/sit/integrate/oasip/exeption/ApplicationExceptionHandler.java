@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,26 +23,22 @@ public class ApplicationExceptionHandler {
         errors.setStatusCode(400);
         errors.setError("BAD REQUEST");
         ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errorsMap.put("Message",errorMessage);
+            errorsMap.put(fieldName,errorMessage);
         });
         errors.setErrorMessage(errorsMap);
         return errors;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(value = ResponseStatusException.class)
-    public ShowException handleNotFoundException(ResponseStatusException ex) {
-        ShowException errors= new ShowException();
-        errors.setStatusCode(ex.getRawStatusCode());
-        if(ex.getRawStatusCode()==500){
-            errors.setError("Internal Sever Error");
-        }
-        else if(ex.getRawStatusCode()==404){
-            errors.setError("Not Found");
-        }
+    @ExceptionHandler(BookingException.class)
+    public ShowException handleBusinessException(BookingException ex) {
+        ShowException errors=new ShowException();
+        errors.setStatusCode(500);
+        errors.setError("INTERNAL SERVER ERROR");
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("Message",ex.getReason());
+        errorMap.put("Message", ex.getMessage());
         errors.setErrorMessage(errorMap);
         return errors;
     }
