@@ -30,9 +30,6 @@ const EditCategoryOpen = (category) => {
 
 const EditCategoryClose =()=>{
     isEditId.value=0
-    EditName.value=""
-    EditDescription.value=""
-    EditDuration.value=0
     isEdit.value=false
 }
 
@@ -46,7 +43,7 @@ const reset=()=>{
 
 const isNameEmpty=ref(false)
 const isDuration=ref(false)
-const CheckInput=(updateCategory)=>{
+const CheckInput= async (updateCategory)=>{
     updateCategory.categoryName=EditName.value;
     updateCategory.description=EditDescription.value
     updateCategory.duration=EditDuration.value
@@ -65,8 +62,10 @@ const CheckInput=(updateCategory)=>{
     if(isCheck){
         isDuration.value=false
         isNameEmpty.value=false
-        saveCategory(updateCategory)
-        reset()
+        if(confirm("Are you sure")){
+            await saveCategory(updateCategory)
+            reset()
+        }
     }
 }
 
@@ -116,7 +115,8 @@ const countName=computed(()=>{
                 <p v-for="(category, index) in getListCategories" :key="index" class="mt-2 pb-8">
                     {{ index + 1 }}. 
                     <span v-if="isEdit && isEditId===category.id">
-                        <input type="text" v-model="EditName" max="100"/>
+                        <input type="text" v-model="EditName" maxlength="100"/>
+                        <p class="text-sm text-stone-500">(Number of Character : {{countName}})</p>
                         <p v-if="isNameEmpty && countName===100" class="text-xs text-red-600">Plase Input Category Name.</p>
                     </span>
                     <span v-else>

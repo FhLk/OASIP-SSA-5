@@ -136,8 +136,10 @@ const CheckInput= async (booking)=>{
         isCategoryEmpty.value=false
         isDateEmpty.value=false
         isTimeEmpty.value=false
-        await createBooking(booking)
-        reset()
+        if(confirm("Are You sure ?")){
+            await createBooking(booking)
+            reset()
+        }
     }
 }
 
@@ -147,7 +149,6 @@ const GoHome =()=>{
 }
 
 const createBooking= async (booking)=>{
-    if(confirm("Are You sure ?")){
     const res=await fetch(`${import.meta.env.VITE_BASE_URL}/bookings`,{
         method: 'POST',
         headers:{
@@ -166,9 +167,8 @@ const createBooking= async (booking)=>{
             eventNote: booking.eventNote.trim()
         })
     })
-    if(res.status===201){
+        if(res.status===201){
         alert("You have a new Booking")
-    }
     }
 }
 
@@ -193,10 +193,12 @@ const countEmail=computed(()=>{
                 <div class="bgc px-10 py-3 my-4 rounded-lg" >
                     <div class="mr-2 mt-2">
                         <p>Full Name: <input type="text" placeholder="Name..." v-model="newbooking.bookingName" maxlength="100"></p>
+                        <p class="text-sm text-stone-500">(Number of Character : {{countName}})</p>
                         <p v-if="isNameEmpty && countName===100" class="text-xs text-red-600">Plase Input your name</p>
                     </div>
                     <div class="mr-2 mt-1">
                         <p>E-mail: <input type="email" placeholder="example@example.com" v-model="newbooking.bookingEmail" maxlength="100"></p>
+                        <p class="text-sm text-stone-500">(Number of Character : {{countEmail}})</p>
                         <p v-if="isEmailEmpty && countEmail===100" class="text-xs text-red-600">Plase Input your e-mail</p>
                         <p v-else-if="isEmailNotFormat" class="text-xs text-red-600">Your Email address is not follow format</p>
                     </div>
